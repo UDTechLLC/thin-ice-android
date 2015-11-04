@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/leftTop"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_top_left"
+        app:layout_heightPercent="42%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/leftTop"
+        android:layout_toRightOf="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_top_right"
+        app:layout_heightPercent="42%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_bottm_left"
+        app:layout_heightPercent="58%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_below="@+id/leftTop"
+        android:layout_toEndOf="@+id/leftTop"
+        android:layout_toRightOf="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_bottom_left"
+        app:layout_heightPercent="58%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_logo"
+        app:layout_marginLeftPercent="20%"
+        app:layout_marginTopPercent="12%"
+        app:layout_widthPercent="60%" />
+
+    <FrameLayout
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        app:layout_heightPercent="22%"
+        app:layout_marginLeftPercent="37%"
+        app:layout_marginTopPercent="31%"
+        app:layout_widthPercent="26%">
+
+        <ImageView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/btn_log_in" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Log In"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="or"
+        android:textColor="#fff"
+        app:layout_marginLeftPercent="45%"
+        app:layout_marginTopPercent="55%"
+        app:layout_widthPercent="10%" />
+
+    <ImageView
+        android:id="@+id/fblogin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/btn_log_in_facebook"
+        app:layout_heightPercent="22%"
+        app:layout_marginLeftPercent="58%"
+        app:layout_marginTopPercent="55%"
+        app:layout_widthPercent="22%" />
+
+    <ImageView
+        android:id="@+id/twlogin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/btn_log_in_twitter"
+        app:layout_heightPercent="22%"
+        app:layout_marginLeftPercent="20%"
+        app:layout_marginTopPercent="55%"
+        app:layout_widthPercent="22%" />
+
+    <View
+        android:background="@drawable/bg_registration_button_left"
+        app:layout_heightPercent="10%"
+        app:layout_marginTopPercent="85%"
+        app:layout_widthPercent="50%" />
+
+    <View
+        android:background="@drawable/bg_registration_button_right"
+        app:layout_heightPercent="10%"
+        app:layout_marginLeftPercent="50%"
+        app:layout_marginTopPercent="85%"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:padding="5dp"
+        android:id="@+id/registration"
+        android:drawableLeft="@drawable/ic_sign_up"
+        android:drawablePadding="3dp"
+        android:gravity="center"
+        android:text="Sign Up"
+        android:textColor="@drawable/color_button_text_selector"
+        app:layout_heightPercent="10%"
+        app:layout_marginLeftPercent="37%"
+        app:layout_marginTopPercent="85%"
+        app:layout_widthPercent="26%" />
+</android.support.percent.PercentRelativeLayout>

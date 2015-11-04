@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/leftTop"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_top_left"
+        app:layout_heightPercent="42%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/leftTop"
+        android:layout_toRightOf="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_top_right"
+        app:layout_heightPercent="42%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_bottm_left"
+        app:layout_heightPercent="58%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_below="@+id/leftTop"
+        android:layout_toEndOf="@+id/leftTop"
+        android:layout_toRightOf="@+id/leftTop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_login_bottom_left"
+        app:layout_heightPercent="58%"
+        app:layout_widthPercent="50%" />
+
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/ic_logo"
+        app:layout_marginLeftPercent="20%"
+        app:layout_marginTopPercent="12%"
+        app:layout_widthPercent="60%" />
+    <LinearLayout
+        app:layout_marginLeftPercent="10%"
+        app:layout_marginTopPercent="32%"
+        app:layout_widthPercent="80%"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/bg_form"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_mail"
+            android:drawableTintMode="src_in"
+            android:paddingBottom="20dp"
+            android:textColor="#fff"
+            android:id="@+id/email"
+            android:inputType="textEmailAddress"
+            android:nextFocusForward="@+id/pass"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_pass"
+            android:paddingBottom="20dp"
+            android:textColor="#fff"
+            android:id="@+id/pass"
+            android:inputType="textPassword"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:textColor="#fff"
+            android:padding="7dp"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
+</android.support.percent.PercentRelativeLayout>
