@@ -6,4 +6,6 @@
     <color name="colorGradientLight">#1a3f5f</color>
     <color name="colorGradientCenter">#1e3851</color>
     <color name="colorGradientDark">#222832</color>
+    <color name="hintColor">#ccc</color>
+    <color name="textViewColor">#999</color>
 </resources>

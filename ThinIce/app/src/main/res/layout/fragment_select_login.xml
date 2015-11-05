@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -67,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:clickable="true"
             android:src="@drawable/btn_log_in" />
 
         <TextView
@@ -98,7 +99,14 @@
         app:layout_heightPercent="22%"
         app:layout_marginLeftPercent="58%"
         app:layout_marginTopPercent="55%"
-        app:layout_widthPercent="22%" />
+        app:layout_widthPercent="22%"
+        android:clickable="true"/>
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/twitter_login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/twlogin"
@@ -109,6 +117,7 @@
         app:layout_heightPercent="22%"
         app:layout_marginLeftPercent="20%"
         app:layout_marginTopPercent="55%"
+        android:clickable="true"
         app:layout_widthPercent="22%" />
 
     <View
@@ -135,5 +144,6 @@
         app:layout_heightPercent="10%"
         app:layout_marginLeftPercent="37%"
         app:layout_marginTopPercent="85%"
-        app:layout_widthPercent="26%" />
+        app:layout_widthPercent="26%"
+        android:clickable="true"/>
 </android.support.percent.PercentRelativeLayout>

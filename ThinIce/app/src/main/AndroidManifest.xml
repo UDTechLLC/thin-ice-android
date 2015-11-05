@@ -19,6 +19,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name"/>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="95604cdd40f18529ba58e2ddc8d29fc81e7bfc14" />
     </application>
 
 </manifest>

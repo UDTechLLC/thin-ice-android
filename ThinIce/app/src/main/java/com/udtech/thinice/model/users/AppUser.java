@@ -8,6 +8,7 @@ import com.orm.SugarRecord;
 public class AppUser extends SugarRecord<AppUser> {
     private String email;
     private String pass;
+    private User user;
 
     public AppUser() {
     }
@@ -15,6 +16,14 @@ public class AppUser extends SugarRecord<AppUser> {
     public AppUser(String email, String pass) {
         this.email = email;
         this.pass = pass;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getEmail() {

@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
-        <bitmap
-            android:src="@mipmap/ic_pass"
-            android:alpha="60">
-        </bitmap>
-    </item>
     <item android:state_pressed="true">
         <bitmap
             android:src="@mipmap/ic_pass">
@@ -19,6 +13,12 @@
     <item android:state_focused="true">
         <bitmap
             android:src="@mipmap/ic_pass">
+        </bitmap>
+    </item>
+    <item >
+        <bitmap
+            android:src="@mipmap/ic_pass"
+            android:alpha="60">
         </bitmap>
     </item>
 </selector>
