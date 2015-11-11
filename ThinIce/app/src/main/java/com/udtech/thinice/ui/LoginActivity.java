@@ -40,11 +40,11 @@ public class LoginActivity extends FragmentActivity {
     }
 
     public void showLoginScreen() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, getLoginFragment()).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).add(R.id.container, getLoginFragment()).addToBackStack(null).commit();
     }
 
     public void showRegistrationScreen() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, getRegistrationFragment()).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_left, 0,0,R.anim.anim_out_to_left).add(R.id.container, getRegistrationFragment()).addToBackStack(null).commit();
     }
 
     private Fragment getStartFragment() {
