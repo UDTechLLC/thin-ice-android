@@ -8,4 +8,7 @@
     <color name="colorGradientDark">#222832</color>
     <color name="hintColor">#ccc</color>
     <color name="textViewColor">#999</color>
+    <color name="colorAccentDark">#9575cd</color>
+    <color name="graphBase">#5e35b1</color>
+    <color name="graphState">#33c6cb</color>
 </resources>

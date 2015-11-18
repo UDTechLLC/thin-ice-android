@@ -55,7 +55,7 @@
         app:layout_heightPercent="0.5%"
         app:layout_widthPercent="90%"
         android:background="@mipmap/bg_tabs"/>
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
+    <com.udtech.thinice.ui.widgets.TabsView
         android:id="@+id/tabs"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"

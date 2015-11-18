@@ -11,6 +11,8 @@
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.udtech.thinice" />
         <activity android:name=".ui.LoginActivity">
+        </activity>
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>
