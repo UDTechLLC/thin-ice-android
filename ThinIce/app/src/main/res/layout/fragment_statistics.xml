@@ -17,7 +17,7 @@
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:src="@drawable/btn_menu"
             android:padding="15dp"
-            android:id="@+id/imageView" />
+            android:id="@+id/menu" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,8 +26,8 @@
             android:text="Statistics"
             android:id="@+id/textView6"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
+            android:layout_toRightOf="@+id/menu"
+            android:layout_toEndOf="@+id/menu"
             android:layout_marginLeft="32dp"
             android:layout_marginStart="32dp" />
 
@@ -47,7 +47,7 @@
         android:background="@mipmap/bg_tabs"
         app:layout_heightPercent="0.5%"
         app:layout_marginLeftPercent="5%"
-        app:layout_marginTopPercent="23.4%"
+        app:layout_marginTopPercent="18.4%"
         app:layout_widthPercent="90%" />
 
     <com.udtech.thinice.ui.widgets.TabsView
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         app:layout_heightPercent="10%"
-        app:layout_marginTopPercent="14%"
+        app:layout_marginTopPercent="9%"
         app:stl_clickable="true"
         app:stl_defaultTabBackground="?attr/selectableItemBackground"
         app:stl_defaultTabTextAllCaps="false"
