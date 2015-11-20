@@ -1,11 +1,13 @@
 package com.udtech.thinice.model;
 
+import com.orm.SugarRecord;
+
 import java.util.Date;
 
 /**
  * Created by JOkolot on 05.11.2015.
  */
-public class Session {
+public class Session extends SugarRecord<Session> {
     private Date startTime;
     private Date endTime;
     private int temperature;
