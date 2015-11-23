@@ -40,7 +40,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
     public void showLoginScreen() {
-        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).add(R.id.container, getLoginFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.to_middle, 0, 0, R.anim.anim_out_to_right).add(R.id.container, getLoginFragment()).addToBackStack(null).commit();
     }
 
     public void showRegistrationScreen() {

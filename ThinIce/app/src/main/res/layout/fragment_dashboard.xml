@@ -54,18 +54,12 @@
         android:layout_below="@id/device_container"
         app:layout_widthPercent="91.6%"
         android:background="#33c6cb"/>
-    <com.udtech.thinice.ui.widgets.ChildFriendlyScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/device_container"
-        app:layout_marginTopPercent="3%"
-        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_below="@id/device_container"
             android:id="@+id/day_container">
 
         </LinearLayout>
-    </com.udtech.thinice.ui.widgets.ChildFriendlyScrollView>
 </android.support.percent.PercentRelativeLayout>

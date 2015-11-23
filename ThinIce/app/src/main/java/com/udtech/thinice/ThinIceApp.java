@@ -2,6 +2,7 @@ package com.udtech.thinice;
 
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.udtech.thinice.model.Day;
 
 /**
  * Created by JOkolot on 03.11.2015.
