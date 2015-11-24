@@ -13,7 +13,14 @@ import com.udtech.thinice.R;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
 import com.udtech.thinice.ui.MainActivity;
-import com.udtech.thinice.ui.main.cards.FragmentCards;
+import com.udtech.thinice.ui.main.adapters.CardsAdapter;
+import com.udtech.thinice.ui.main.cards.FragmentBackCard;
+import com.udtech.thinice.ui.main.cards.FragmentFrontCard;
+import com.udtech.thinice.ui.widgets.LoopPagerAdapterWrapper;
+import com.udtech.thinice.ui.widgets.LoopViewPager;
+
+import java.util.Arrays;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -49,7 +56,8 @@ public class FragmentDashBoard extends Fragment{
     }
 
     private void initDays(View view) {
-       getChildFragmentManager().beginTransaction().add(R.id.day_container,new FragmentCards()).commit();
+        ((LoopViewPager)view.findViewById(R.id.cards_container)).setAdapter(new LoopPagerAdapterWrapper(new CardsAdapter(getChildFragmentManager(),
+                Arrays.asList(new Fragment[]{new FragmentFrontCard(), new FragmentBackCard()}))));
     }
 
     @OnClick(R.id.menu)

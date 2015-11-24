@@ -3,12 +3,11 @@ package com.udtech.thinice.eventbus.model.cards;
 import com.udtech.thinice.model.Day;
 
 /**
- * Created by JOkolot on 23.11.2015.
+ * Created by Sofi on 24.11.2015.
  */
-public class UpdateCard {
+public class TouchedCard {
     private Day day;
-
-    public UpdateCard(Day day) {
+    public TouchedCard(Day day) {
         this.day = day;
     }
 
