@@ -3,6 +3,7 @@ package com.udtech.thinice.model;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,8 +12,11 @@ import java.util.List;
 public class Day extends SugarRecord<Day> {
     private List<Session> sessions;
     private int gymHours, waterIntake,junkFood,hProteinMeals,hoursSlept,carbsConsumed;
+    private Date date;
+
     public Day() {
         this.sessions = new ArrayList<>();
+        date = new Date();
     }
 
     public void addSession(Session session) {
@@ -78,5 +82,9 @@ public class Day extends SugarRecord<Day> {
             return 0;
         }
 
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

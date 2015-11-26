@@ -24,7 +24,7 @@ public class CardsAdapter extends ArrayAdapter<Day> {
     }
     public static CardsAdapter getInstance(Context context){
         List<Day> days = new ArrayList<>();
-        Iterator<Day> daysIterator = SugarRecord.findAll(Day.class);
+        Iterator<Day> daysIterator = Day.findAll(Day.class);
         while (daysIterator.hasNext())
             days.add(daysIterator.next());
         days = days.subList(days.size()-7>0?days.size()-7:0,days.size());
