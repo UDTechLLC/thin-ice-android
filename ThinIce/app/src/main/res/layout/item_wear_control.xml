@@ -61,14 +61,32 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <Switch
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Delayed Timer"
-                    android:layout_margin="10dp"
-                    android:checked="false"
-                    android:textColor="@color/textViewColor" />
+                    android:layout_margin="10dp">
+
+                    <com.rey.material.widget.Switch
+                        style="@style/Material.Widget.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:sw_trackColor="@drawable/switch_bg_color"
+                        app:sw_thumbColor="@drawable/switch_color"
+                        android:checked="false"
+                        android:layout_gravity="right|center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Notificatios"
+                        android:id="@+id/textView25"
+                        android:layout_gravity="left|center_vertical"
+                        android:textColor="#fff" />
+                </FrameLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
@@ -85,6 +103,17 @@
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:weightSum="2">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_selection_active" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:weightSum="2">
 
@@ -93,18 +122,17 @@
                             android:layout_height="50dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="30 min"
-                            android:id="@+id/textView23"
+                            android:id="@+id/one"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:textColor="#fff"
-                            android:background="@drawable/bg_selection" />
+                            android:textColor="#fff"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="1 hour"
-                            android:id="@+id/textView24"
+                            android:id="@+id/two"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textColor="#fff" />
@@ -117,13 +145,30 @@
                     android:background="#33c6cb"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp" />
-                <Switch
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Disable Device"
-                    android:layout_margin="10dp"
-                    android:textColor="@color/textViewColor"
-                    android:checked="false" />
+                    android:layout_margin="10dp">
+
+                    <com.rey.material.widget.Switch
+                        style="@style/Material.Widget.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:sw_trackColor="@drawable/switch_bg_color"
+                        app:sw_thumbColor="@drawable/switch_color"
+                        android:checked="false"
+                        android:layout_gravity="right|center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Disablecdevice"
+                        android:id="@+id/textView25"
+                        android:layout_gravity="left|center_vertical"
+                        android:textColor="@color/textViewColor" />
+                </FrameLayout>
 
                 <Button
                     android:layout_width="match_parent"

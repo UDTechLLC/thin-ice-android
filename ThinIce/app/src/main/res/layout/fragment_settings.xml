@@ -2,8 +2,32 @@
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_statistics">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material">
 
+        <ImageView
+            android:layout_width="@dimen/abc_action_bar_default_height_material"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:src="@drawable/btn_menu"
+            android:padding="15dp"
+            android:id="@+id/menu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Settings"
+            android:id="@+id/textView6"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/menu"
+            android:layout_toEndOf="@+id/menu"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp" />
+
+    </RelativeLayout>
     <View
         android:background="@mipmap/bg_tabs"
         app:layout_heightPercent="0.5%"
@@ -21,7 +45,7 @@
         app:stl_defaultTabBackground="?attr/selectableItemBackground"
         app:stl_defaultTabTextAllCaps="false"
         app:stl_defaultTabTextColor="@drawable/color_tabs"
-        app:stl_defaultTabTextHorizontalPadding="45dp"
+        app:stl_defaultTabTextHorizontalPadding="30dp"
         app:stl_defaultTabTextMinWidth="0dp"
         app:stl_defaultTabTextSize="18sp"
         app:stl_distributeEvenly="false"

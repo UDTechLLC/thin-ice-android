@@ -14,6 +14,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.ui.main.FragmentDashBoard;
+import com.udtech.thinice.ui.main.FragmentSettings;
 import com.udtech.thinice.ui.main.FragmentStatistics;
 import com.udtech.thinice.ui.main.MenuHolder;
 
@@ -85,6 +86,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         if (position != openedMenuItem)
             switch (position) {
                 case MenuHolder.SETTINGS: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentSettings()).addToBackStack(null).commit();
                     break;
                 }
                 case MenuHolder.STATISTICS: {
