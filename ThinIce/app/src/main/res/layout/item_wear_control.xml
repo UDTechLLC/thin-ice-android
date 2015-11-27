@@ -38,25 +38,21 @@
                     android:id="@+id/save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="false"
-                    android:layout_alignParentTop="false"
                     android:padding="15dp"
                     android:drawableLeft="@mipmap/ic_timer"
                     android:drawablePadding="10dp"
                     android:text="12:59 PM"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#fff"
-                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/imageView13"
-                    android:layout_marginRight="20dp" />
+                    android:layout_centerVertical="true" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView13"
                     android:src="@drawable/ic_more"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:foregroundGravity="center_vertical"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
@@ -69,8 +65,10 @@
                 <Switch
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="New Switch"
-                    android:layout_margin="10dp" />
+                    android:text="Delayed Timer"
+                    android:layout_margin="10dp"
+                    android:checked="false"
+                    android:textColor="@color/textViewColor" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
@@ -122,16 +120,19 @@
                 <Switch
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="New Switch"
-                    android:layout_margin="10dp" />
+                    android:text="Disable Device"
+                    android:layout_margin="10dp"
+                    android:textColor="@color/textViewColor"
+                    android:checked="false" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="New Button"
+                    android:text="Delete device"
                     android:id="@+id/button"
                     android:background="@drawable/bg_button"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="10dp"
+                    android:textColor="#fff" />
             </LinearLayout>
 
         </LinearLayout>
