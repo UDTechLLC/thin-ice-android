@@ -1,7 +1,8 @@
-package com.udtech.thinice.ui.main;
+package com.udtech.thinice.ui.authorization;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.eventbus.model.user.UserInfoAdded;
 import com.udtech.thinice.model.users.User;
 
 import java.text.DateFormatSymbols;
@@ -22,16 +24,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
- * Created by JOkolot on 05.11.2015.
+ * Created by JOkolot on 30.11.2015.
  */
-public class FragmentInfo extends UserDataForm {
+public class FragmentProfileInfo extends Fragment
+{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_account_info, container, false);
+        return inflater.inflate(R.layout.fragment_sign_in_info,container,false);
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -132,23 +136,26 @@ public class FragmentInfo extends UserDataForm {
 
             }
         });
+        getView().findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User();
+                user.setEmail(getArguments().getString("email"));
+                user.setPassword(getArguments().getString("pass"));
+                user = collectData(user);
+                if(user != null){
+                    user.save();
+                    UserSessionManager.saveSession(user, getActivity());
+                    EventBus.getDefault().post(new UserInfoAdded());
+                }
+            }
+        });
 
-        User user = UserSessionManager.getSession(getContext());
-        if (user != null) {
-            ((EditText) getView().findViewById(R.id.first_name)).setText(user.getFirstName());
-            ((EditText) getView().findViewById(R.id.last_name)).setText(user.getLastName());
-            ((EditText) getView().findViewById(R.id.weight)).setText(user.getWeight() + "");
-            ((EditText) getView().findViewById(R.id.height)).setText(user.getHeight() + "");
-            ((Spinner) getView().findViewById(R.id.days)).setSelection(Integer.parseInt(new SimpleDateFormat("d").format(user.getDateOfBirth())) - 1);
-            ((Spinner) getView().findViewById(R.id.months)).setSelection(Integer.parseInt(new SimpleDateFormat("M").format(user.getDateOfBirth())) - 1);
-            ((Spinner) getView().findViewById(R.id.year)).setSelection(Integer.parseInt(new SimpleDateFormat("yyyy").format(user.getDateOfBirth())) - 1);
-        }
+
     }
 
-    @Override
     public User collectData(User user) {
-        user.setFirstName(((EditText) getView().findViewById(R.id.first_name)).getText().toString());
-        user.setLastName(((EditText) getView().findViewById(R.id.last_name)).getText().toString());
+        user.setSex(((Spinner)getView().findViewById(R.id.sex)).getSelectedItemPosition() == 0);
         user.setWeight(Long.valueOf(((EditText) getView().findViewById(R.id.weight)).getText().toString()));
         user.setHeight(Long.valueOf(((EditText) getView().findViewById(R.id.height)).getText().toString()));
         int days = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition()  + 1;

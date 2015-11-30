@@ -11,13 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
 import com.udtech.thinice.eventbus.model.devices.ShowBackDevice;
 import com.udtech.thinice.eventbus.model.devices.ShowFrontDevice;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
 import com.udtech.thinice.ui.MainActivity;
-import com.udtech.thinice.ui.authorization.FragmentAddWear;
 import com.udtech.thinice.ui.main.devices.DeviceControl;
 import com.udtech.thinice.ui.main.devices.DeviceView;
 import com.udtech.thinice.ui.widgets.animation.FlipAnimation;
@@ -89,7 +89,18 @@ public class FragmentControl extends Fragment {
     public void onEvent(ShowFrontDevice event) {
         switchCards(event.isReverse());
     }
+    public void onEvent(DeleteDevice event){
+        event.getDevice().delete();
+        List<Device> devices = new ArrayList<>();
+        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
+        while(tempIterator.hasNext())
+            devices.add(tempIterator.next());
+        Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
+        while(tempInsoleIterator.hasNext())
+            devices.add(tempInsoleIterator.next());
+        front.setAdapter(new ControlAdapter(getContext(), devices));
 
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,7 +120,7 @@ public class FragmentControl extends Fragment {
         view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).add(R.id.fragment_container,new FragmentAddWear()).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).addToBackStack(null).add(R.id.fragment_container, new FragmentAddWear()).commit();
             }
         });
         front = (ListView) view.findViewById(R.id.devices);
@@ -126,6 +137,7 @@ public class FragmentControl extends Fragment {
         while(tempInsoleIterator.hasNext())
             devices.add(tempInsoleIterator.next());
         front.setAdapter(new ControlAdapter(getContext(), devices));
+
     }
 
     private class ControlAdapter extends ArrayAdapter<Device> {

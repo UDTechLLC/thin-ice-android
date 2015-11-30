@@ -52,6 +52,15 @@
                     android:layout_gravity="center_horizontal|top"
                     android:src="@mipmap/ic_logo"
                     android:layout_marginTop="20dp" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/progressBar"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="35dp"
+                    android:indeterminate="false" />
             </LinearLayout>
         </ScrollView>
 
@@ -77,7 +86,8 @@
                     android:layout_gravity="left|bottom"
                     android:layout_margin="20dp"
                     android:src="@mipmap/ic_insoles"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -86,7 +96,8 @@
                     android:layout_gravity="right|bottom"
                     android:layout_margin="20dp"
                     android:src="@mipmap/ic_add_tshirt"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <TextView
@@ -101,12 +112,13 @@
                 android:layout_margin="15dp" />
         </LinearLayout>
 
+
     </FrameLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Get Started"
+        android:text="Back"
         android:background="@drawable/bg_button_blue"
         android:id="@+id/btn_exit"
         android:textColor="#fff"

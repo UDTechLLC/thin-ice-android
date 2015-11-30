@@ -1,6 +1,5 @@
-package com.udtech.thinice.ui.authorization;
+package com.udtech.thinice.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,16 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.udtech.thinice.R;
-import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
-import com.udtech.thinice.ui.LoginActivity;
-import com.udtech.thinice.ui.MainActivity;
-import com.udtech.thinice.ui.SplashActivity;
 
 /**
- * Created by Sofi on 30.11.2015.
+ * Created by JOkolot on 30.11.2015.
  */
 public class FragmentAddWear extends Fragment {
     private Device insoles, tshirt;
@@ -50,9 +45,7 @@ public class FragmentAddWear extends Fragment {
         view.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                getActivity().startActivity(mainIntent);
-                getActivity().finish();
+                getActivity().onBackPressed();
             }
         });
         if (TShirt.findAll(TShirt.class).hasNext()) {

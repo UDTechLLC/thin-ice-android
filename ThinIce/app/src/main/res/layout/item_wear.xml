@@ -23,7 +23,7 @@
                 android:background="@drawable/bg_header_blue">
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -129,7 +129,7 @@
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@mipmap/ic_charge_fill"
+                                    android:src="@mipmap/ic_charge_empty"
                                     android:layout_margin="1px"/>
                             </LinearLayout>
                         </FrameLayout>
@@ -143,7 +143,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:text="30%"
+                                android:text="0%"
                                 android:inputType="text"
                                 android:id="@+id/textView14"
                                 android:layout_gravity="center_vertical"
@@ -181,8 +181,8 @@
                         android:paddingBottom="5dp">
 
                         <FrameLayout
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:id="@+id/plus"
                             android:layout_gravity="center_horizontal|top"
                             android:background="@drawable/ic_plus">
@@ -196,8 +196,8 @@
                         </FrameLayout>
 
                         <FrameLayout
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:id="@+id/minus"
                             android:layout_gravity="center_horizontal|bottom"
                             android:background="@drawable/ic_minus" >

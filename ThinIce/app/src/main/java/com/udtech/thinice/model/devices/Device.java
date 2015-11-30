@@ -22,5 +22,8 @@ public abstract interface Device {
 
     public void setDisabled(boolean disabled);
     public void save();
+    public void delete();
+    @Override
+    public boolean equals(Object o);
 
 }

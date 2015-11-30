@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.model.users.User;
 import com.udtech.thinice.ui.MainActivity;
 
 import java.util.Iterator;
@@ -56,6 +58,8 @@ public class FragmentDevices extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        User user = UserSessionManager.getSession(getActivity());
+        ((TextView)view.findViewById(R.id.name)).setText(user.getFirstName()!=null?user.getFirstName():""+" "+user.getLastName()!=null?user.getLastName():"");
         Iterator<TShirt> tsIterator = TShirt.findAll(TShirt.class);
         Iterator<Insole> inIterator = Insole.findAll(Insole.class);
         TShirt tShirt = null;
@@ -65,9 +69,9 @@ public class FragmentDevices extends Fragment {
         if(inIterator.hasNext())
             insole = inIterator.next();
         devices = new Pair<>(tShirt,insole);
+        view.findViewById(R.id.separator).setVisibility(View.VISIBLE);
         if(devices.first!=null){
             view.findViewById(R.id.tshirt_container).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.separator).setVisibility(View.VISIBLE);
             setCharge(view.findViewById(R.id.charge_tshirt), devices.first.getCharge());
             ((TextView)view.findViewById(R.id.charge_tshirt_text)).setText(devices.first.getCharge()+"%");
         }else{
@@ -76,7 +80,6 @@ public class FragmentDevices extends Fragment {
         }
         if(devices.second!=null){
             view.findViewById(R.id.insoles_container).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.separator).setVisibility(View.VISIBLE);
             setCharge(view.findViewById(R.id.charge_insoles), devices.second.getCharge());
             ((TextView)view.findViewById(R.id.charge_insoles_text)).setText(devices.second.getCharge() + "%");
         }else{

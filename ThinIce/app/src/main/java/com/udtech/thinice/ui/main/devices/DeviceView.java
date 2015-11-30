@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.eventbus.model.devices.ShowBackDevice;
 import com.udtech.thinice.model.Settings;
 import com.udtech.thinice.model.devices.Device;
@@ -23,8 +24,8 @@ import de.greenrobot.event.EventBus;
  * Created by Sofi on 30.11.2015.
  */
 public class DeviceView extends FrameLayout {
-    private Device device;
     final GestureDetector gdt;
+    private Device device;
     private Settings settings;
 
     public DeviceView(Context context) {
@@ -35,9 +36,22 @@ public class DeviceView extends FrameLayout {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 gdt.onTouchEvent(event);
-                return false;
+                return true;
             }
         });
+        EventBus.getDefault().register(this);
+    }
+
+    public void onEvent(DeviceChanged event) {
+        if(device.equals(event.getDevice()))
+            device = event.getDevice();
+            initView();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        EventBus.getDefault().unregister(this);
     }
 
     public void setDevice(Device device) {
@@ -46,6 +60,15 @@ public class DeviceView extends FrameLayout {
     }
 
     public void initView() {
+        if (device.isDisabled()) {
+            setAlpha(0.5f);
+        } else {
+            setAlpha(1.0f);
+        }
+        if (device instanceof Insole)
+            ((TextView) findViewById(R.id.name)).setText("Thin Ice Insoles");
+        else
+            ((TextView) findViewById(R.id.name)).setText("Thin Ice T Shirt");
         settings = new Settings().fetch(getContext());
         findViewById(R.id.switchCard).setOnClickListener(new OnClickListener() {
                                                              @Override
@@ -59,21 +82,25 @@ public class DeviceView extends FrameLayout {
         else
             ((ImageView) findViewById(R.id.ic_type)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_tshirt_large));
         setCharge(findViewById(R.id.charge), device.getCharge());
-        ((TextView) findViewById(R.id.temperature)).setText(device.getTemperature() + (settings.isTemperature() ? "°F" : "°C"));
+        ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature())  + (settings.isTemperature() ? "°F" : "°C"));
         findViewById(R.id.plus).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                device.setTemperature(device.getTemperature() + 1);
-                device.save();
-                ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                if (!device.isDisabled()) {
+                    device.setTemperature(device.getTemperature() + 1);
+                    device.save();
+                    ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                }
             }
         });
         findViewById(R.id.minus).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                device.setTemperature(device.getTemperature() - 1);
-                device.save();
-                ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                if (!device.isDisabled()) {
+                    device.setTemperature(device.getTemperature() - 1);
+                    device.save();
+                    ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                }
             }
         });
         if (device.getTimer().getTime() != 0) {
@@ -82,6 +109,7 @@ public class DeviceView extends FrameLayout {
         } else {
             ((TextView) findViewById(R.id.timer)).setVisibility(INVISIBLE);
         }
+
     }
 
     public void switchCards() {
