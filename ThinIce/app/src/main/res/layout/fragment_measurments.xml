@@ -26,7 +26,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_spinner"
             android:popupBackground="#2b5568"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,7 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_spinner"
-            android:spinnerMode="dropdown" />
+            android:popupBackground="#2b5568"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -54,7 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_spinner"
-            android:spinnerMode="dropdown" />
+            android:popupBackground="#2b5568"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,6 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_spinner"
-            android:spinnerMode="dropdown" />
+            android:popupBackground="#2b5568"
+            android:spinnerMode="dropdown"
+            android:dropDownWidth="match_parent" />
     </LinearLayout>
 </FrameLayout>

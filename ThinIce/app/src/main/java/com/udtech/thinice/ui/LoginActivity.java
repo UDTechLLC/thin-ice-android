@@ -12,7 +12,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.udtech.thinice.R;
 import com.udtech.thinice.ui.authorization.FragmentAuth;
 import com.udtech.thinice.ui.authorization.FragmentInnerLogin;
-import com.udtech.thinice.ui.authorization.registration.FragmentRegistration;
+import com.udtech.thinice.ui.main.FragmentRegistration;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -41,10 +41,12 @@ public class LoginActivity extends FragmentActivity {
 
     public void showLoginScreen() {
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.to_middle, 0, 0, R.anim.anim_out_to_right).add(R.id.container, getLoginFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().remove(getStartFragment()).addToBackStack(null).commit();
     }
 
     public void showRegistrationScreen() {
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_left, 0,0,R.anim.anim_out_to_left).add(R.id.container, getRegistrationFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().remove(getStartFragment()).addToBackStack(null).commit();
     }
 
     private Fragment getStartFragment() {

@@ -13,6 +13,8 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.Day;
+import com.udtech.thinice.ui.main.FragmentChangeRegistration;
+import com.udtech.thinice.ui.main.FragmentControl;
 import com.udtech.thinice.ui.main.FragmentDashBoard;
 import com.udtech.thinice.ui.main.FragmentSettings;
 import com.udtech.thinice.ui.main.FragmentStatistics;
@@ -98,12 +100,14 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
                     break;
                 }
                 case MenuHolder.CONTROL: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentControl()).addToBackStack(null).commit();
                     break;
                 }
                 case MenuHolder.ACHIEVEMENTS: {
                     break;
                 }
                 case MenuHolder.ACCOUNT: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentChangeRegistration()).addToBackStack(null).commit();
                     break;
                 }
             }

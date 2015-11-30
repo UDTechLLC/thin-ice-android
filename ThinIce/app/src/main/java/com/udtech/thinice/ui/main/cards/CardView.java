@@ -1,4 +1,4 @@
-package com.udtech.thinice.ui.widgets;
+package com.udtech.thinice.ui.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,6 +20,8 @@ import com.udtech.thinice.eventbus.model.cards.ShowBackCard;
 import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.model.Day;
 import com.wefika.flowlayout.FlowLayout;
+
+import java.text.SimpleDateFormat;
 
 import de.greenrobot.event.EventBus;
 
@@ -69,6 +71,7 @@ public class CardView extends FrameLayout {
     public void setDay(Day day){
         this.day = day;
         checkTasks();
+        ((TextView)findViewById(R.id.date)).setText(new SimpleDateFormat("dd MMM yyyy").format(day.getDate()));
     }
     private void checkTasks() {
         FlowLayout container = (FlowLayout) frontSide.findViewById(R.id.container_tasks);

@@ -57,7 +57,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             }
 
         });
-        temperature.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(new String[]{"°C", "°F"})));
+        temperature.setAdapter(new ArrayAdapter<String>(getActivity(),R.layout.item_spinner,R.id.tittle, Arrays.asList(new String[]{"°C", "°F"})));
         temperature.setSelection(settings.isTemperature() ? 1 : 0);
         temperature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -72,7 +72,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             }
 
         });
-        weight.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(new String[]{"Kg", "Lb"})));
+        weight.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner,R.id.tittle, Arrays.asList(new String[]{"Kg", "Lb"})));
         weight.setSelection(settings.isWeight() ? 1 : 0);
         weight.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -87,7 +87,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             }
 
         });
-        lenght.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Arrays.asList(new String[]{"M", "Ft"})));
+        lenght.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner,R.id.tittle, Arrays.asList(new String[]{"M", "Ft"})));
         lenght.setSelection(settings.isLenght() ? 1 : 0);
         lenght.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

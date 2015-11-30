@@ -63,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/tshirt_container"
                 android:layout_marginRight="10dp">
 
                 <ImageView
@@ -121,7 +122,7 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:text="30%"
                             android:inputType="text"
-                            android:id="@+id/textView14"
+                            android:id="@+id/charge_tshirt_text"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/textViewColor" />
                     </FrameLayout>
@@ -136,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/insoles_container"
                 android:layout_marginLeft="10dp">
 
                 <ImageView
@@ -161,7 +163,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:id="@+id/charge_tshirt"
+                            android:id="@+id/charge_insoles"
                             android:layout_gravity="center_vertical|right"
                             android:layout_marginRight="7dp">
                             <ImageView
@@ -192,7 +194,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:text="30%"
-                            android:id="@+id/textView15"
+                            android:id="@+id/charge_insoles_text"
                             android:layout_gravity="left|center_vertical"
                             android:textColor="@color/textViewColor" />
                     </FrameLayout>

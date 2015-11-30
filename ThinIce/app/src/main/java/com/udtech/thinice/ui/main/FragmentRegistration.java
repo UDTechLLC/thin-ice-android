@@ -1,4 +1,4 @@
-package com.udtech.thinice.ui.authorization.registration;
+package com.udtech.thinice.ui.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,23 +11,20 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.users.User;
 import com.udtech.thinice.ui.authorization.adapters.FragmentAdapterRegistration;
@@ -60,12 +57,23 @@ public class FragmentRegistration extends UserDataForm {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
         ButterKnife.bind(this, view);
         account = new FragmentAccount();
         info = new FragmentInfo();

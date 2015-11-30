@@ -1,25 +1,26 @@
 package com.udtech.thinice.model.devices;
 
+import java.util.Date;
+
 /**
  * Created by JOkolot on 18.11.2015.
  */
-public abstract class Device {
-    private int temperature;
-    private int charge;
+public abstract interface Device {
+    public int getTemperature();
 
-    public int getTemperature() {
-        return temperature;
-    }
+    public void setTemperature(int temperature);
 
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
-    }
+    public int getCharge();
 
-    public int getCharge() {
-        return charge;
-    }
+    public void setCharge(int charge);
 
-    public void setCharge(int charge) {
-        this.charge = charge;
-    }
+    public void setTimer(Date date);
+
+    public Date getTimer();
+
+    public boolean isDisabled();
+
+    public void setDisabled(boolean disabled);
+    public void save();
+
 }

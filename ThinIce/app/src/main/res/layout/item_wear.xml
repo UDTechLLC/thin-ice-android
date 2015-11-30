@@ -35,18 +35,28 @@
                     android:textColor="#fff" />
 
                 <TextView
-                    android:id="@+id/save"
+                    android:id="@+id/timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/switchCard"
+                    android:padding="15dp"
+                    android:drawableLeft="@mipmap/ic_timer"
+                    android:drawablePadding="10dp"
+                    android:text="timer"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/switchCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:padding="15dp"
-                    android:drawableLeft="@mipmap/ic_timer"
-                    android:drawablePadding="10dp"
-                    android:text="Save"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#fff" />
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_more"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="15dp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -83,7 +93,63 @@
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_tshirt_large"
                         android:layout_marginBottom="5dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/ic_type" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="2"
+                        android:touchscreenBlocksFocus="true"
+                        android:layout_marginTop="10dp">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:id="@+id/charge"
+                                android:layout_gravity="center_vertical|right"
+                                android:layout_marginRight="7dp">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/ic_charge_empty"
+                                    android:layout_margin="1px"/>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/ic_charge_empty"
+                                    android:layout_margin="1px"/>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@mipmap/ic_charge_fill"
+                                    android:layout_margin="1px"/>
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:text="30%"
+                                android:inputType="text"
+                                android:id="@+id/textView14"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="@color/textViewColor" />
+                        </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -117,7 +183,7 @@
                         <FrameLayout
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:id="@+id/imageView5"
+                            android:id="@+id/plus"
                             android:layout_gravity="center_horizontal|top"
                             android:background="@drawable/ic_plus">
 
@@ -132,7 +198,7 @@
                         <FrameLayout
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:id="@+id/imageView10"
+                            android:id="@+id/minus"
                             android:layout_gravity="center_horizontal|bottom"
                             android:background="@drawable/ic_minus" >
 
@@ -149,7 +215,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="12°C"
-                            android:id="@+id/textView22"
+                            android:id="@+id/temperature"
                             android:layout_gravity="center" />
                     </FrameLayout>
 

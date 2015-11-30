@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ImageView
         android:id="@+id/leftTop"
         android:layout_alignParentLeft="true"
@@ -49,6 +48,42 @@
         app:layout_marginTopPercent="4.5%"
         app:layout_heightPercent="38%"
         app:layout_widthPercent="38%" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:layout_width="@dimen/abc_action_bar_default_height_material"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:src="@drawable/btn_menu"
+            android:padding="15dp"
+            android:id="@+id/menu" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Account"
+            android:id="@+id/textView6"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/menu"
+            android:layout_toEndOf="@+id/menu"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/action"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add"
+            android:padding="15dp"/>
+    </RelativeLayout>
     <View
         app:layout_marginLeftPercent="5%"
         app:layout_marginTopPercent="43.4%"

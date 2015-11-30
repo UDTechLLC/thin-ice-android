@@ -13,7 +13,7 @@ public class Settings {
     private static final String WEIGHT = "weight";
     private static final String LENGHT = "lenght";
 
-    //true if metrical/celsium
+    //true if non metrical/celsium
     private boolean temperature;
     private boolean weight;
     private boolean lenght;

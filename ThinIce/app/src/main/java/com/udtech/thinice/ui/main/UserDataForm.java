@@ -1,4 +1,4 @@
-package com.udtech.thinice.ui.authorization.registration;
+package com.udtech.thinice.ui.main;
 
 import android.support.v4.app.Fragment;
 

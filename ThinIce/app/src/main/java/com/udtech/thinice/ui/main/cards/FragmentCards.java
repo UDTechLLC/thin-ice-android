@@ -34,7 +34,6 @@ public class FragmentCards extends Fragment {
         back = new BackCard(getContext());
         swipe = new FlipAnimation(front, back);
         reverse = new RevertAnimation(front, back);
-
         EventBus.getDefault().register(this);
     }
 
@@ -47,6 +46,8 @@ public class FragmentCards extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(front.getParent()!=null)
+        ((FrameLayout)front.getParent()).removeAllViews();
         ((FrameLayout) view.findViewById(R.id.day_container)).addView(front);
         ((FrameLayout) view.findViewById(R.id.day_container)).addView(back);
         back.setVisibility(View.GONE);

@@ -2,6 +2,7 @@ package com.udtech.thinice.ui.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,6 +32,13 @@ public class BackCard extends FrameLayout implements CardEventListener {
             public boolean onTouch(View v, MotionEvent event) {
                 gdt.onTouchEvent(event);
                 return false;
+            }
+        });
+        findViewById(R.id.save).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+                EventBus.getDefault().post(new ShowFrontCard());
             }
         });
         this.findViewById(R.id.food_edit).setOnTouchListener(new OnTouchListener() {
@@ -70,9 +78,12 @@ public class BackCard extends FrameLayout implements CardEventListener {
             }
         });
 
+
     }
 
     public void updateView(View view) {
+        long now = System.currentTimeMillis();
+        ((TextView) findViewById(R.id.date)).setText(DateUtils.getRelativeTimeSpanString(day.getDate().getTime(), now, DateUtils.DAY_IN_MILLIS));
         ((TextView) view.findViewById(R.id.food_edit)).setText(day.getJunkFood() + "");
         ((TextView) view.findViewById(R.id.water_edit)).setText(day.getWaterIntake() + "");
         ((TextView) view.findViewById(R.id.protein_edit)).setText(day.gethProteinMeals() + "");
