@@ -12,6 +12,7 @@
     </style>
     <style name="editTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/bg_edit_text</item>
+        <item name="android:textColor">#cfff</item>
     </style>
     <style name="tabsStyle">
         <item name="android:textColor">@color/colorPrimary</item>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <FrameLayout
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_card">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_header_blue">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="cancel"
+                    android:id="@+id/cancel"
+                    android:textColor="#fff"
+                    android:padding="15dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="save"
+                    android:id="@+id/save"
+                    android:textColor="#fff"
+                    android:padding="15dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <com.rey.material.widget.Switch
+                        style="@style/Material.Widget.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:sw_trackColor="@drawable/switch_bg_color"
+                        app:sw_thumbColor="@drawable/switch_color"
+                        android:checked="false"
+                        android:layout_gravity="right|center_vertical"
+                        android:id="@+id/timer_enabled" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Delayed Timer"
+                        android:id="@+id/enale_timer_text"
+                        android:layout_gravity="left|center_vertical"
+                        android:textColor="@color/textViewColor" />
+                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#33c6cb"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_selection">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:weightSum="2">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:id="@+id/selection"
+                            android:background="@drawable/bg_selection_active" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="30 min"
+                            android:id="@+id/one"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="#fff"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="1 hour"
+                            android:id="@+id/two"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="#fff"
+                            android:alpha="0.5" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#33c6cb"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <com.rey.material.widget.Switch
+                        style="@style/Material.Widget.Switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:sw_trackColor="@drawable/switch_bg_color"
+                        app:sw_thumbColor="@drawable/switch_color"
+                        android:checked="false"
+                        android:layout_gravity="right|center_vertical"
+                        android:id="@+id/disable" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Disablecdevice"
+                        android:id="@+id/disable_text"
+                        android:layout_gravity="left|center_vertical"
+                        android:textColor="@color/textViewColor" />
+                </FrameLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Delete device"
+                    android:id="@+id/delete"
+                    android:background="@drawable/bg_button"
+                    android:layout_margin="10dp"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

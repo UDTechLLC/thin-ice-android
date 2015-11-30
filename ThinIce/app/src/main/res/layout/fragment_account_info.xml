@@ -30,7 +30,7 @@
                     android:text="First Name" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -47,7 +47,7 @@
                     android:text="Last Name" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -63,10 +63,11 @@
                     android:text="Choose Sex" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/sex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_spinner"
+                    android:popupBackground="#3b5568"
                     android:spinnerMode="dropdown" />
 
                 <TextView
@@ -83,26 +84,29 @@
                     android:weightSum="10">
 
                     <Spinner
-                        android:id="@+id/spinner2"
+                        android:id="@+id/days"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
+                        android:popupBackground="#3b5568"
                         android:background="@drawable/bg_spinner"
                         android:spinnerMode="dropdown" />
 
                     <Spinner
-                        android:id="@+id/spinner3"
+                        android:id="@+id/months"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="4"
+                        android:layout_marginLeft="5dp"
+                        android:popupBackground="#3b5568"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="5"
                         android:background="@drawable/bg_spinner"
                         android:spinnerMode="dropdown" />
 
                     <Spinner
-                        android:id="@+id/spinner4"
+                        android:id="@+id/year"
                         android:layout_width="0dp"
+                        android:popupBackground="#3b5568"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:background="@drawable/bg_spinner"
@@ -140,7 +144,7 @@
                     android:weightSum="2">
 
                     <EditText
-                        android:id="@+id/editText3"
+                        android:id="@+id/weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -151,7 +155,7 @@
                         android:paddingLeft="15dp" />
 
                     <EditText
-                        android:id="@+id/editText4"
+                        android:id="@+id/height"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"

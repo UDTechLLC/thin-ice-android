@@ -12,9 +12,18 @@ import android.widget.TextView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.udtech.thinice.R;
+import com.udtech.thinice.model.Day;
+import com.udtech.thinice.ui.main.FragmentChangeRegistration;
+import com.udtech.thinice.ui.main.FragmentControl;
 import com.udtech.thinice.ui.main.FragmentDashBoard;
+import com.udtech.thinice.ui.main.FragmentSettings;
 import com.udtech.thinice.ui.main.FragmentStatistics;
 import com.udtech.thinice.ui.main.MenuHolder;
+
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by Sofi on 16.11.2015.
@@ -40,6 +49,11 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         int width = size.x;
         sm.setBehindWidth((int) (width * 0.4));
         initMenu(menu);
+        try {
+            checkDay();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -74,6 +88,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         if (position != openedMenuItem)
             switch (position) {
                 case MenuHolder.SETTINGS: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentSettings()).addToBackStack(null).commit();
                     break;
                 }
                 case MenuHolder.STATISTICS: {
@@ -85,12 +100,14 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
                     break;
                 }
                 case MenuHolder.CONTROL: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentControl()).addToBackStack(null).commit();
                     break;
                 }
                 case MenuHolder.ACHIEVEMENTS: {
                     break;
                 }
                 case MenuHolder.ACCOUNT: {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentChangeRegistration()).addToBackStack(null).commit();
                     break;
                 }
             }
@@ -127,6 +144,23 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
             itemText.setTextColor(getResources().getColor(R.color.colorAccent));
             item.setBackgroundColor(Color.argb(64, 0, 0, 0));
         }
+    }
+    private void checkDay() throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        Iterator<Day> dayList =  Day.findAll(Day.class);
+        boolean created = false;
+        while (dayList.hasNext()) {
+            Day day = dayList.next();
+            Calendar dayCalendar = Calendar.getInstance();
+            dayCalendar.setTime(day.getDate());
+            if((dayCalendar.get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR)&&(dayCalendar.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)))){
+                created = true;
+                break;
+            }
+        }
+        if(!created)
+            new Day().save();
     }
 
 }

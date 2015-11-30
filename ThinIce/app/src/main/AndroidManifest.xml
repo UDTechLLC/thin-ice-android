@@ -7,16 +7,18 @@
         android:icon="@mipmap/ic_launcher" android:supportsRtl="true"
         android:theme="@style/AppTheme" android:name=".ThinIceApp" tools:replace="android:icon">
         <meta-data android:name="DATABASE" android:value="thin-ice.db" />
-        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="VERSION" android:value="4" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.udtech.thinice" />
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.MainActivity" android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=

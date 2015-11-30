@@ -5,10 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.orm.SugarRecord;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.Day;
-import com.udtech.thinice.ui.widgets.CardView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +22,7 @@ public class CardsAdapter extends ArrayAdapter<Day> {
     }
     public static CardsAdapter getInstance(Context context){
         List<Day> days = new ArrayList<>();
-        Iterator<Day> daysIterator = SugarRecord.findAll(Day.class);
+        Iterator<Day> daysIterator = Day.findAll(Day.class);
         while (daysIterator.hasNext())
             days.add(daysIterator.next());
         days = days.subList(days.size()-7>0?days.size()-7:0,days.size());

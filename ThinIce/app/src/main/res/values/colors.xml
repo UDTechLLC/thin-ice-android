@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3318ffff</color>
+    <color name="colorPrimary">#b7ffff</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#5518ffff</color>
     <color name="colorGradientLight">#1a3f5f</color>
@@ -11,4 +11,5 @@
     <color name="colorAccentDark">#9575cd</color>
     <color name="graphBase">#5e35b1</color>
     <color name="graphState">#33c6cb</color>
+
 </resources>

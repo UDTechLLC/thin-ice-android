@@ -1,4 +1,4 @@
-package com.udtech.thinice.ui.authorization.registration;
+package com.udtech.thinice.ui.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,11 +11,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,10 +24,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.udtech.thinice.R;
+import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.eventbus.model.user.SaveUser;
 import com.udtech.thinice.model.users.User;
+import com.udtech.thinice.ui.LoginActivity;
+import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.authorization.adapters.FragmentAdapterRegistration;
 
 import java.io.File;
@@ -42,11 +42,12 @@ import java.util.Arrays;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
- * Created by JOkolot on 04.11.2015.
+ * Created by Sofi on 30.11.2015.
  */
-public class FragmentRegistration extends UserDataForm {
+public class FragmentChangeRegistration extends UserDataForm {
     static final int REQUEST_IMAGE_CAPTURE = 1, REQUEST_SELECT_FILE = 2;
     @Bind(R.id.viewPager)
     ViewPager viewPager;
@@ -56,34 +57,80 @@ public class FragmentRegistration extends UserDataForm {
     ImageView avatar;
     private UserDataForm account, info;
     private String avatarUrl;
+    private MenuHolder holder;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+        holder = (MainActivity) getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.fragment_change_account, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        holder.openPosition(MenuHolder.ACCOUNT);
+        view.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.show();
+            }
+        });
+        view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent logout = new Intent(getActivity(), LoginActivity.class);
+                getActivity().startActivity(logout);
+                getActivity().finish();
+            }
+        });
         ButterKnife.bind(this, view);
         account = new FragmentAccount();
         info = new FragmentInfo();
         FragmentAdapterRegistration adapter = new FragmentAdapterRegistration(getChildFragmentManager(), Arrays.asList(new Fragment[]{account, info}));
         viewPager.setAdapter(adapter);
         tabs.setViewPager(viewPager);
+        initView();
     }
 
+    public void initView() {
+        User user = UserSessionManager.getSession(getActivity());
+        if (user != null) {
+            avatarUrl = user.getImageUrl();
+        }
+        updateView();
+    }
+
+    public void onEvent(SaveUser event) {
+        User user = collectData(new User());
+        if(user!=null){
+            user.save();
+            getActivity().onBackPressed();
+        }
+    }
     @Override
-    User collectData(User user) {
+    User collectData(User user) {account.collectData(user);
         user.setImageUrl(avatarUrl);
         user = account.collectData(user);
         if (user == null) {
-            viewPager.setCurrentItem(1);
+            viewPager.setCurrentItem(0);
         } else {
-            user = account.collectData(user);
+            user = info.collectData(user);
             if (user == null) {
-                viewPager.setCurrentItem(2);
+                viewPager.setCurrentItem(1);
             }
         }
         return user;
@@ -131,7 +178,7 @@ public class FragmentRegistration extends UserDataForm {
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File destFile=new File(directory,"profile.jpg");
+        File destFile = new File(directory, "profile.jpg");
 
         FileOutputStream fos = null;
         try {
@@ -169,36 +216,39 @@ public class FragmentRegistration extends UserDataForm {
             }
         }).start();
     }
-    private Bitmap cropSquare(Bitmap bitmap){
+
+    private Bitmap cropSquare(Bitmap bitmap) {
         Bitmap dstBmp = null;
-        if (bitmap.getWidth() >= bitmap.getHeight()){
+        if (bitmap.getWidth() >= bitmap.getHeight()) {
 
             dstBmp = Bitmap.createBitmap(
                     bitmap,
-                    bitmap.getWidth()/2 - bitmap.getHeight()/2,
+                    bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
                     0,
                     bitmap.getHeight(),
                     bitmap.getHeight()
             );
 
-        }else{
+        } else {
 
             dstBmp = Bitmap.createBitmap(
                     bitmap,
                     0,
-                    bitmap.getHeight()/2 - bitmap.getWidth()/2,
+                    bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
                     bitmap.getWidth(),
                     bitmap.getWidth()
             );
         }
         return dstBmp;
     }
-    private Bitmap scaleBitmapToMask(Bitmap src, Bitmap mask){
+
+    private Bitmap scaleBitmapToMask(Bitmap src, Bitmap mask) {
         return Bitmap.createScaledBitmap(src, mask.getWidth(), mask.getHeight(), true);
     }
+
     private Bitmap cropByMask(Bitmap bmp) {
         Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask);
-        bmp = scaleBitmapToMask(cropSquare(bmp),mask);
+        bmp = scaleBitmapToMask(cropSquare(bmp), mask);
         BitmapFactory.Options options = new BitmapFactory.Options();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             options.inMutable = true;
@@ -221,7 +271,8 @@ public class FragmentRegistration extends UserDataForm {
         mask.recycle();
         return addBorder(bitmap);
     }
-    private Bitmap addBorder(Bitmap bmp){
+
+    private Bitmap addBorder(Bitmap bmp) {
         Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask_add);
         BitmapFactory.Options options = new BitmapFactory.Options();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -245,9 +296,10 @@ public class FragmentRegistration extends UserDataForm {
         mask.recycle();
         return bitmap;
     }
-    private void updateView(){
-        if(avatarUrl!=null){
-            File bitmap=new File(avatarUrl);
+
+    private void updateView() {
+        if (avatarUrl != null) {
+            File bitmap = new File(avatarUrl);
             try {
                 final Bitmap b = BitmapFactory.decodeStream(new FileInputStream(bitmap));
                 getActivity().runOnUiThread(new Runnable() {

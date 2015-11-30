@@ -30,7 +30,7 @@ public class RevertAnimation extends Animation {
     public RevertAnimation(View fromView, View toView) {
         this.fromView = fromView;
         this.toView = toView;
-        setDuration(700);
+        setDuration(900);
         setFillAfter(false);
         setInterpolator(new AccelerateDecelerateInterpolator());
     }
@@ -51,6 +51,24 @@ public class RevertAnimation extends Animation {
         centerX = width / 2;
         centerY = height / 2;
         camera = new Camera();
+        setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                toView.setAlpha(0.0f);
+                toView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                toView.setAlpha(0.0f);
+                fromView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     @Override
@@ -59,8 +77,8 @@ public class RevertAnimation extends Animation {
         float degrees = (float) (180.0 * radians / Math.PI);
         if (interpolatedTime >= 0.5f) {
             degrees -= 180.f;
-            fromView.setVisibility(View.GONE);
-            toView.setVisibility(View.VISIBLE);
+            fromView.setAlpha(0.0f);
+            toView.setAlpha(1.0f);
         }
         final Matrix matrix = t.getMatrix();
         camera.save();
