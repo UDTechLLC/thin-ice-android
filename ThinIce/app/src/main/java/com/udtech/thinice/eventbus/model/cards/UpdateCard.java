@@ -8,10 +8,6 @@ import com.udtech.thinice.model.Day;
 public class UpdateCard {
     private Day day;
 
-    public UpdateCard(Day day) {
-        this.day = day;
-    }
-
     public Day getDay() {
         return day;
     }

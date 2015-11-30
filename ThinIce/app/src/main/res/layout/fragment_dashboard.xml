@@ -50,13 +50,16 @@
     <View
         android:layout_height="1px"
         app:layout_marginLeftPercent="4.2%"
-        app:layout_marginTopPercent="2%"
+        app:layout_marginTopPercent="3%"
         android:layout_below="@id/device_container"
         app:layout_widthPercent="91.6%"
         android:background="#33c6cb"/>
-        <com.udtech.thinice.ui.widgets.LoopViewPager
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_below="@id/device_container"
-            android:id="@+id/cards_container"/>
+            android:id="@+id/day_container">
+
+        </LinearLayout>
 </android.support.percent.PercentRelativeLayout>

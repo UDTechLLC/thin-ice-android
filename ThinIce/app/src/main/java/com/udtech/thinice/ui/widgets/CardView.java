@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udtech.thinice.R;
-import com.udtech.thinice.eventbus.model.cards.TouchedCard;
-import com.udtech.thinice.eventbus.model.cards.UpdateCard;
+import com.udtech.thinice.eventbus.model.cards.ShowBackCard;
 import com.udtech.thinice.model.Day;
 import com.wefika.flowlayout.FlowLayout;
 
@@ -28,6 +28,7 @@ import de.greenrobot.event.EventBus;
 public class CardView extends FrameLayout {
     private View frontSide;
     private Day day;
+    final GestureDetector gdt;
 
     public CardView(Context context) {
         this(context, null);
@@ -39,11 +40,11 @@ public class CardView extends FrameLayout {
 
     public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        gdt = new GestureDetector(context, new GestureListener());
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    EventBus.getDefault().post(new TouchedCard(day));
+                gdt.onTouchEvent(event);
                 return true;
             }
         });
@@ -51,23 +52,15 @@ public class CardView extends FrameLayout {
         frontSide.findViewById(R.id.switchCard).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                switchCards();
             }
         });
         this.addView(frontSide);
-        EventBus.getDefault().register(this);
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public void setDay(Day day) {
+    public void setDay(Day day){
         this.day = day;
         checkTasks();
     }
-
     private void checkTasks() {
         FlowLayout container = (FlowLayout) frontSide.findViewById(R.id.container_tasks);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -134,11 +127,35 @@ public class CardView extends FrameLayout {
         }
     }
 
-    public void onEvent(UpdateCard event) {
-        if (day.getId() == event.getDay().getId()) {
-            setDay(event.getDay());
-        }
+    public void switchCards() {
+        EventBus.getDefault().post(new ShowBackCard(day));
     }
 
+    public void reverseSwitchCards() {
+        EventBus.getDefault().post(new ShowBackCard(day, true));
+    }
 
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_MIN_DISTANCE = 30;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 60;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                reverseSwitchCards();
+                return false; // Right to left
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                switchCards();
+                return false; // Right to left
+            }
+
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Bottom to top
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Top to bottom
+            }
+            return true;
+        }
+
+    }
 }
