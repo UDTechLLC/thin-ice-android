@@ -32,7 +32,18 @@
                     android:text="Medium Text"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="#fff"
-                    android:padding="15dp" />
+                    android:layout_marginLeft="15dp" />
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Medium Text"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#fff"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="35dp" />
 
                 <ImageView
                     android:id="@+id/switchCard"
@@ -44,7 +55,7 @@
                     android:src="@drawable/ic_more"
                     android:paddingLeft="15dp"
                     android:paddingTop="15dp"
-                    android:paddingRight="25dp"
+                    android:paddingRight="15dp"
                     android:paddingBottom="15dp" />
 
             </RelativeLayout>
@@ -65,14 +76,13 @@
                         android:id="@+id/imageView6"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:padding="5dp"
                         android:src="@mipmap/ic_thinice_with_bg" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:paddingLeft="5dp"
+                        android:paddingLeft="10dp"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical">
 

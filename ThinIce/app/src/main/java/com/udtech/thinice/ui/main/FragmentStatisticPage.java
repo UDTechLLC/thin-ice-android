@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hookedonplay.decoviewlib.DecoView;
@@ -52,10 +53,12 @@ public class FragmentStatisticPage extends Fragment {
         ButterKnife.bind(this, view);
         ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphBase))
                 .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(TOTAL_VALUE))
+                .setLineWidth(80f)
                 .build());
         ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphState))
                 .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(DONE_VALUE))
                 .setInterpolator(new DecelerateInterpolator())
+                .setLineWidth(80f)
                 .build());
         done.setText(getArguments().getInt(DONE_VALUE)+" hrs");
         planned.setText(getArguments().getInt(TOTAL_VALUE)+" hrs");

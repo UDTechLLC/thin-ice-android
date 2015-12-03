@@ -58,15 +58,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:clickable="true"
-        app:layout_heightPercent="22%"
-        app:layout_marginLeftPercent="37%"
-        app:layout_marginTopPercent="31%"
-        app:layout_widthPercent="26%">
+        app:layout_heightPercent="25%"
+        app:layout_marginLeftPercent="36%"
+        app:layout_marginTopPercent="29.5%"
+        app:layout_widthPercent="28%">
 
         <ImageView
             android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:clickable="true"
             android:src="@drawable/btn_log_in" />
@@ -122,28 +122,29 @@
 
     <View
         android:background="@drawable/bg_registration_button_left"
-        app:layout_heightPercent="10%"
-        app:layout_marginTopPercent="90%"
+        app:layout_heightPercent="8%"
+        app:layout_marginTopPercent="92%"
         app:layout_widthPercent="50%" />
 
     <View
         android:background="@drawable/bg_registration_button_right"
-        app:layout_heightPercent="10%"
+        app:layout_heightPercent="8%"
         app:layout_marginLeftPercent="50%"
-        app:layout_marginTopPercent="90%"
+        app:layout_marginTopPercent="92%"
         app:layout_widthPercent="50%" />
 
     <TextView
         android:padding="5dp"
         android:id="@+id/registration"
         android:drawableLeft="@drawable/ic_sign_up"
-        android:drawablePadding="3dp"
+        android:drawablePadding="5dp"
         android:gravity="center"
         android:text="Sign Up"
         android:textColor="@drawable/color_button_text_selector"
-        app:layout_heightPercent="10%"
+        app:layout_heightPercent="5%"
         app:layout_marginLeftPercent="37%"
-        app:layout_marginTopPercent="90%"
-        app:layout_widthPercent="26%"
+        app:layout_marginTopPercent="93.5%"
+        android:textSize="16dp"
+        app:layout_widthPercent="30%"
         android:clickable="true"/>
 </android.support.percent.PercentRelativeLayout>

@@ -58,8 +58,20 @@ public class FragmentDevices extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.insoles_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MenuHolder) getActivity()).showMenuItem(MenuHolder.CONTROL);
+            }
+        });
+        view.findViewById(R.id.tshirt_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MenuHolder) getActivity()).showMenuItem(MenuHolder.CONTROL);
+            }
+        });
         User user = UserSessionManager.getSession(getActivity());
-        ((TextView)view.findViewById(R.id.name)).setText(user.getFirstName()!=null?user.getFirstName():""+" "+user.getLastName()!=null?user.getLastName():"");
+        ((TextView)view.findViewById(R.id.name)).setText((user.getFirstName()!=null?user.getFirstName():"")+" "+(user.getLastName()!=null?user.getLastName():""));
         Iterator<TShirt> tsIterator = TShirt.findAll(TShirt.class);
         Iterator<Insole> inIterator = Insole.findAll(Insole.class);
         TShirt tShirt = null;
@@ -85,6 +97,9 @@ public class FragmentDevices extends Fragment {
         }else{
             view.findViewById(R.id.insoles_container).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.separator).setVisibility(View.GONE);
+        }
+        if(devices.first == null&& devices.second == null){
+            ((TextView)view.findViewById(R.id.devices_tittle)).setText("No connected devices");
         }
     }
 

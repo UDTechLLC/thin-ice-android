@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
@@ -21,7 +22,9 @@ import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.model.Day;
 import com.wefika.flowlayout.FlowLayout;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
@@ -68,11 +71,13 @@ public class CardView extends FrameLayout {
         EventBus.getDefault().unregister(this);
     }
 
-    public void setDay(Day day){
+    public void setDay(Day day) {
         this.day = day;
         checkTasks();
-        ((TextView)findViewById(R.id.date)).setText(new SimpleDateFormat("dd MMM yyyy").format(day.getDate()));
+        ((TextView) findViewById(R.id.date)).setText(DateFormat.getDateInstance(DateFormat.LONG, Locale.UK).format(day.getDate()));
+        ((TextView) findViewById(R.id.day)).setText(DateUtils.getRelativeTimeSpanString(day.getDate().getTime(), new Date().getTime(), DateUtils.DAY_IN_MILLIS));
     }
+
     private void checkTasks() {
         FlowLayout container = (FlowLayout) frontSide.findViewById(R.id.container_tasks);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -153,6 +158,11 @@ public class CardView extends FrameLayout {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Bottom to top
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Top to bottom
+            }
             if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 reverseSwitchCards();
                 return false; // Right to left
@@ -161,17 +171,14 @@ public class CardView extends FrameLayout {
                 return false; // Right to left
             }
 
-            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                return false; // Bottom to top
-            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                return false; // Top to bottom
-            }
+
             return true;
         }
 
     }
-    public void onEvent(ShowFrontCard event){
-        day = Day.findById(Day.class,day.getId());
+
+    public void onEvent(ShowFrontCard event) {
+        day = Day.findById(Day.class, day.getId());
         checkTasks();
     }
 }

@@ -3,6 +3,9 @@ package com.udtech.thinice.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.model.users.User;
+
 /**
  * Created by JOkolot on 27.11.2015.
  */
@@ -52,21 +55,29 @@ public class Settings {
     }
 
     public Settings fetch(Context context) {
-        SharedPreferences sPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-        temperature = sPref.getBoolean(TEMPERATURE,false);
-        lenght = sPref.getBoolean(LENGHT,false);
-        volume = sPref.getBoolean(VOLUME,false);
-        weight = sPref.getBoolean(WEIGHT,false);
+        User user = UserSessionManager.getSession(context);
+        if (user != null) {
+            SharedPreferences sPref = context.getSharedPreferences(NAME+user.getId(), Context.MODE_PRIVATE);
+            temperature = sPref.getBoolean(TEMPERATURE, false);
+            lenght = sPref.getBoolean(LENGHT, false);
+            volume = sPref.getBoolean(VOLUME, false);
+            weight = sPref.getBoolean(WEIGHT, false);
+        }else{
+            temperature = false;
+            lenght = false;
+            volume = false;
+            weight = false;
+        }
         return this;
     }
 
     public Settings save(Context context) {
         SharedPreferences sPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putBoolean(TEMPERATURE,temperature);
-        ed.putBoolean(LENGHT,lenght);
-        ed.putBoolean(VOLUME,volume);
-        ed.putBoolean(WEIGHT,weight);
+        ed.putBoolean(TEMPERATURE, temperature);
+        ed.putBoolean(LENGHT, lenght);
+        ed.putBoolean(VOLUME, volume);
+        ed.putBoolean(WEIGHT, weight);
         ed.commit();
         return this;
     }
@@ -99,10 +110,10 @@ public class Settings {
     }
 
     public static int deconvertWeight(int weight) {
-        return Math.round(weight/2.2f );
+        return Math.round(weight / 2.2f);
     }
 
     public static int deconvertLenght(int temp) {
-        return Math.round(temp/2.54f);
+        return Math.round(temp / 2.54f);
     }
 }

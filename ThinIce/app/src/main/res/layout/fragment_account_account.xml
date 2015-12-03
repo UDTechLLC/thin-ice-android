@@ -32,7 +32,7 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/email"
@@ -42,8 +42,10 @@
                         android:ems="10"
                         android:hint="Email"
                         android:inputType="textPersonName"
-                        android:paddingBottom="30dp"
-                        android:paddingLeft="15dp" />
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingBottom="3dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -59,7 +61,7 @@
                         android:id="@+id/emailStatus"
                         android:layout_gravity="right|top"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="0dp" />
                 </FrameLayout>
 
                 <TextView
@@ -86,7 +88,7 @@
                         android:id="@+id/passStatus"
                         android:layout_gravity="right|top"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="0dp" />
 
                     <EditText
                         android:id="@+id/pass"
@@ -95,14 +97,17 @@
                         android:ems="10"
                         android:hint="Password"
                         android:inputType="textPassword"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="3dp"
                         android:paddingLeft="15dp"
-                        android:layout_gravity="left|top" />
+                        android:layout_gravity="left|top"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="15dp" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -118,7 +123,7 @@
                         android:id="@+id/passConfirmStatus"
                         android:layout_gravity="right|top"
                         android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="0dp" />
 
                     <EditText
                         android:id="@+id/passConfirm"
@@ -127,9 +132,10 @@
                         android:ems="10"
                         android:hint="Confirm Password"
                         android:inputType="textPassword"
-                        android:paddingBottom="30dp"
+                        android:paddingBottom="3dp"
                         android:paddingLeft="15dp"
-                        android:layout_gravity="left|top" />
+                        android:layout_gravity="left|top"
+                        android:layout_marginBottom="15dp" />
                 </FrameLayout>
 
             </LinearLayout>

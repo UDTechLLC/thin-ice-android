@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.udtech.thinice.R;
@@ -55,6 +56,7 @@ public class FragmentAddWear extends Fragment {
                 getActivity().finish();
             }
         });
+        ((Button)view.findViewById(R.id.btn_exit)).setText("Search Thin Ice");
         if (TShirt.findAll(TShirt.class).hasNext()) {
             tshirt = TShirt.findAll(TShirt.class).next();
             ((ImageView) view.findViewById(R.id.tshirt)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_add_tshirt_active));

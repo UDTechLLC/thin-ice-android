@@ -51,39 +51,90 @@
         app:layout_marginLeftPercent="20%"
         app:layout_marginTopPercent="12%"
         app:layout_widthPercent="60%" />
+
     <LinearLayout
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_form"
+        android:orientation="vertical"
+        android:padding="15dp"
         app:layout_marginLeftPercent="10%"
         app:layout_marginTopPercent="32%"
-        app:layout_widthPercent="80%"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:background="@drawable/bg_form"
-        android:orientation="vertical">
-        <EditText
+        app:layout_widthPercent="80%">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_mail"
-            android:drawableTintMode="src_in"
-            android:textColor="#fff"
-            android:id="@+id/email"
-            android:drawablePadding="10dp"
-            android:inputType="textEmailAddress"
-            android:nextFocusForward="@+id/pass"
-            android:paddingBottom="30dp" />
-        <EditText
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/emailErr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="50dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageView
+                android:id="@+id/emailStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_mail"
+                android:drawablePadding="10dp"
+                android:drawableTintMode="src_in"
+                android:inputType="textEmailAddress"
+                android:nextFocusForward="@+id/pass"
+                android:paddingBottom="3dp"
+                android:textColor="#fff" />
+        </FrameLayout>
+
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_pass"
-            android:drawablePadding="10dp"
-            android:textColor="#fff"
-            android:id="@+id/pass"
-            android:inputType="textPassword"
-            android:paddingBottom="30dp" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/passErr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:layout_marginLeft="50dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageView
+                android:id="@+id/passStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp" />
+
+            <EditText
+                android:id="@+id/pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_pass"
+                android:drawablePadding="10dp"
+                android:inputType="textPassword"
+                android:paddingBottom="3dp"
+                android:textColor="#fff" />
+        </FrameLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
             android:text="Forgot password?"
-            android:textColor="#fff"
-            android:layout_marginLeft="30dp"/>
+            android:textColor="#fff" />
     </LinearLayout>
 </android.support.percent.PercentRelativeLayout>

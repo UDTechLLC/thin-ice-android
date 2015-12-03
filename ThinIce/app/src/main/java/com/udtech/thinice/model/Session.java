@@ -8,31 +8,29 @@ import java.util.Date;
  * Created by JOkolot on 05.11.2015.
  */
 public class Session extends SugarRecord<Session> {
+    private Day day;
     private Date startTime;
     private Date endTime;
     private int temperature;
 
-    public Date getStartTime() {
-        return startTime;
+    public Session(Day day) {
+        this.day = day;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public Date getStartTime() {
+        return startTime;
     }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
     public int getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void openSession(int temperature){
+        startTime = new Date();
         this.temperature = temperature;
     }
 }

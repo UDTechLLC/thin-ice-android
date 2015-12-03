@@ -24,18 +24,19 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.twitter.sdk.android.core.models.User;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
-import com.udtech.thinice.model.users.FBUser;
-import com.udtech.thinice.model.users.TUser;
+import com.udtech.thinice.eventbus.model.user.CreatedUser;
 import com.udtech.thinice.ui.LoginActivity;
+import com.udtech.thinice.ui.MainActivity;
 
 import org.json.JSONObject;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by JOkolot on 04.11.2015.
@@ -78,22 +79,24 @@ public class FragmentAuth extends Fragment {
                             public void success(Result<User> userResult) {
                                 com.udtech.thinice.model.users.User innerUser = null;
                                 User user = userResult.data;
-                                List<TUser> tUsers = TUser.find(TUser.class, "twitter_id = ?", user.idStr);
-                                if (tUsers != null ? tUsers.size() != 0 : false) {
-                                    List<com.udtech.thinice.model.users.User> users = com.udtech.thinice.model.users.User.find(com.udtech.thinice.model.users.User.class, "t_user = ?", user.idStr);
-                                    innerUser = users.get(0);
-
-                                } else {
-                                    TUser tUser = new TUser();
-                                    tUser.setTwitterId(user.id);
-                                    innerUser = new com.udtech.thinice.model.users.User(tUser);
-                                    innerUser.setEmail(user.email);
-                                    innerUser.setFirstName(user.name);
-                                    innerUser.setLastName(user.screenName);
-                                    innerUser.setImageUrl(user.profileImageUrl);
-                                    innerUser.save();
+                                Iterator<com.udtech.thinice.model.users.User> users = com.udtech.thinice.model.users.User.findAll(com.udtech.thinice.model.users.User.class);
+                                while (users.hasNext()) {
+                                    com.udtech.thinice.model.users.User savedUser = users.next();
+                                    if (savedUser.getTwitterId() != 0 ? savedUser.getTwitterId() == user.getId() : false) {
+                                        openSession(savedUser);
+                                        return;
+                                    }
                                 }
-                                saveSession(innerUser);
+                                com.udtech.thinice.model.users.User newUser = new com.udtech.thinice.model.users.User();
+                                newUser.setTwitterId((int) user.id);
+                                newUser.setEmail(user.email);
+                                if (user.name.contains(" ")) {
+                                    newUser.setFirstName(user.name.substring(0, user.name.lastIndexOf(" ")));
+                                    newUser.setLastName(user.name.substring(user.name.lastIndexOf(" "), user.name.length()));
+                                } else {
+                                    newUser.setFirstName(user.name);
+                                }
+                                saveSession(newUser);
                             }
 
                         });
@@ -112,27 +115,27 @@ public class FragmentAuth extends Fragment {
                                 loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(JSONObject me, GraphResponse response) {
+                                        LoginManager.getInstance().logOut();
                                         if (response.getError() != null) {
                                             // handle error
                                         } else {
                                             com.udtech.thinice.model.users.User innerUser = null;
                                             long id = Long.parseLong(me.optString("id"));
-                                            FBUser fbUser = null;
-                                            List<FBUser> fbUsers = FBUser.find(FBUser.class, "fb_id = ?", id + "");
-                                            if (fbUsers != null ? fbUsers.size() > 0 : false) {
-                                                fbUser = fbUsers.get(0);
-                                                innerUser = fbUser.getUser();
-                                            } else {
-                                                fbUser = new FBUser(id);
-                                                innerUser = new com.udtech.thinice.model.users.User(fbUser);
-                                                innerUser.setImageUrl("https://graph.facebook.com/" +id + "/picture?type=large");
-                                                innerUser.setFirstName(me.optString("name").substring(0, me.optString("name").lastIndexOf(' ')));
-                                                innerUser.setLastName(me.optString("name").substring(me.optString("name").lastIndexOf(' ')));
-                                                innerUser.save();
+                                            Iterator<com.udtech.thinice.model.users.User> users = com.udtech.thinice.model.users.User.findAll(com.udtech.thinice.model.users.User.class);
+                                            while (users.hasNext()) {
+                                                com.udtech.thinice.model.users.User savedUser = users.next();
+                                                if (savedUser.getTwitterId() != 0 ? savedUser.getTwitterId() == Integer.valueOf(me.optString("id")) : false) {
+                                                    openSession(savedUser);
+                                                    return;
+                                                }
                                             }
+                                            innerUser = new com.udtech.thinice.model.users.User();
+                                            innerUser.setImageUrl("https://graph.facebook.com/" + id + "/picture?type=large");
+                                            innerUser.setFirstName(me.optString("name").substring(0, me.optString("name").lastIndexOf(' ')));
+                                            innerUser.setLastName(me.optString("name").substring(me.optString("name").lastIndexOf(' ')));
                                             saveSession(innerUser);
                                         }
-                                        LoginManager.getInstance().logOut();
+
                                     }
                                 }).executeAsync();
                     }
@@ -154,6 +157,7 @@ public class FragmentAuth extends Fragment {
 
     @OnClick(R.id.fblogin)
     public void showLogInFacebook() {
+        LoginManager.getInstance().logOut();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile, email"));
     }
 
@@ -175,6 +179,13 @@ public class FragmentAuth extends Fragment {
     }
 
     private void saveSession(com.udtech.thinice.model.users.User user) {
-        UserSessionManager.saveSession(user, getActivity());
+        EventBus.getDefault().post(new CreatedUser(user));
+    }
+
+    private void openSession(com.udtech.thinice.model.users.User user) {
+        UserSessionManager.saveSession(user, getContext());
+        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+        getActivity().startActivity(mainIntent);
+        getActivity().finish();
     }
 }

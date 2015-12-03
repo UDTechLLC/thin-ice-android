@@ -37,8 +37,8 @@
                     android:ems="10"
                     android:hint="First Name"
                     android:inputType="textPersonName"
-                    android:paddingBottom="30dp"
-                    android:paddingLeft="15dp" />
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="15dp" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -53,8 +53,8 @@
                     android:ems="10"
                     android:hint="Last Name"
                     android:inputType="textPersonName"
-                    android:paddingBottom="30dp"
-                    android:paddingLeft="15dp" />
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="15dp" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -151,8 +151,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="number"
-                        android:paddingBottom="30dp"
-                        android:paddingLeft="15dp" />
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="15dp" />
 
                     <EditText
                         android:id="@+id/height"
@@ -162,8 +162,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="number"
-                        android:paddingBottom="30dp"
-                        android:paddingLeft="15dp" />
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="15dp" />
                 </LinearLayout>
 
             </LinearLayout>

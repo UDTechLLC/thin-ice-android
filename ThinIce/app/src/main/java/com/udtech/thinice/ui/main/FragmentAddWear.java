@@ -19,10 +19,11 @@ import com.udtech.thinice.model.devices.TShirt;
  */
 public class FragmentAddWear extends Fragment {
     private Device insoles, tshirt;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_device,container,false);
+        return inflater.inflate(R.layout.fragment_add_device, container, false);
     }
 
     @Override
@@ -31,9 +32,11 @@ public class FragmentAddWear extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
-                getView().findViewById(R.id.insoles).setVisibility(View.VISIBLE);
-                getView().findViewById(R.id.tshirt).setVisibility(View.VISIBLE);
+                if (getView() != null) {
+                    getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    getView().findViewById(R.id.insoles).setVisibility(View.VISIBLE);
+                    getView().findViewById(R.id.tshirt).setVisibility(View.VISIBLE);
+                }
             }
         }, 2000);
         view.findViewById(R.id.exit).setOnClickListener(new View.OnClickListener() {
@@ -83,15 +86,15 @@ public class FragmentAddWear extends Fragment {
         view.findViewById(R.id.tshirt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tshirt == null){
+                if (tshirt == null) {
                     tshirt = new TShirt();
                     tshirt.setDisabled(true);
-                    ((TShirt)tshirt).save();
-                    ((ImageView)view.findViewById(R.id.tshirt)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_add_tshirt_active));
+                    ((TShirt) tshirt).save();
+                    ((ImageView) view.findViewById(R.id.tshirt)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_add_tshirt_active));
 
-                }else{
-                    ((TShirt)tshirt).delete();
-                    ((ImageView)view.findViewById(R.id.tshirt)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_add_tshirt));
+                } else {
+                    ((TShirt) tshirt).delete();
+                    ((ImageView) view.findViewById(R.id.tshirt)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_add_tshirt));
                     tshirt = null;
                 }
 

@@ -36,7 +36,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/exit"
+                        android:id="@+id/close"
                         android:layout_gravity="center_vertical|right"
                         android:src="@drawable/ic_cross"
                         android:padding="10dp" />
@@ -84,8 +84,8 @@
                                 android:ems="10"
                                 android:hint="Email"
                                 android:inputType="textPersonName"
-                                android:paddingBottom="30dp"
-                                android:paddingLeft="15dp" />
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="17dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -139,9 +139,9 @@
                                 android:ems="10"
                                 android:hint="Password"
                                 android:inputType="textPassword"
-                                android:paddingBottom="30dp"
-                                android:paddingLeft="15dp"
-                                android:layout_gravity="left|top" />
+                                android:layout_gravity="left|top"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="15dp" />
                         </FrameLayout>
 
                         <FrameLayout
@@ -172,13 +172,21 @@
                                 android:ems="10"
                                 android:hint="Confirm Password"
                                 android:inputType="textPassword"
-                                android:paddingBottom="30dp"
-                                android:paddingLeft="15dp"
-                                android:layout_gravity="left|top" />
+                                android:layout_gravity="left|top"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="15dp" />
                         </FrameLayout>
 
                     </LinearLayout>
                 </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="By clicking "
+                    android:id="@+id/agreements"
+                    android:gravity="center" />
             </LinearLayout>
         </ScrollView>
 
@@ -197,5 +205,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:textSize="20dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textStyle="normal"/>
 </RelativeLayout>

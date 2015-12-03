@@ -2,43 +2,7 @@
 <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/leftTop"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_registration_top_left"
-        app:layout_heightPercent="23%"
-        app:layout_widthPercent="50%" />
-
-    <ImageView
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/leftTop"
-        android:layout_toRightOf="@+id/leftTop"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_registration_top_right"
-        app:layout_heightPercent="23%"
-        app:layout_widthPercent="50%" />
-
-    <ImageView
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/leftTop"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_registration_bottom_left"
-        app:layout_heightPercent="77%"
-        app:layout_widthPercent="50%" />
-
-    <ImageView
-        android:layout_below="@+id/leftTop"
-        android:layout_toEndOf="@+id/leftTop"
-        android:layout_toRightOf="@+id/leftTop"
-        android:scaleType="fitXY"
-        android:src="@mipmap/bg_registration_bottom_right"
-        app:layout_heightPercent="77%"
-        app:layout_widthPercent="50%" />
+    android:layout_height="match_parent" android:background="@mipmap/bg_account">
     <ImageView
         android:scaleType="centerInside"
         android:src="@drawable/btn_avatar"
@@ -46,7 +10,7 @@
         android:id="@+id/avatar"
         app:layout_marginLeftPercent="31%"
         app:layout_marginTopPercent="4.5%"
-        app:layout_heightPercent="38%"
+        app:layout_heightPercent="31%"
         app:layout_widthPercent="38%" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,11 +19,12 @@
         android:layout_alignParentTop="true">
 
         <ImageView
-            android:layout_width="@dimen/abc_action_bar_default_height_material"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/btn_menu"
             android:padding="15dp"
-            android:id="@+id/menu" />
+            android:id="@+id/menu"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,19 +39,19 @@
             android:layout_marginStart="32dp" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/action"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/btn_logout"
-            android:padding="15dp"/>
+            android:padding="18dp"/>
     </RelativeLayout>
     <View
         app:layout_marginLeftPercent="5%"
-        app:layout_marginTopPercent="43.4%"
+        app:layout_marginTopPercent="36.5%"
         app:layout_heightPercent="0.5%"
         app:layout_widthPercent="90%"
         android:background="@mipmap/bg_tabs"/>
@@ -94,8 +59,8 @@
         android:id="@+id/tabs"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        app:layout_heightPercent="10%"
-        app:layout_marginTopPercent="34%"
+        app:layout_heightPercent="7%"
+        app:layout_marginTopPercent="30%"
         app:stl_indicatorAlwaysInCenter="false"
         app:stl_indicatorWithoutPadding="false"
         app:stl_indicatorInFront="false"
@@ -114,13 +79,13 @@
         app:stl_defaultTabTextAllCaps="false"
         app:stl_defaultTabTextColor="@drawable/color_tabs"
         app:stl_defaultTabTextSize="18sp"
-        app:stl_defaultTabTextHorizontalPadding="45dp"
+        app:stl_defaultTabTextHorizontalPadding="53dp"
         app:stl_defaultTabTextMinWidth="0dp"
         app:stl_distributeEvenly="false"
         app:stl_clickable="true"
         />
     <android.support.v4.view.ViewPager
-        app:layout_marginTopPercent="45%"
+        app:layout_marginTopPercent="38%"
         app:layout_heightPercent="55%"
         app:layout_widthPercent="100%"
         android:id="@+id/viewPager"

@@ -95,6 +95,7 @@ public class FragmentChangeRegistration extends UserDataForm {
                 Intent logout = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(logout);
                 getActivity().finish();
+                UserSessionManager.clearSession(getContext());
             }
         });
         ButterKnife.bind(this, view);
@@ -115,14 +116,15 @@ public class FragmentChangeRegistration extends UserDataForm {
     }
 
     public void onEvent(SaveUser event) {
-        User user = collectData(new User());
+        User user = collectData(UserSessionManager.getSession(getActivity()));
         if(user!=null){
             user.save();
             getActivity().onBackPressed();
         }
     }
     @Override
-    User collectData(User user) {account.collectData(user);
+    User collectData(User user) {
+        account.collectData(user);
         user.setImageUrl(avatarUrl);
         user = account.collectData(user);
         if (user == null) {

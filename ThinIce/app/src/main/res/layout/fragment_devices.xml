@@ -47,7 +47,8 @@
                     android:text="Connected devices"
                     android:textColor="#33c6cb"
                     android:layout_margin="1px"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:id="@+id/devices_tittle" />
             </LinearLayout>
         </LinearLayout>
 
@@ -125,7 +126,7 @@
                             android:inputType="text"
                             android:id="@+id/charge_tshirt_text"
                             android:layout_gravity="center_vertical"
-                            android:textColor="@color/textViewColor" />
+                            android:textColor="@color/colorAccent" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -197,7 +198,7 @@
                             android:text="30%"
                             android:id="@+id/charge_insoles_text"
                             android:layout_gravity="left|center_vertical"
-                            android:textColor="@color/textViewColor" />
+                            android:textColor="@color/colorAccent" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>

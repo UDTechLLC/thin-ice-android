@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher" android:supportsRtl="true"
         android:theme="@style/AppTheme" android:name=".ThinIceApp" tools:replace="android:icon">
         <meta-data android:name="DATABASE" android:value="thin-ice.db" />
-        <meta-data android:name="VERSION" android:value="4" />
+        <meta-data android:name="VERSION" android:value="5" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.udtech.thinice" />
         <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait">
@@ -30,5 +30,4 @@
             android:name="io.fabric.ApiKey"
             android:value="95604cdd40f18529ba58e2ddc8d29fc81e7bfc14" />
     </application>
-
 </manifest>

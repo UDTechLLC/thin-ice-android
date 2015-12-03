@@ -31,7 +31,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/exit"
+                        android:id="@+id/close"
                         android:layout_gravity="center_vertical|right"
                         android:src="@drawable/ic_cross"
                         android:padding="10dp" />
@@ -152,28 +152,73 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2">
-
-                            <EditText
-                                android:id="@+id/weight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginRight="10dp"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:inputType="number"
-                                android:paddingBottom="30dp"
-                                android:paddingLeft="15dp" />
+                                android:layout_weight="1" >
 
-                            <EditText
-                                android:id="@+id/height"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:inputType="number"
-                                android:paddingBottom="30dp"
-                                android:paddingLeft="15dp" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:id="@+id/weightErr"
+                                    android:layout_gravity="left|top"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#a90000" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/weightStatus"
+                                    android:layout_gravity="right|top"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp" />
+
+                                <EditText
+                                    android:id="@+id/weight"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal"
+                                    android:layout_gravity="left|top"
+                                    android:layout_marginTop="13dp"
+                                    android:layout_marginBottom="15dp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="1" >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:id="@+id/heightErr"
+                                    android:layout_gravity="left|top"
+                                    android:layout_marginLeft="15dp"
+                                    android:textColor="#a90000" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/heightStatus"
+                                    android:layout_gravity="right|top"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="5dp" />
+
+                                <EditText
+                                    android:id="@+id/height"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal"
+                                    android:layout_gravity="left|top"
+                                    android:layout_marginTop="13dp"
+                                    android:layout_marginBottom="15dp" />
+                            </FrameLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -197,5 +242,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:textSize="20dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:textStyle="normal"/>
 </RelativeLayout>

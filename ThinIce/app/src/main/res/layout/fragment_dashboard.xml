@@ -10,12 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material">
 
+
         <ImageView
-            android:layout_width="@dimen/abc_action_bar_default_height_material"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/btn_menu"
             android:padding="15dp"
-            android:id="@+id/menu" />
+            android:id="@+id/menu"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,8 +52,8 @@
     <View
         android:layout_height="1px"
         app:layout_marginLeftPercent="4.2%"
-        app:layout_marginTopPercent="3%"
         android:layout_below="@id/device_container"
+        android:layout_marginTop="12dp"
         app:layout_widthPercent="91.6%"
         android:background="#33c6cb"/>
         <LinearLayout
@@ -59,6 +61,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_below="@id/device_container"
+            android:layout_marginTop="12dp"
             android:id="@+id/day_container">
 
         </LinearLayout>

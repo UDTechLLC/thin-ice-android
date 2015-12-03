@@ -16,6 +16,11 @@ public class CardGestureListener extends GestureDetector.SimpleOnGestureListener
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            return false; // Bottom to top
+        } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            return false; // Top to bottom
+        }
         if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
             listener.reverseSwitchCards();
             return true; // Right to left
@@ -24,11 +29,6 @@ public class CardGestureListener extends GestureDetector.SimpleOnGestureListener
             return true; // Right to left
         }
 
-        if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-            return false; // Bottom to top
-        } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-            return false; // Top to bottom
-        }
         return false;
     }
 

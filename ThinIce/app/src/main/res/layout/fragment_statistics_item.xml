@@ -10,78 +10,94 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp">
 
-            <com.hookedonplay.decoviewlib.DecoView
+            <com.udtech.thinice.ui.widgets.DecoView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/graph" />
-
-            <LinearLayout
-                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="45dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:id="@+id/graph"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp" />
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Done"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#33c6cb" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="#33c6cb" />
-
-                <TextView
-                    android:id="@+id/done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="700 hrs"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#33c6cb" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="70dp"
+            <RelativeLayout
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="45dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Planned"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccentDark" />
+                    android:layout_gravity="right|center_vertical"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="#33c6cb" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Planned"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorAccentDark"
+                        android:textSize="19dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="#33c6cb" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="1500 hrs"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/colorAccentDark"
+                        android:id="@+id/planned"
+                        android:textSize="19dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="1500 hrs"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorAccentDark"
-                    android:id="@+id/planned" />
-            </LinearLayout>
+                    android:layout_gravity="left|center_vertical"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Done"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#33c6cb"
+                        android:textSize="19dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="#33c6cb" />
+
+                    <TextView
+                        android:id="@+id/done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="700 hrs"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#33c6cb"
+                        android:textSize="19dp" />
+                </LinearLayout>
+            </RelativeLayout>
         </FrameLayout>
 
         <FrameLayout
@@ -90,13 +106,13 @@
             android:layout_gravity="center_horizontal">
 
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginLeft="23dp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginRight="23dp">
 
                 <TextView
                     android:id="@+id/textView7"
@@ -108,7 +124,8 @@
                     android:inputType="text"
                     android:text="Burnt Calories"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#ccc" />
+                    android:textColor="#ccc"
+                    android:textSize="19dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -122,17 +139,18 @@
                     android:layout_margin="5dp"
                     android:text="1000 cal"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#cddc39" />
+                    android:textColor="#cddc39"
+                    android:textSize="19dp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|top"
-                android:layout_marginRight="35dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginRight="23dp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginLeft="23dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -142,7 +160,8 @@
                     android:drawablePadding="10dp"
                     android:text="AVG Temp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#ccc" />
+                    android:textColor="#ccc"
+                    android:textSize="19dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -155,7 +174,8 @@
                     android:layout_margin="5dp"
                     android:text="15 °C"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#cddc39" />
+                    android:textColor="#cddc39"
+                    android:textSize="19dp" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

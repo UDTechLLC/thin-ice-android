@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
@@ -29,22 +31,43 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by JOkolot on 30.11.2015.
  */
-public class FragmentProfileInfo extends Fragment
-{
+public class FragmentProfileInfo extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sign_in_info,container,false);
+        return inflater.inflate(R.layout.fragment_sign_in_info, container, false);
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getView().findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        getView().findViewById(R.id.weight).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                getView().findViewById(R.id.weightErr).setVisibility(View.INVISIBLE);
+                getView().findViewById(R.id.weightStatus).setVisibility(View.INVISIBLE);
+            }
+        });
+        getView().findViewById(R.id.height).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                getView().findViewById(R.id.heightErr).setVisibility(View.INVISIBLE);
+                getView().findViewById(R.id.heightStatus).setVisibility(View.INVISIBLE);
+            }
+        });
         ((Spinner) view.findViewById(R.id.sex)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, Arrays.asList(new String[]{"Male", "Female"})));
         List<String> values = new ArrayList<>();
         for (int i = 1900; i < Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date())); i++) {
             values.add("" + i);
         }
         ((Spinner) view.findViewById(R.id.year)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+        ((Spinner) view.findViewById(R.id.year)).setSelection(values.size()-1);
         String[] months = new DateFormatSymbols().getMonths();
         ((Spinner) view.findViewById(R.id.months)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, months));
         values = new ArrayList<>();
@@ -142,8 +165,12 @@ public class FragmentProfileInfo extends Fragment
                 User user = new User();
                 user.setEmail(getArguments().getString("email"));
                 user.setPassword(getArguments().getString("pass"));
+                user.setFirstName(getArguments().getString("first_name", ""));
+                user.setLastName(getArguments().getString("last_name", ""));
+                user.setTwitterId(getArguments().getInt("twitterid", 0));
+                user.setFacebookId(getArguments().getInt("facebookid", 0));
                 user = collectData(user);
-                if(user != null){
+                if (user != null) {
                     user.save();
                     UserSessionManager.saveSession(user, getActivity());
                     EventBus.getDefault().post(new UserInfoAdded());
@@ -155,19 +182,44 @@ public class FragmentProfileInfo extends Fragment
     }
 
     public User collectData(User user) {
-        user.setSex(((Spinner)getView().findViewById(R.id.sex)).getSelectedItemPosition() == 0);
-        user.setWeight(Long.valueOf(((EditText) getView().findViewById(R.id.weight)).getText().toString()));
-        user.setHeight(Long.valueOf(((EditText) getView().findViewById(R.id.height)).getText().toString()));
-        int days = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition()  + 1;
-        int months = ((Spinner) getView().findViewById(R.id.months)).getSelectedItemPosition()  + 1;
-        int year = ((Spinner) getView().findViewById(R.id.year)).getSelectedItemPosition()  + 1;
-        try {
-            user.setDateOfBirth(new SimpleDateFormat("d.M.yyyy").parse(days + "." + months + "." + year));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (!((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("") && !((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")) {
+            user.setSex(((Spinner) getView().findViewById(R.id.sex)).getSelectedItemPosition() == 0);
+            user.setWeight(Long.valueOf(((EditText) getView().findViewById(R.id.weight)).getText().toString()));
+            user.setHeight(Long.valueOf(((EditText) getView().findViewById(R.id.height)).getText().toString()));
+            int days = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition() + 1;
+            int months = ((Spinner) getView().findViewById(R.id.months)).getSelectedItemPosition() + 1;
+            int year = ((Spinner) getView().findViewById(R.id.year)).getSelectedItemPosition() + 1;
+            try {
+                user.setDateOfBirth(new SimpleDateFormat("d.M.yyyy").parse(days + "." + months + "." + year));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (user.getWeight() != 0 && user.getHeight() != 0)
+                return user;
+        }else{
+            if(((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("")){
+                showWeightError("Empty value");
+            }
+            if(((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")){
+                showHeightError("Empty value");
+            }
         }
-        if(user.getWeight()!=0&&user.getHeight()!=0)
-            return user;
         return null;
+    }
+
+    private void showWeightError(String string) {
+        ((TextView)getView().findViewById(R.id.weight)).setText("");
+        ((TextView)getView().findViewById(R.id.weightErr)).setText(string);
+        getView().findViewById(R.id.weightErr).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.weightStatus).setVisibility(View.VISIBLE);
+        ((ImageView)getView().findViewById(R.id.weightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
+    }
+
+    private void showHeightError(String string) {
+        ((TextView)getView().findViewById(R.id.height)).setText("");
+        ((TextView)getView().findViewById(R.id.heightErr)).setText(string);
+        getView().findViewById(R.id.heightErr).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.heightStatus).setVisibility(View.VISIBLE);
+        ((ImageView)getView().findViewById(R.id.heightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 }

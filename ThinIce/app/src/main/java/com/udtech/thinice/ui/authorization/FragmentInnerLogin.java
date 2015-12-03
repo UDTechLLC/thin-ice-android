@@ -1,5 +1,6 @@
 package com.udtech.thinice.ui.authorization;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.users.User;
+import com.udtech.thinice.ui.MainActivity;
 
-import java.util.List;
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,8 +27,11 @@ import butterknife.ButterKnife;
  * Created by JOkolot on 04.11.2015.
  */
 public class FragmentInnerLogin extends Fragment {
-    @Bind(R.id.email) EditText email;
-    @Bind(R.id.pass) EditText pass;
+    @Bind(R.id.email)
+    EditText email;
+    @Bind(R.id.pass)
+    EditText pass;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,13 +62,22 @@ public class FragmentInnerLogin extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                if(s.equals("\n")){
-                    List<User> users = User.find(User.class,"email = ?, pass = ?",email.getText().toString(),pass.getText().toString());
-                    if(users!=null?users.size()>0:false){
-                        User user = users.get(0);
+                if (s.equals("\n")) {
+                    Iterator<User> users = User.findAll(User.class);
+                    boolean contains = false;
+                    while (users.hasNext()) {
+                        User dbUser = users.next();
+                        if (dbUser.getEmail() == email.getText().toString()) {
+                            contains = true;
+                            UserSessionManager.saveSession(dbUser,getContext());
+                        }
                     }
-                    else{
-                        //todo show err
+                    if (!contains) {
+                        showError("Wrong auth data");
+                    } else {
+                        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+                        getActivity().startActivity(mainIntent);
+                        getActivity().finish();
                     }
                 }
 
@@ -71,5 +87,55 @@ public class FragmentInnerLogin extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
+        pass.setOnKeyListener(new View.OnKeyListener() {
+                                  public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                      if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                                          Iterator<User> users = User.findAll(User.class);
+                                          boolean contains = false;
+                                          while (users.hasNext()) {
+                                              User dbUser = users.next();
+                                              if (dbUser.getEmail() == email.getText().toString()) {
+                                                  contains = true;
+                                              }
+                                          }
+                                          if (!contains) {
+                                              showError("Wrong auth data");
+                                          } else {
+                                              Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+                                              getActivity().startActivity(mainIntent);
+                                              getActivity().finish();
+                                          }
+
+                                          return true;
+                                      }
+                                      return false;
+                                  }
+                              }
+
+        );
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener()
+
+                                       {
+                                           @Override
+                                           public void onFocusChange(View v, boolean hasFocus) {
+                                               getView().findViewById(R.id.passErr).setVisibility(View.INVISIBLE);
+                                               getView().findViewById(R.id.passStatus).setVisibility(View.INVISIBLE);
+                                               getView().findViewById(R.id.emailErr).setVisibility(View.INVISIBLE);
+                                               getView().findViewById(R.id.emailStatus).setVisibility(View.INVISIBLE);
+                                           }
+                                       }
+
+        );
+    }
+
+    private void showError(String s) {
+        ((TextView) getView().findViewById(R.id.email)).setText("");
+        ((TextView) getView().findViewById(R.id.emailErr)).setText(s);
+        getView().findViewById(R.id.emailErr).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.emailStatus).setVisibility(View.VISIBLE);
+        ((TextView) getView().findViewById(R.id.pass)).setText("");
+        ((TextView) getView().findViewById(R.id.passErr)).setText(s);
+        getView().findViewById(R.id.passErr).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.passStatus).setVisibility(View.VISIBLE);
     }
 }

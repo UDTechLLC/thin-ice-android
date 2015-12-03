@@ -12,12 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material">
 
+
+
         <ImageView
-            android:layout_width="@dimen/abc_action_bar_default_height_material"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/btn_menu"
             android:padding="15dp"
-            android:id="@+id/menu" />
+            android:id="@+id/menu"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,8 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="clear"
+            android:text="Clear"
             android:id="@+id/action"
+            android:textColor="@color/graphState"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -60,7 +64,7 @@
         app:stl_defaultTabBackground="?attr/selectableItemBackground"
         app:stl_defaultTabTextAllCaps="false"
         app:stl_defaultTabTextColor="@drawable/color_tabs"
-        app:stl_defaultTabTextHorizontalPadding="10dp"
+        app:stl_defaultTabTextHorizontalPadding="15dp"
         app:stl_defaultTabTextMinWidth="0dp"
         app:stl_defaultTabTextSize="18sp"
         app:stl_distributeEvenly="false"

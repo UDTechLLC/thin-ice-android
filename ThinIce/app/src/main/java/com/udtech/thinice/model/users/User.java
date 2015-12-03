@@ -2,15 +2,15 @@ package com.udtech.thinice.model.users;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by JOkolot on 03.11.2015.
  */
-public class User extends SugarRecord<User> {
-    private AppUser appUser;
-    private FBUser fbUser;
-    private TUser tUser;
+public class User extends SugarRecord<User>{
+    private int twitterId;
+    private int facebookId;
     private String imageUrl;
     private String firstName;
     private String lastName;
@@ -24,36 +24,20 @@ public class User extends SugarRecord<User> {
     public User() {
     }
 
-    public User(AppUser appUser) {
-        this.appUser = appUser;
-        this.appUser.setUser(this);
-        this.appUser.save();
+    public int getTwitterId() {
+        return twitterId;
     }
 
-    public User(TUser tUser) {
-        this.tUser = tUser;
-        this.tUser.setUser(this);
-        this.tUser.save();
+    public void setTwitterId(Integer twitterId) {
+        this.twitterId = twitterId;
     }
 
-    public User(FBUser fbUser) {
-        this.fbUser = fbUser;
-        this.fbUser.setUser(this);
-        this.fbUser.save();
+    public int getFacebookId() {
+        return facebookId;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
-    }
-
-
-    public FBUser getFbUser() {
-        return fbUser;
-    }
-
-
-    public TUser getTUser() {
-        return tUser;
+    public void setFacebookId(Integer facebookId) {
+        this.facebookId = facebookId;
     }
 
     public String getImageUrl() {
@@ -126,5 +110,12 @@ public class User extends SugarRecord<User> {
 
     public void setHeight(Long height) {
         this.height = height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof  User)
+            return ((User)o).getId() == getId();
+        return super.equals(o);
     }
 }

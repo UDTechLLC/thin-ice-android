@@ -3,6 +3,8 @@ package com.udtech.thinice.ui.authorization;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,15 @@ public class FragmentCreateProfile extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((TextView)view.findViewById(R.id.agreements)).setText(Html.fromHtml(
+                "By clicking \"Create Account\" you acknowledge that you understand and accept the <a href = \"https://en.wikipedia.org/wiki/Terms_of_service\">Terms of Use</a> and read the <a href = \"https://en.wikipedia.org/wiki/Privacy_policy\">Privacy Policy</a>"));
+        ((TextView)view.findViewById(R.id.agreements)).setMovementMethod(LinkMovementMethod.getInstance());
+        view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         ButterKnife.bind(this, view);
         User user = UserSessionManager.getSession(getContext());
         if (user != null) {
@@ -94,13 +105,15 @@ public class FragmentCreateProfile extends Fragment {
     @OnClick(R.id.save)
     void save() {
         User user = collectData(new User());
-        Iterator<User> userIterator = User.findAll(User.class);
-        while (userIterator.hasNext())
-            if (userIterator.next().getEmail().equals(user.getEmail())) {
-                showEmailError("Email is already being used.");
-                return;
-            }
-        EventBus.getDefault().post(new CreatedUser(user));
+        if (user != null) {
+            Iterator<User> userIterator = User.findAll(User.class);
+            while (userIterator.hasNext())
+                if (userIterator.next().getEmail().equals(user.getEmail())) {
+                    showEmailError("Email is already being used.");
+                    return;
+                }
+            EventBus.getDefault().post(new CreatedUser(user));
+        }
     }
 
     public User collectData(User user) {
@@ -117,9 +130,21 @@ public class FragmentCreateProfile extends Fragment {
         } else if (passConfirm != null ? passConfirm.equals("") || !passConfirm.equals(pass) : true) {
             showPassConfirmError("Wrong confirm password.");
         } else {
+            Iterator<User> users = User.findAll(User.class);
+            boolean exist = false;
             user.setEmail(email);
             user.setPassword(pass);
-            return user;
+            while (users.hasNext()) {
+                User temp = users.next();
+                if (temp.getEmail().equals(user.getEmail())) {
+                    showEmailError("Email already exists");
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist)
+                return user;
+
         }
         return null;
     }

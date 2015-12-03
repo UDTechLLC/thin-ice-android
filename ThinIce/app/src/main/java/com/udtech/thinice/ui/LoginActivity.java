@@ -2,10 +2,14 @@ package com.udtech.thinice.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.crashlytics.android.Crashlytics;
@@ -36,6 +40,11 @@ public class LoginActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.rgb(34, 46, 59));
+        }
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -54,7 +63,7 @@ public class LoginActivity extends FragmentActivity {
     }
 
     public void showRegistrationScreen() {
-        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).replace(R.id.container, getRegistrationFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_left, 0, 0, R.anim.anim_out_to_left).replace(R.id.container, getRegistrationFragment()).addToBackStack(null).commit();
     }
 
     private Fragment getStartFragment() {
@@ -73,7 +82,10 @@ public class LoginActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        auth.onActivityResult(requestCode, resultCode, data);
+        try {
+            auth.onActivityResult(requestCode, resultCode, data);
+        } catch (NullPointerException e) {
+        }
     }
 
     @Override
@@ -92,6 +104,10 @@ public class LoginActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putString("email", event.getUser().getEmail());
         bundle.putString("pass", event.getUser().getPassword());
+        bundle.putString("first_name", event.getUser().getFirstName());
+        bundle.putString("last_name", event.getUser().getLastName());
+        bundle.putInt("twitterid", event.getUser().getTwitterId());
+        bundle.putInt("facebookid", event.getUser().getFacebookId());
         Fragment fragment = new FragmentProfileInfo();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).replace(R.id.container, fragment).addToBackStack(null).commit();

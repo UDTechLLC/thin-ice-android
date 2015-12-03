@@ -16,6 +16,8 @@ public class FragmentFrontCard extends ListView {
         super(context);
         gd = new GestureDetector(getContext(),new YScrollDetector());
         setFadingEdgeLength(0);
+        setDividerHeight(0);
+        setDivider(null);
         setAdapter(CardsAdapter.getInstance(getContext()));
     }
     @Override
