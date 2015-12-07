@@ -1,18 +1,24 @@
-package com.udtech.thinice;
+package com.udtech.thinice.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.udtech.thinice.R;
+import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.Achievement;
+import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.Session;
 import com.udtech.thinice.model.users.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Sofi on 01.12.2015.
@@ -79,7 +85,86 @@ public class AchievementManager {
         User user = UserSessionManager.getSession(context);
         long timeDif = (session.getEndTime().getTime() - session.getStartTime().getTime());
         timeSpending.addAndGet(timeDif);
+        if ((timeSpending.get() / 60000) > FRESH_START_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.FRESH_START),context);
+        if ((timeSpending.get() / 60000) > MOVING_FORWARD_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.MOVING_FORWARD),context);
+        if ((timeSpending.get() / 60000) > THE_MOTIVATED_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.THE_MOTIVATED),context);
+        if ((timeSpending.get() / 60000) > THE_ENTHUSIAST_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.THE_ENTHUSIAST),context);
+        if ((timeSpending.get() / 60000) > THE_MARATHONER_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.THE_MARATHONER),context);
+        List<Day> days = new ArrayList<>();
+        Iterator<Day> daysIterator = Day.findAll(Day.class);
+        while (daysIterator.hasNext()) {
+            Day day = daysIterator.next();
+            if (user.equals(day.getUser())) {
+                days.add(day);
+            }
+        }
+        int totalCalories = 0;
+        for (Day day : days)
+            totalCalories += day.calcCalories();
+        if(totalCalories > FIRESTARTER_COUNT )
+            showAchievement(getAchievement(context, Achievement.Type.FIRESTARTER),context);
+        if(totalCalories > FEELIN_THE_BURN_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.FEELIN_THE_BURN),context);
+        if(totalCalories > GETTING_LEAN_COUNT )
+            showAchievement(getAchievement(context, Achievement.Type.GETTING_LEAN),context);
+        if(totalCalories > SEEING_RESULTS_COUNT )
+            showAchievement(getAchievement(context, Achievement.Type.SEEING_RESULTS),context);
 
+    }
+    public synchronized void settingsChanged(Context context){
+        showAchievement(getAchievement(context, Achievement.Type.THE_BUTTON_PRESSER),context);
+    }
+    public synchronized void registrationCompleted(Context context){
+        showAchievement(getAchievement(context, Achievement.Type.FRESH_FACE),context);
+    }
+    public synchronized void statisticsOpened(Context context){
+        statistics.incrementAndGet();
+        if(statistics.get()>THE_TRACKER_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.THE_TRACKER),context);
+        if(statistics.get()>RESULTS_ORIENTED_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.RESULTS_ORIENTED),context);
+        if(statistics.get()>RESULTS_OBSESSED_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.RESULTS_OBSESSED),context);
+    }
+    public synchronized void dayChanged(Context context){
+        int count = 0;
+        User user = UserSessionManager.getSession(context);
+        List<Day> days = new ArrayList<>();
+        Iterator<Day> daysIterator = Day.findAll(Day.class);
+        while (daysIterator.hasNext()) {
+            Day day = daysIterator.next();
+            if (user.equals(day.getUser())) {
+                days.add(day);
+            }
+        }
+        for(Day day: days){
+            if(day.getGymHours()!=0)
+                count++;
+            if(day.gethProteinMeals()!=0)
+                count++;
+            if(day.getWaterIntake()!=0)
+                count++;
+            if(day.getHoursSlept()!=0)
+                count++;
+            if(day.getJunkFood()!=0)
+                count++;
+            if(day.getCarbsConsumed()!=0)
+                count++;
+        }
+        if(count>0){
+            showAchievement(getAchievement(context, Achievement.Type.THE_DABBLER),context);
+        }
+        if(count>=5){
+            showAchievement(getAchievement(context, Achievement.Type.THE_SCHEMER),context);
+        }
+        if(count>20){
+            showAchievement(getAchievement(context, Achievement.Type.THE_STRATEGIST),context);
+        }
     }
 
     public void commit(Context context) {
@@ -116,7 +201,8 @@ public class AchievementManager {
     }
 
     public Achievement getAchievement(Context context, int id) {
-        SharedPreferences sPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        User user = UserSessionManager.getSession(context);
+        SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
         Achievement achievement = new Achievement();
         achievement.setId(id);
         achievement.setName(getName(id));
@@ -425,6 +511,14 @@ public class AchievementManager {
             }
         }
         return description;
+    }
+
+    private void showAchievement(Achievement achievement,Context context) {
+        if(!achievement.isOpened()){
+            achievement.setOpened(true);
+            saveAchievement(achievement, context);
+            EventBus.getDefault().postSticky(achievement);
+        }
     }
 
     private static class Sorter implements Comparator<Achievement> {
