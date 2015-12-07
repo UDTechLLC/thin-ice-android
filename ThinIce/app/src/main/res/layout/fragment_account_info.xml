@@ -7,10 +7,6 @@
         android:background="@drawable/bg_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:layout_margin="20dp">
 
         <ScrollView
@@ -21,13 +17,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="First Name" />
+                    android:text="First Name"
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/first_name"
@@ -44,7 +42,8 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Name" />
+                    android:text="Last Name"
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/last_name"
@@ -60,7 +59,8 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose Sex" />
+                    android:text="Choose Sex"
+                    android:textSize="18dp" />
 
                 <Spinner
                     android:id="@+id/sex"
@@ -75,7 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Date of Birth" />
+                    android:text="Date of Birth"
+                    android:textSize="18dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -125,7 +126,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_weight="1"
-                        android:text="Weight*" />
+                        android:text="Weight*"
+                        android:textSize="18dp" />
 
                     <TextView
                         android:id="@+id/textView9"
@@ -134,7 +136,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="15dp"
                         android:layout_weight="1"
-                        android:text="Heght*" />
+                        android:text="Heght*"
+                        android:textSize="18dp" />
                 </LinearLayout>
 
                 <LinearLayout

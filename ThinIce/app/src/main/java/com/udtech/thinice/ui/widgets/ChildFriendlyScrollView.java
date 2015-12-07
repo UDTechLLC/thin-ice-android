@@ -11,7 +11,7 @@ import android.widget.ScrollView;
  */
 public class ChildFriendlyScrollView extends ScrollView {
     private GestureDetector mGestureDetector;
-
+    private volatile static boolean isMoving = false;
     public ChildFriendlyScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mGestureDetector = new GestureDetector(context, new YScrollDetector());
@@ -20,9 +20,17 @@ public class ChildFriendlyScrollView extends ScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            isMoving = true;
+        }
+        if(ev.getAction() == MotionEvent.ACTION_UP){
+            isMoving = false;
+        }
         return super.onInterceptTouchEvent(ev) && mGestureDetector.onTouchEvent(ev);
     }
-
+    public  static boolean isMoving(){
+        return  isMoving;
+    }
     // Return false if we're scrolling in the x direction
     class YScrollDetector extends GestureDetector.SimpleOnGestureListener {
         @Override

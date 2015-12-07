@@ -98,7 +98,7 @@
                                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
                             <ImageView
-                                android:id="@+id/imageView7"
+                                android:id="@+id/imageTemp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@mipmap/ic_degrees"
@@ -106,7 +106,7 @@
                                 android:layout_marginRight="40dp" />
 
                             <TextView
-                                android:id="@+id/textView13"
+                                android:id="@+id/temperature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical|right"
@@ -125,7 +125,8 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="3dp"
                             android:layout_marginTop="3dp"
-                            android:progressDrawable="@drawable/progress_bar" />
+                            android:progressDrawable="@drawable/progress_bar"
+                            android:indeterminate="false" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -212,7 +213,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
-                        android:id="@+id/textView18"
+                        android:id="@+id/calories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2000"

@@ -19,6 +19,7 @@ import com.udtech.thinice.model.Notification;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.utils.DelayedDeviceStart;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -32,6 +33,7 @@ import de.greenrobot.event.EventBus;
 public class DeviceControl extends FrameLayout {
     private Device device;
     private int selectedPosition = 1;
+
     public DeviceControl(Context context) {
         super(context);
         addView(inflate(getContext(), R.layout.item_wear_control, null));
@@ -58,8 +60,10 @@ public class DeviceControl extends FrameLayout {
         ((Switch) findViewById(R.id.timer_enabled)).setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(Switch view, boolean checked) {
-                device.setTimer(checked ? new Date(new Date().getTime() + 3600000/*hour*//(selectedPosition == 2?1:2)) : new Date(0));
+                device.setTimer(checked ? new Date(new Date().getTime() + 3600000/*hour*/ / (selectedPosition == 2 ? 1 : 2)) : new Date(0));
                 ((TextView) findViewById(R.id.enale_timer_text)).setTextColor(checked ? Color.WHITE : getResources().getColor(R.color.textViewColor));
+                if (checked)
+                    ((Switch) findViewById(R.id.disable)).setChecked(checked);
             }
         });
         findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
@@ -71,13 +75,24 @@ public class DeviceControl extends FrameLayout {
         findViewById(R.id.save).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (device.getTimer().getTime() != 0) {
+                    if (device instanceof Insole)
+                        DelayedDeviceStart.getInsolesInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()));
+                    else
+                        DelayedDeviceStart.getTShirtInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()));
+                } else {
+                    if (device instanceof Insole)
+                        DelayedDeviceStart.getInsolesInstance(device).cancel();
+                    else
+                        DelayedDeviceStart.getTShirtInstance(device).cancel();
+                }
                 switchCards();
                 device.save();
                 EventBus.getDefault().post(new DeviceChanged(device));
             }
         });
 
-        final View selection =findViewById(R.id.selection);
+        final View selection = findViewById(R.id.selection);
         final ViewGroup parent = ((ViewGroup) selection.getParent());
         ((TextView) findViewById(R.id.disable_text)).setTextColor(device.isDisabled() ? Color.WHITE : getResources().getColor(R.color.textViewColor));
         ((TextView) findViewById(R.id.enale_timer_text)).setTextColor(device.getTimer().getTime() == 0 ? Color.WHITE : getResources().getColor(R.color.textViewColor));
@@ -106,7 +121,7 @@ public class DeviceControl extends FrameLayout {
                 setTextColor(2);
                 Notification.getInstance(getContext()).setTimer(1);
                 selectedPosition = 2;
-                device.setTimer(((Switch) findViewById(R.id.timer_enabled)).isChecked() ? new Date(new Date().getTime() + 3600000/*hour*//(selectedPosition == 2?1:2)) : new Date(0));
+                device.setTimer(((Switch) findViewById(R.id.timer_enabled)).isChecked() ? new Date(new Date().getTime() + 3600000/*hour*/ / (selectedPosition == 2 ? 1 : 2)) : new Date(0));
             }
         });
         findViewById(R.id.delete).setOnClickListener(new OnClickListener() {
@@ -114,6 +129,7 @@ public class DeviceControl extends FrameLayout {
             public void onClick(View v) {
                 switchCards();
                 EventBus.getDefault().post(new DeleteDevice(device));
+                EventBus.getDefault().post(new DeviceChanged(device));
             }
         });
     }
@@ -127,6 +143,7 @@ public class DeviceControl extends FrameLayout {
             views.get(i).setAlpha(0.5f);
         }
     }
+
     public void switchCards() {
         EventBus.getDefault().post(new ShowFrontDevice());
     }

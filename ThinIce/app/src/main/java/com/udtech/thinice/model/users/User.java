@@ -9,8 +9,8 @@ import java.util.Date;
  * Created by JOkolot on 03.11.2015.
  */
 public class User extends SugarRecord<User>{
-    private int twitterId;
-    private int facebookId;
+    private long twitterId;
+    private long facebookId;
     private String imageUrl;
     private String firstName;
     private String lastName;
@@ -24,19 +24,19 @@ public class User extends SugarRecord<User>{
     public User() {
     }
 
-    public int getTwitterId() {
+    public long getTwitterId() {
         return twitterId;
     }
 
-    public void setTwitterId(Integer twitterId) {
+    public void setTwitterId(long twitterId) {
         this.twitterId = twitterId;
     }
 
-    public int getFacebookId() {
+    public long getFacebookId() {
         return facebookId;
     }
 
-    public void setFacebookId(Integer facebookId) {
+    public void setFacebookId(long facebookId) {
         this.facebookId = facebookId;
     }
 

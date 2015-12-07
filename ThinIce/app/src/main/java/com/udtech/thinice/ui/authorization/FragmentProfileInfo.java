@@ -3,6 +3,7 @@ package com.udtech.thinice.ui.authorization;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,21 @@ public class FragmentProfileInfo extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
         getView().findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().onBackPressed();
                 getActivity().onBackPressed();
             }
         });
@@ -167,8 +180,8 @@ public class FragmentProfileInfo extends Fragment {
                 user.setPassword(getArguments().getString("pass"));
                 user.setFirstName(getArguments().getString("first_name", ""));
                 user.setLastName(getArguments().getString("last_name", ""));
-                user.setTwitterId(getArguments().getInt("twitterid", 0));
-                user.setFacebookId(getArguments().getInt("facebookid", 0));
+                user.setTwitterId(getArguments().getLong("twitterid", 0));
+                user.setFacebookId(getArguments().getLong("facebookid", 0));
                 user = collectData(user);
                 if (user != null) {
                     user.save();

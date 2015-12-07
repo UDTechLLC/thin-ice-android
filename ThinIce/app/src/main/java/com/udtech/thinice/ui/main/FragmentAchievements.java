@@ -12,7 +12,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.udtech.thinice.AchievementManager;
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.Achievement;
 import com.udtech.thinice.ui.MainActivity;
@@ -64,7 +64,7 @@ public class FragmentAchievements extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             if(convertView == null)
                 convertView = View.inflate(getContext(),R.layout.item_achivement,null);
-            ((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(getItem(position).isOpened() ? getResources().getDrawable(getItem(position).getResourceSrc()) : getResources().getDrawable(getItem(position).getResourceSrc()));
+            ((ImageView)convertView.findViewById(R.id.icon)).setImageDrawable(getItem(position).isOpened() ? getResources().getDrawable(getItem(position).getResourceSrc()) : getResources().getDrawable(R.mipmap.ic_achievement));
             ((TextView)convertView.findViewById(R.id.name)).setText(getItem(position).getName());
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -43,9 +43,9 @@ public class DeviceView extends FrameLayout {
     }
 
     public void onEvent(DeviceChanged event) {
-        if(device.equals(event.getDevice()))
+        if (device.equals(event.getDevice()))
             device = event.getDevice();
-            initView();
+        initView();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class DeviceView extends FrameLayout {
         else
             ((ImageView) findViewById(R.id.ic_type)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_tshirt_large));
         setCharge(findViewById(R.id.charge), device.getCharge());
-        ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature())  + (settings.isTemperature() ? "°F" : "°C"));
+        ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
         findViewById(R.id.plus).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +90,7 @@ public class DeviceView extends FrameLayout {
                     device.setTemperature(device.getTemperature() + 1);
                     device.save();
                     ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                    EventBus.getDefault().post(new DeviceChanged(device));
                 }
             }
         });
@@ -99,6 +100,7 @@ public class DeviceView extends FrameLayout {
                 if (!device.isDisabled()) {
                     device.setTemperature(device.getTemperature() - 1);
                     device.save();
+                    EventBus.getDefault().post(new DeviceChanged(device));
                     ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
                 }
             }
@@ -121,9 +123,9 @@ public class DeviceView extends FrameLayout {
     }
 
     private void setCharge(View container, int charge) {
-        ((ImageView) ((LinearLayout) container).getChildAt(0)).setImageDrawable(getResources().getDrawable((charge / 70) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
-        ((ImageView) ((LinearLayout) container).getChildAt(1)).setImageDrawable(getResources().getDrawable((charge / 50) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
-        ((ImageView) ((LinearLayout) container).getChildAt(2)).setImageDrawable(getResources().getDrawable((charge / 10) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
+        ((ImageView) ((LinearLayout) container).getChildAt(0)).setImageDrawable(getResources().getDrawable((charge / 70) >= 1 ? R.mipmap.ic_charge_grey_fill : R.mipmap.ic_charge_grey_empty));
+        ((ImageView) ((LinearLayout) container).getChildAt(1)).setImageDrawable(getResources().getDrawable((charge / 50) >= 1 ? R.mipmap.ic_charge_grey_fill : R.mipmap.ic_charge_grey_empty));
+        ((ImageView) ((LinearLayout) container).getChildAt(2)).setImageDrawable(getResources().getDrawable((charge / 10) >= 1 ? R.mipmap.ic_charge_grey_fill : R.mipmap.ic_charge_grey_empty));
     }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.Achievement;
@@ -56,6 +57,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AchievementManager.getInstance(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -87,6 +89,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
             findViewById(R.id.container).setPadding(0, 0, 0, navBarHeight);
             findViewById(R.id.menu_frame).setPadding(0, 0, 0, navBarHeight);
         }
+        AchievementManager.getInstance(getApplicationContext()).registrationCompleted(getApplicationContext());
     }
 
     @Override
@@ -217,6 +220,12 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
             itemText.setTextColor(getResources().getColor(R.color.colorAccent));
             item.setBackgroundColor(Color.argb(64, 0, 0, 0));
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AchievementManager.getInstance(getApplicationContext()).commit(getApplicationContext());
     }
 
     private void checkDay() throws ParseException {

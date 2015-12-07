@@ -30,14 +30,14 @@ import butterknife.OnClick;
 /**
  * Created by JOkolot on 18.11.2015.
  */
-public class FragmentDashBoard extends Fragment{
+public class FragmentDashBoard extends Fragment {
     private MenuHolder holder;
-    private Pair<TShirt,Insole> devices;
+    private Pair<TShirt, Insole> devices;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        holder = (MainActivity)getActivity();
+        holder = (MainActivity) getActivity();
         devices = new Pair<>(new TShirt(), new Insole());
         devices.first.setCharge(88);
         devices.second.setCharge(28);
@@ -46,8 +46,9 @@ public class FragmentDashBoard extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_dashboard,container,false);
+        return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
+
     private void updateAvatar(String avatarUrl, final ImageView avatar) {
         if (avatarUrl != null) {
             File bitmap = new File(avatarUrl);
@@ -64,6 +65,7 @@ public class FragmentDashBoard extends Fragment{
             }
         }
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,11 +78,11 @@ public class FragmentDashBoard extends Fragment{
     }
 
     private void initDays(View view) {
-       getChildFragmentManager().beginTransaction().replace(R.id.day_container,new FragmentCards()).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.day_container, new FragmentCards()).commit();
     }
 
     @OnClick(R.id.menu)
-    void showMenu(){
+    void showMenu() {
         holder.show();
     }
 }

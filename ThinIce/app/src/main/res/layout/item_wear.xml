@@ -84,13 +84,13 @@
                         android:layout_height="wrap_content"
                         android:text="Charge"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="20dp" />
+                        android:textSize="17dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:background="#33c6cb"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="20dp" />
 
                     <ImageView
@@ -112,7 +112,9 @@
                         <FrameLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
+                            android:foregroundGravity="center_vertical">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -120,7 +122,8 @@
                                 android:orientation="vertical"
                                 android:id="@+id/charge"
                                 android:layout_gravity="center_vertical|right"
-                                android:layout_marginRight="7dp">
+                                android:layout_marginRight="7dp"
+                                android:foregroundGravity="center_vertical">
                                 <ImageView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -179,13 +182,13 @@
                         android:layout_height="wrap_content"
                         android:text="Temperature"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textSize="20dp" />
+                        android:textSize="17dp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:background="#33c6cb"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="20dp" />
 
                     <FrameLayout

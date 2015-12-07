@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.udtech.thinice.AchievementManager;
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.model.Achievement;
 
@@ -26,7 +26,7 @@ public class FragmentDialogAchievement extends DialogFragment {
         View view = View.inflate(getContext(), R.layout.fragment_dialog_achievement,null);
         dialog.setContentView(view);
         Achievement achievement = AchievementManager.getInstance(getContext()).getAchievement(getContext(),getArguments().getInt("id"));
-        ((ImageView)view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(achievement.getBigResourceSrc()));
+        ((ImageView)view.findViewById(R.id.icon)).setImageDrawable(achievement.isOpened()?getResources().getDrawable(achievement.getBigResourceSrc()):getResources().getDrawable(R.mipmap.ic_achievement_big));
         ((TextView)view.findViewById(R.id.name)).setText(achievement.getName());
         ((TextView)view.findViewById(R.id.description)).setText(achievement.getDescription());
         view.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {

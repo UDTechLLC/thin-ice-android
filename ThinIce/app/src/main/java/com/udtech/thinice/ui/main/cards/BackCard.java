@@ -2,7 +2,6 @@ package com.udtech.thinice.ui.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.model.Day;
@@ -31,6 +31,17 @@ public class BackCard extends FrameLayout implements CardEventListener {
         super(context);
         this.addView(View.inflate(context, R.layout.item_dashboard_day_back, null));
         gdt = new GestureDetector(getContext(), new CardGestureListener(this));
+        findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = ((Activity) getContext()).getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) (getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                EventBus.getDefault().post(new ShowFrontCard());
+            }
+        });
         this.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -218,6 +229,7 @@ public class BackCard extends FrameLayout implements CardEventListener {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         day.save();
+        AchievementManager.getInstance(getContext()).dayChanged(getContext());
     }
 
     public void setDay(Day day) {
@@ -227,13 +239,11 @@ public class BackCard extends FrameLayout implements CardEventListener {
 
     @Override
     public void switchCards() {
-        save();
         EventBus.getDefault().post(new ShowFrontCard());
     }
 
     @Override
     public void reverseSwitchCards() {
-        save();
         EventBus.getDefault().post(new ShowFrontCard(true));
     }
 }

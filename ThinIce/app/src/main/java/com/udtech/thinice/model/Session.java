@@ -13,6 +13,9 @@ public class Session extends SugarRecord<Session> {
     private Date endTime;
     private int temperature;
 
+    public Session() {
+    }
+
     public Session(Day day) {
         this.day = day;
     }
@@ -29,8 +32,17 @@ public class Session extends SugarRecord<Session> {
         return temperature;
     }
 
+
+    public Day getDay() {
+        return day;
+    }
+
     public void openSession(int temperature){
         startTime = new Date();
         this.temperature = temperature;
+    }
+    public void closeSession(){
+        endTime = new Date();
+        save();
     }
 }

@@ -70,7 +70,8 @@
                             android:id="@+id/textView4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Email" />
+                            android:text="Email"
+                            android:textSize="18dp" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -92,6 +93,7 @@
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:id="@+id/emailErr"
+                                android:layout_marginTop="3dp"
                                 android:layout_gravity="left|top"
                                 android:layout_marginLeft="15dp"
                                 android:textColor="#a90000" />
@@ -109,7 +111,8 @@
                             android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Password" />
+                            android:text="Password"
+                            android:textSize="18dp" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -120,6 +123,7 @@
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:id="@+id/passErr"
+                                android:layout_marginTop="3dp"
                                 android:layout_gravity="left|top"
                                 android:layout_marginLeft="15dp"
                                 android:textColor="#a90000" />

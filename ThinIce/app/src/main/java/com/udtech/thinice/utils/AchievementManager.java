@@ -83,55 +83,61 @@ public class AchievementManager {
 
     public synchronized void sessionClosed(Context context, Session session) {
         User user = UserSessionManager.getSession(context);
-        long timeDif = (session.getEndTime().getTime() - session.getStartTime().getTime());
-        timeSpending.addAndGet(timeDif);
-        if ((timeSpending.get() / 60000) > FRESH_START_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.FRESH_START),context);
-        if ((timeSpending.get() / 60000) > MOVING_FORWARD_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.MOVING_FORWARD),context);
-        if ((timeSpending.get() / 60000) > THE_MOTIVATED_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.THE_MOTIVATED),context);
-        if ((timeSpending.get() / 60000) > THE_ENTHUSIAST_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.THE_ENTHUSIAST),context);
-        if ((timeSpending.get() / 60000) > THE_MARATHONER_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.THE_MARATHONER),context);
-        List<Day> days = new ArrayList<>();
-        Iterator<Day> daysIterator = Day.findAll(Day.class);
-        while (daysIterator.hasNext()) {
-            Day day = daysIterator.next();
-            if (user.equals(day.getUser())) {
-                days.add(day);
+        if (user != null) {
+            long timeDif = (session.getEndTime().getTime() - session.getStartTime().getTime());
+            timeSpending.addAndGet(timeDif);
+            if ((timeSpending.get() / 60) > FRESH_START_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.FRESH_START), context);
+            if ((timeSpending.get() / 60) > MOVING_FORWARD_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.MOVING_FORWARD), context);
+            if ((timeSpending.get() / 60) > THE_MOTIVATED_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.THE_MOTIVATED), context);
+            if ((timeSpending.get() / 60) > THE_ENTHUSIAST_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.THE_ENTHUSIAST), context);
+            if ((timeSpending.get() / 60) > THE_MARATHONER_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.THE_MARATHONER), context);
+            List<Day> days = new ArrayList<>();
+            Iterator<Day> daysIterator = Day.findAll(Day.class);
+            while (daysIterator.hasNext()) {
+                Day day = daysIterator.next();
+                if (user.equals(day.getUser())) {
+                    days.add(day);
+                }
             }
+            int totalCalories = 0;
+            for (Day day : days)
+                totalCalories += day.calcCalories();
+            if (totalCalories > FIRESTARTER_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.FIRESTARTER), context);
+            if (totalCalories > FEELIN_THE_BURN_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.FEELIN_THE_BURN), context);
+            if (totalCalories > GETTING_LEAN_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.GETTING_LEAN), context);
+            if (totalCalories > SEEING_RESULTS_COUNT)
+                showAchievement(getAchievement(context, Achievement.Type.SEEING_RESULTS), context);
         }
-        int totalCalories = 0;
-        for (Day day : days)
-            totalCalories += day.calcCalories();
-        if(totalCalories > FIRESTARTER_COUNT )
-            showAchievement(getAchievement(context, Achievement.Type.FIRESTARTER),context);
-        if(totalCalories > FEELIN_THE_BURN_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.FEELIN_THE_BURN),context);
-        if(totalCalories > GETTING_LEAN_COUNT )
-            showAchievement(getAchievement(context, Achievement.Type.GETTING_LEAN),context);
-        if(totalCalories > SEEING_RESULTS_COUNT )
-            showAchievement(getAchievement(context, Achievement.Type.SEEING_RESULTS),context);
 
     }
-    public synchronized void settingsChanged(Context context){
-        showAchievement(getAchievement(context, Achievement.Type.THE_BUTTON_PRESSER),context);
+
+    public synchronized void settingsChanged(Context context) {
+        showAchievement(getAchievement(context, Achievement.Type.THE_BUTTON_PRESSER), context);
     }
-    public synchronized void registrationCompleted(Context context){
-        showAchievement(getAchievement(context, Achievement.Type.FRESH_FACE),context);
+
+    public synchronized void registrationCompleted(Context context) {
+        showAchievement(getAchievement(context, Achievement.Type.FRESH_FACE), context);
     }
-    public synchronized void statisticsOpened(Context context){
+
+    public synchronized void statisticsOpened(Context context) {
         statistics.incrementAndGet();
-        if(statistics.get()>THE_TRACKER_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.THE_TRACKER),context);
-        if(statistics.get()>RESULTS_ORIENTED_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.RESULTS_ORIENTED),context);
-        if(statistics.get()>RESULTS_OBSESSED_COUNT)
-            showAchievement(getAchievement(context, Achievement.Type.RESULTS_OBSESSED),context);
+        if (statistics.get() > THE_TRACKER_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.THE_TRACKER), context);
+        if (statistics.get() > RESULTS_ORIENTED_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.RESULTS_ORIENTED), context);
+        if (statistics.get() > RESULTS_OBSESSED_COUNT)
+            showAchievement(getAchievement(context, Achievement.Type.RESULTS_OBSESSED), context);
     }
-    public synchronized void dayChanged(Context context){
+
+    public synchronized void dayChanged(Context context) {
         int count = 0;
         User user = UserSessionManager.getSession(context);
         List<Day> days = new ArrayList<>();
@@ -142,39 +148,41 @@ public class AchievementManager {
                 days.add(day);
             }
         }
-        for(Day day: days){
-            if(day.getGymHours()!=0)
+        for (Day day : days) {
+            if (day.getGymHours() != 0)
                 count++;
-            if(day.gethProteinMeals()!=0)
+            if (day.gethProteinMeals() != 0)
                 count++;
-            if(day.getWaterIntake()!=0)
+            if (day.getWaterIntake() != 0)
                 count++;
-            if(day.getHoursSlept()!=0)
+            if (day.getHoursSlept() != 0)
                 count++;
-            if(day.getJunkFood()!=0)
+            if (day.getJunkFood() != 0)
                 count++;
-            if(day.getCarbsConsumed()!=0)
+            if (day.getCarbsConsumed() != 0)
                 count++;
         }
-        if(count>0){
-            showAchievement(getAchievement(context, Achievement.Type.THE_DABBLER),context);
+        if (count > 0) {
+            showAchievement(getAchievement(context, Achievement.Type.THE_DABBLER), context);
         }
-        if(count>=5){
-            showAchievement(getAchievement(context, Achievement.Type.THE_SCHEMER),context);
+        if (count >= 5) {
+            showAchievement(getAchievement(context, Achievement.Type.THE_SCHEMER), context);
         }
-        if(count>20){
-            showAchievement(getAchievement(context, Achievement.Type.THE_STRATEGIST),context);
+        if (count > 20) {
+            showAchievement(getAchievement(context, Achievement.Type.THE_STRATEGIST), context);
         }
     }
 
     public void commit(Context context) {
         User user = UserSessionManager.getSession(context);
-        SharedPreferences sPref = context.getSharedPreferences(TEMP + user.getId(), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sPref.edit();
-        editor.putLong(TIME, timeSpending.get());
-        editor.putInt(TARGETS, targets.get());
-        editor.putInt(CALORIES, calories.get());
-        editor.putInt(STATISTICS, statistics.get());
+        if (user != null) {
+            SharedPreferences sPref = context.getSharedPreferences(TEMP + user.getId(), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sPref.edit();
+            editor.putLong(TIME, timeSpending.get());
+            editor.putInt(TARGETS, targets.get());
+            editor.putInt(CALORIES, calories.get());
+            editor.putInt(STATISTICS, statistics.get());
+        }
     }
 
     public List<Achievement> getAchievements(Context context) {
@@ -513,11 +521,17 @@ public class AchievementManager {
         return description;
     }
 
-    private void showAchievement(Achievement achievement,Context context) {
-        if(!achievement.isOpened()){
+    private void showAchievement(Achievement achievement, Context context) {
+        if (!achievement.isOpened()) {
             achievement.setOpened(true);
             saveAchievement(achievement, context);
-            EventBus.getDefault().postSticky(achievement);
+            if (achievement.getId() == Achievement.Type.FRESH_FACE) {
+                Iterator iterator = User.findAll(User.class);
+                iterator.next();
+                if (!iterator.hasNext())
+                    EventBus.getDefault().postSticky(achievement);
+            } else
+                EventBus.getDefault().postSticky(achievement);
         }
     }
 

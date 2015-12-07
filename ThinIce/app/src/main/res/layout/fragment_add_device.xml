@@ -118,7 +118,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Back"
+        android:text="Done"
         android:background="@drawable/bg_button_blue"
         android:id="@+id/btn_exit"
         android:textColor="#fff"

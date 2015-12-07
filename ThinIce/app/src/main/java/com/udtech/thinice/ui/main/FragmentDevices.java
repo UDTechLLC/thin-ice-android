@@ -86,6 +86,11 @@ public class FragmentDevices extends Fragment {
             view.findViewById(R.id.tshirt_container).setVisibility(View.VISIBLE);
             setCharge(view.findViewById(R.id.charge_tshirt), devices.first.getCharge());
             ((TextView)view.findViewById(R.id.charge_tshirt_text)).setText(devices.first.getCharge()+"%");
+            if(devices.first.isDisabled()){
+                view.findViewById(R.id.tshirt_container).setAlpha(0.5f);
+            }else{
+                view.findViewById(R.id.tshirt_container).setAlpha(1.0f);
+            }
         }else{
             view.findViewById(R.id.tshirt_container).setVisibility(View.GONE);
             view.findViewById(R.id.separator).setVisibility(View.GONE);
@@ -94,6 +99,11 @@ public class FragmentDevices extends Fragment {
             view.findViewById(R.id.insoles_container).setVisibility(View.VISIBLE);
             setCharge(view.findViewById(R.id.charge_insoles), devices.second.getCharge());
             ((TextView)view.findViewById(R.id.charge_insoles_text)).setText(devices.second.getCharge() + "%");
+            if(devices.second.isDisabled()){
+                view.findViewById(R.id.insoles_container).setAlpha(0.5f);
+            }else{
+                view.findViewById(R.id.insoles_container).setAlpha(1.0f);
+            }
         }else{
             view.findViewById(R.id.insoles_container).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.separator).setVisibility(View.GONE);

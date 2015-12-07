@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material">
 
+
         <ImageView
-            android:layout_width="@dimen/abc_action_bar_default_height_material"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/btn_menu"
             android:padding="15dp"
-            android:id="@+id/menu" />
+            android:id="@+id/menu"
+            android:layout_centerVertical="true" />
 
         <TextView
             android:layout_width="wrap_content"

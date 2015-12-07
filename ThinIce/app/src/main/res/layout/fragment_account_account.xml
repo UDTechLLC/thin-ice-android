@@ -28,7 +28,8 @@
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email" />
+                    android:text="Email"
+                    android:textSize="18dp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -68,7 +69,8 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password" />
+                    android:text="Password"
+                    android:textSize="18dp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"

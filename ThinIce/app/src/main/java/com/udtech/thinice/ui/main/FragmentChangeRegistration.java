@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.eventbus.model.user.SaveUser;
@@ -92,6 +93,8 @@ public class FragmentChangeRegistration extends UserDataForm {
         view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AchievementManager.getInstance(getContext()).commit(getContext());
                 Intent logout = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(logout);
                 getActivity().finish();
@@ -120,6 +123,7 @@ public class FragmentChangeRegistration extends UserDataForm {
         if(user!=null){
             user.save();
             getActivity().onBackPressed();
+            AchievementManager.getInstance(getContext()).settingsChanged(getContext());
         }
     }
     @Override
@@ -142,7 +146,7 @@ public class FragmentChangeRegistration extends UserDataForm {
     void getAvatar() {
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Change photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {

@@ -24,6 +24,7 @@ import com.udtech.thinice.ui.authorization.FragmentAuth;
 import com.udtech.thinice.ui.authorization.FragmentCreateProfile;
 import com.udtech.thinice.ui.authorization.FragmentInnerLogin;
 import com.udtech.thinice.ui.authorization.FragmentProfileInfo;
+import com.udtech.thinice.ui.authorization.ProgressFragment;
 
 import de.greenrobot.event.EventBus;
 import io.fabric.sdk.android.Fabric;
@@ -106,11 +107,13 @@ public class LoginActivity extends FragmentActivity {
         bundle.putString("pass", event.getUser().getPassword());
         bundle.putString("first_name", event.getUser().getFirstName());
         bundle.putString("last_name", event.getUser().getLastName());
-        bundle.putInt("twitterid", event.getUser().getTwitterId());
-        bundle.putInt("facebookid", event.getUser().getFacebookId());
+        bundle.putLong("twitterid", event.getUser().getTwitterId());
+        bundle.putLong("facebookid", event.getUser().getFacebookId());
         Fragment fragment = new FragmentProfileInfo();
         fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, new ProgressFragment()).addToBackStack(null).commit();
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).replace(R.id.container, fragment).addToBackStack(null).commit();
+
     }
 
     public void onEvent(UserInfoAdded event) {

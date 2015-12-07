@@ -27,12 +27,6 @@ public class ThinIceApp extends com.orm.SugarApp {
             configuration.setLocale(Locale.UK);
         Locale.setDefault(Locale.UK);
         Resources.getSystem().updateConfiguration(configuration, null);
-        AchievementManager.getInstance(getApplicationContext());
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        AchievementManager.getInstance(getApplicationContext()).commit(getApplicationContext());
-    }
 }

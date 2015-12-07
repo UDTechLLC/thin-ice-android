@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.main.adapters.FragmentAdapterStatistics;
@@ -46,6 +47,7 @@ public class FragmentStatistics extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        AchievementManager.getInstance(getContext()).statisticsOpened(getContext());
         ButterKnife.bind(this, view);
         week = FragmentStatisticPage.getInstance(100, 80);
         twoWeeks = FragmentStatisticPage.getInstance(200, 180);

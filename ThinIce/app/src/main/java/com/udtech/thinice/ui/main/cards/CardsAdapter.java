@@ -9,6 +9,7 @@ import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.users.User;
+import com.udtech.thinice.utils.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,6 +39,7 @@ public class CardsAdapter extends ArrayAdapter<Day> {
         for (int i = days.size() - 1; i >= 0; i--) {
             reverseDayList.add(days.get(i));
         }
+        SessionManager.initDay(reverseDayList.get(0),context);
         return new CardsAdapter(context, reverseDayList);
     }
 

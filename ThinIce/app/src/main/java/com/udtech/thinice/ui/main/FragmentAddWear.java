@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by JOkolot on 30.11.2015.
@@ -49,6 +52,7 @@ public class FragmentAddWear extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
+                EventBus.getDefault().post(new DeviceChanged(insoles));
             }
         });
         if (TShirt.findAll(TShirt.class).hasNext()) {

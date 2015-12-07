@@ -1,8 +1,11 @@
 package com.udtech.thinice.ui.main;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +54,18 @@ public class FragmentStatisticPage extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
         ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphBase))
                 .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(TOTAL_VALUE))
-                .setLineWidth(80f)
+                .setLineWidth((float) (0.06*width))
                 .build());
         ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphState))
                 .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(DONE_VALUE))
                 .setInterpolator(new DecelerateInterpolator())
-                .setLineWidth(80f)
+                .setLineWidth((float) (0.06*width))
                 .build());
         done.setText(getArguments().getInt(DONE_VALUE)+" hrs");
         planned.setText(getArguments().getInt(TOTAL_VALUE)+" hrs");

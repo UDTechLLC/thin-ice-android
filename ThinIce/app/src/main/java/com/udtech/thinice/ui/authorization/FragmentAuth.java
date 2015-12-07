@@ -124,7 +124,7 @@ public class FragmentAuth extends Fragment {
                                             Iterator<com.udtech.thinice.model.users.User> users = com.udtech.thinice.model.users.User.findAll(com.udtech.thinice.model.users.User.class);
                                             while (users.hasNext()) {
                                                 com.udtech.thinice.model.users.User savedUser = users.next();
-                                                if (savedUser.getTwitterId() != 0 ? savedUser.getTwitterId() == Integer.valueOf(me.optString("id")) : false) {
+                                                if (savedUser.getFacebookId() != 0 ? savedUser.getFacebookId() == id : false) {
                                                     openSession(savedUser);
                                                     return;
                                                 }
@@ -133,6 +133,7 @@ public class FragmentAuth extends Fragment {
                                             innerUser.setImageUrl("https://graph.facebook.com/" + id + "/picture?type=large");
                                             innerUser.setFirstName(me.optString("name").substring(0, me.optString("name").lastIndexOf(' ')));
                                             innerUser.setLastName(me.optString("name").substring(me.optString("name").lastIndexOf(' ')));
+                                            innerUser.setFacebookId(id);
                                             saveSession(innerUser);
                                         }
 
