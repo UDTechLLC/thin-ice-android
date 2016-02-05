@@ -36,13 +36,17 @@ public class FragmentFrontCard extends ListView {
                     int xDiff, yDiff;
                     xDiff = Math.abs(startPosition.x - endPoint.x);
                     yDiff = Math.abs(startPosition.y - endPoint.y);
-                    startPosition = null;
                     if (xDiff > yDiff) {
-                        if (xDiff > 50) {
-                            Log.d("Motion event position", getSelectedItemPosition()+"");
-                            return true;
-                        }
+                        CardView card = (CardView) getChildAt(pointToPosition(endPoint.x, endPoint.y));
+                        if(card!=null)
+                        if (startPosition.x - endPoint.x > 0)
+                            card.reverseSwitchCards();
+                        else
+                            card.switchCards();
+                        return true;
+
                     }
+                    startPosition = null;
                 }
                 Log.d("Motion events", event.toString());
                 isMoving = true;

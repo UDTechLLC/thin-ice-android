@@ -134,17 +134,16 @@
         app:layout_widthPercent="50%" />
 
     <TextView
-        android:padding="5dp"
         android:id="@+id/registration"
         android:drawableLeft="@drawable/ic_sign_up"
-        android:drawablePadding="5dp"
-        android:gravity="center"
         android:text="Sign Up"
         android:textColor="@drawable/color_button_text_selector"
-        app:layout_heightPercent="5%"
+        app:layout_heightPercent="10%"
         app:layout_marginLeftPercent="37%"
         app:layout_marginTopPercent="93.5%"
         android:textSize="16dp"
+        android:paddingBottom="5dp"
         app:layout_widthPercent="30%"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:gravity="center" />
 </android.support.percent.PercentRelativeLayout>

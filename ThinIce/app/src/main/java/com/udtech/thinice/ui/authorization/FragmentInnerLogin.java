@@ -56,7 +56,7 @@ public class FragmentInnerLogin extends Fragment {
         pass.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+ 
             }
 
             @Override

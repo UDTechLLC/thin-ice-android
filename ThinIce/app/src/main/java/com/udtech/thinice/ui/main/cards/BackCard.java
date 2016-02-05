@@ -2,8 +2,8 @@ package com.udtech.thinice.ui.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.view.ActionMode;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,10 +13,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.model.Day;
+import com.udtech.thinice.utils.AchievementManager;
 
 import de.greenrobot.event.EventBus;
 
@@ -24,13 +24,12 @@ import de.greenrobot.event.EventBus;
  * Created by JOkolot on 23.11.2015.
  */
 public class BackCard extends FrameLayout implements CardEventListener {
-    private GestureDetector gdt;
     private Day day;
+    private Point startPosition;
 
     public BackCard(Context context) {
         super(context);
         this.addView(View.inflate(context, R.layout.item_dashboard_day_back, null));
-        gdt = new GestureDetector(getContext(), new CardGestureListener(this));
         findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,13 +41,13 @@ public class BackCard extends FrameLayout implements CardEventListener {
                 EventBus.getDefault().post(new ShowFrontCard());
             }
         });
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gdt.onTouchEvent(event);
-                return false;
-            }
-        });
+        this.setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.food_edit)).setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.water_edit)).setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.protein_edit)).setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.sleep_edit)).setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.carb_edit)).setOnTouchListener(new SwipeListener());
+        ((TextView) findViewById(R.id.gym_edit)).setOnTouchListener(new SwipeListener());
 
         ((EditText) findViewById(R.id.food_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
 
@@ -160,42 +159,6 @@ public class BackCard extends FrameLayout implements CardEventListener {
                 EventBus.getDefault().post(new ShowFrontCard());
             }
         });
-        this.findViewById(R.id.food_edit).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
-        ((TextView) findViewById(R.id.water_edit)).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
-        ((TextView) findViewById(R.id.protein_edit)).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
-        ((TextView) findViewById(R.id.sleep_edit)).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
-        ((TextView) findViewById(R.id.carb_edit)).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
-        ((TextView) findViewById(R.id.gym_edit)).setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gdt.onTouchEvent(event);
-            }
-        });
 
 
     }
@@ -245,5 +208,32 @@ public class BackCard extends FrameLayout implements CardEventListener {
     @Override
     public void reverseSwitchCards() {
         EventBus.getDefault().post(new ShowFrontCard(true));
+    }
+    private class SwipeListener implements  OnTouchListener{
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) { if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if (startPosition == null)
+                startPosition = new Point((int) event.getX(), (int) event.getY());
+        }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (startPosition != null) {
+                    Point endPoint = new Point((int) event.getX(), (int) event.getY());
+                    int xDiff, yDiff;
+                    xDiff = Math.abs(startPosition.x - endPoint.x);
+                    yDiff = Math.abs(startPosition.y - endPoint.y);
+                    if (xDiff > yDiff) {
+                        if (startPosition.x - endPoint.x > 0)
+                            reverseSwitchCards();
+                        else
+                            switchCards();
+                        return true;
+
+                    }
+                    startPosition = null;
+                }
+            }
+            return false;
+        }
     }
 }
