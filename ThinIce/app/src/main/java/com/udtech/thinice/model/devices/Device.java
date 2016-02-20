@@ -19,7 +19,7 @@ public abstract interface Device {
     public Date getTimer();
 
     public boolean isDisabled();
-
+    public Long getId();
     public void setDisabled(boolean disabled);
     public void save();
     public void delete();

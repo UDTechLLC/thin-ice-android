@@ -45,7 +45,6 @@ public class Insole extends SugarRecord<Insole> implements Device  {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
-
     @Override
     public boolean equals(Object o) {
         if(o instanceof Insole)

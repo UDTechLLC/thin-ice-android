@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.udtech.thinice.R;
+import com.udtech.thinice.eventbus.model.BluetoothCommand;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.eventbus.model.devices.ShowBackDevice;
 import com.udtech.thinice.model.Settings;
@@ -87,10 +88,10 @@ public class DeviceView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if (!device.isDisabled()) {
-                    device.setTemperature(device.getTemperature() + 1);
-                    device.save();
                     ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
-                    EventBus.getDefault().post(new DeviceChanged(device));
+                    BluetoothCommand command = new BluetoothCommand(device);
+                    command.setTemperature(device.getTemperature()+1);
+                    EventBus.getDefault().post(command);
                 }
             }
         });
@@ -98,9 +99,9 @@ public class DeviceView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if (!device.isDisabled()) {
-                    device.setTemperature(device.getTemperature() - 1);
-                    device.save();
-                    EventBus.getDefault().post(new DeviceChanged(device));
+                    BluetoothCommand command = new BluetoothCommand(device);
+                    command.setTemperature(device.getTemperature()+1);
+                    EventBus.getDefault().post(command);
                     ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
                 }
             }

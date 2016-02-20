@@ -56,9 +56,9 @@ public class FragmentCreateProfile extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((TextView)view.findViewById(R.id.agreements)).setText(Html.fromHtml(
+        ((TextView) view.findViewById(R.id.agreements)).setText(Html.fromHtml(
                 "By clicking \"Create Account\" you acknowledge that you understand and accept the <a href = \"https://en.wikipedia.org/wiki/Terms_of_service\">Terms of Use</a> and read the <a href = \"https://en.wikipedia.org/wiki/Privacy_policy\">Privacy Policy</a>"));
-        ((TextView)view.findViewById(R.id.agreements)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) view.findViewById(R.id.agreements)).setMovementMethod(LinkMovementMethod.getInstance());
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,11 +107,14 @@ public class FragmentCreateProfile extends Fragment {
         User user = collectData(new User());
         if (user != null) {
             Iterator<User> userIterator = User.findAll(User.class);
-            while (userIterator.hasNext())
-                if (userIterator.next().getEmail().equals(user.getEmail())) {
-                    showEmailError("Email is already being used.");
-                    return;
-                }
+            while (userIterator.hasNext()) {
+                User iteratorUser = userIterator.next();
+                if (iteratorUser.getEmail() != null)
+                    if (iteratorUser.getEmail().equals(user.getEmail())) {
+                        showEmailError("Email is already being used.");
+                        return;
+                    }
+            }
             EventBus.getDefault().post(new CreatedUser(user));
         }
     }
@@ -136,15 +139,19 @@ public class FragmentCreateProfile extends Fragment {
             user.setPassword(pass);
             while (users.hasNext()) {
                 User temp = users.next();
-                if (temp.getEmail().equals(user.getEmail())) {
-                    showEmailError("Email already exists");
-                    exist = true;
-                    break;
+                try {
+                    if (temp.getEmail().equals(user.getEmail())) {
+                        showEmailError("Email already exists");
+                        exist = true;
+                        break;
+                    }
+
+
+                } catch (Exception e) {
                 }
             }
             if (!exist)
                 return user;
-
         }
         return null;
     }

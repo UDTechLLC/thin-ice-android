@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
 import com.udtech.thinice.model.users.User;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by JOkolot on 18.11.2015.
@@ -58,6 +60,7 @@ public class FragmentDevices extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EventBus.getDefault().register(this);
         view.findViewById(R.id.insoles_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +73,12 @@ public class FragmentDevices extends Fragment {
                 ((MenuHolder) getActivity()).showMenuItem(MenuHolder.CONTROL);
             }
         });
+       check(view);
+    }
+    public void onEvent(DeviceChanged event){
+        check(getView());
+    }
+    private void check(View view){
         User user = UserSessionManager.getSession(getActivity());
         ((TextView)view.findViewById(R.id.name)).setText((user.getFirstName()!=null?user.getFirstName():"")+" "+(user.getLastName()!=null?user.getLastName():""));
         Iterator<TShirt> tsIterator = TShirt.findAll(TShirt.class);
@@ -117,5 +126,11 @@ public class FragmentDevices extends Fragment {
         ((ImageView) ((LinearLayout) container).getChildAt(0)).setImageDrawable(getResources().getDrawable((charge / 70) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
         ((ImageView) ((LinearLayout) container).getChildAt(1)).setImageDrawable(getResources().getDrawable((charge / 50) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
         ((ImageView) ((LinearLayout) container).getChildAt(2)).setImageDrawable(getResources().getDrawable((charge / 10) >= 1 ? R.mipmap.ic_charge_fill : R.mipmap.ic_charge_empty));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 }

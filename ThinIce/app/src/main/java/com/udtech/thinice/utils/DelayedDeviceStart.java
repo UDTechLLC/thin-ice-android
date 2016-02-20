@@ -2,6 +2,7 @@ package com.udtech.thinice.utils;
 
 import android.os.Handler;
 
+import com.udtech.thinice.eventbus.model.BluetoothCommand;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.model.devices.Device;
 
@@ -66,7 +67,9 @@ public class DelayedDeviceStart {
                 device.setDisabled(false);
                 device.setTimer(new Date(0));
                 device.save();
-                EventBus.getDefault().postSticky(new DeviceChanged(device));
+                BluetoothCommand command = new BluetoothCommand(device);
+                command.setStartCommand();
+                EventBus.getDefault().postSticky(command);
             }
         }
     }

@@ -44,14 +44,14 @@
         app:layout_widthPercent="50%" />
 
     <ImageView
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@mipmap/ic_logo"
-        app:layout_marginLeftPercent="20%"
+        app:layout_marginLeftPercent="10%"
         app:layout_marginTopPercent="12%"
-        app:layout_widthPercent="60%" />
+        app:layout_widthPercent="80%" />
 
     <FrameLayout
         android:layout_alignParentLeft="true"
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Log In"
+            android:text="Sign In"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#fff" />
 
@@ -88,7 +88,7 @@
         android:text="or"
         android:textColor="#fff"
         app:layout_marginLeftPercent="45%"
-        app:layout_marginTopPercent="55%"
+        app:layout_marginTopPercent="57%"
         app:layout_widthPercent="10%" />
 
     <ImageView
@@ -97,11 +97,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/btn_log_in_facebook"
-        app:layout_heightPercent="22%"
-        app:layout_marginLeftPercent="20%"
-        app:layout_marginTopPercent="55%"
+        app:layout_heightPercent="18%"
+        app:layout_marginLeftPercent="22%"
+        app:layout_marginTopPercent="62%"
         android:clickable="true"
-        app:layout_widthPercent="22%"/>
+        app:layout_widthPercent="18%"/>
     <com.twitter.sdk.android.core.identity.TwitterLoginButton
         android:id="@+id/twitter_login_button"
         android:layout_width="wrap_content"
@@ -115,22 +115,22 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/btn_log_in_twitter"
-        app:layout_heightPercent="22%"
-        app:layout_marginLeftPercent="58%"
-        app:layout_marginTopPercent="55%"
-        app:layout_widthPercent="22%"/>
+        app:layout_heightPercent="18%"
+        app:layout_marginLeftPercent="60%"
+        app:layout_marginTopPercent="62%"
+        app:layout_widthPercent="18%"/>
 
     <View
         android:background="@drawable/bg_registration_button_left"
-        app:layout_heightPercent="8%"
-        app:layout_marginTopPercent="92%"
+        app:layout_heightPercent="9%"
+        app:layout_marginTopPercent="91%"
         app:layout_widthPercent="50%" />
 
     <View
         android:background="@drawable/bg_registration_button_right"
-        app:layout_heightPercent="8%"
+        app:layout_heightPercent="9%"
         app:layout_marginLeftPercent="50%"
-        app:layout_marginTopPercent="92%"
+        app:layout_marginTopPercent="91%"
         app:layout_widthPercent="50%" />
 
     <TextView
@@ -139,11 +139,12 @@
         android:text="Sign Up"
         android:textColor="@drawable/color_button_text_selector"
         app:layout_heightPercent="10%"
-        app:layout_marginLeftPercent="37%"
-        app:layout_marginTopPercent="93.5%"
+        app:layout_marginLeftPercent="40%"
+        app:layout_marginTopPercent="92%"
         android:textSize="16dp"
+        android:drawablePadding="0dp"
         android:paddingBottom="5dp"
-        app:layout_widthPercent="30%"
+        app:layout_widthPercent="24%"
         android:clickable="true"
         android:gravity="center" />
 </android.support.percent.PercentRelativeLayout>

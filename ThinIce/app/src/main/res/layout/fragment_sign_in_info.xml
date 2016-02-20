@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg_statistics"
-    android:orientation="vertical">
+    android:scrollbars="none"
+    android:background="@mipmap/bg_statistics">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_auth"
-        android:layout_above="@+id/btn_exit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="70dp">
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_exit"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_auth">
 
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/close"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/close"
                         android:layout_gravity="center_vertical|right"
-                        android:src="@drawable/ic_cross"
+                        android:layout_margin="10dp"
                         android:padding="10dp"
-                        android:layout_margin="10dp" />
+                        android:src="@drawable/ic_cross" />
                 </FrameLayout>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64dp"
                     android:layout_gravity="center_horizontal|top"
-                    android:src="@mipmap/ic_logo"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:src="@mipmap/ic_logo" />
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/scrollView">
                 <FrameLayout
+                    android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/frameLayout"
                     android:layout_marginTop="20dp"
                     android:padding="30dp">
 
@@ -97,8 +100,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:popupBackground="#3b5568"
                                 android:background="@drawable/bg_spinner"
+                                android:popupBackground="#3b5568"
                                 android:spinnerMode="dropdown" />
 
                             <Spinner
@@ -106,19 +109,19 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:popupBackground="#3b5568"
                                 android:layout_marginRight="5dp"
                                 android:layout_weight="5"
                                 android:background="@drawable/bg_spinner"
+                                android:popupBackground="#3b5568"
                                 android:spinnerMode="dropdown" />
 
                             <Spinner
                                 android:id="@+id/year"
                                 android:layout_width="0dp"
-                                android:popupBackground="#3b5568"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
                                 android:background="@drawable/bg_spinner"
+                                android:popupBackground="#3b5568"
                                 android:spinnerMode="dropdown" />
                         </LinearLayout>
 
@@ -153,25 +156,26 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="2">
+
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginRight="10dp"
-                                android:layout_weight="1" >
+                                android:layout_weight="1">
 
                                 <TextView
+                                    android:id="@+id/weightErr"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:id="@+id/weightErr"
                                     android:layout_gravity="left|top"
                                     android:layout_marginLeft="15dp"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="#a90000" />
 
                                 <ImageView
+                                    android:id="@+id/weightStatus"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/weightStatus"
                                     android:layout_gravity="right|top"
                                     android:layout_marginRight="10dp"
                                     android:layout_marginTop="5dp" />
@@ -180,32 +184,32 @@
                                     android:id="@+id/weight"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:ems="10"
-                                    android:inputType="numberDecimal"
                                     android:layout_gravity="left|top"
+                                    android:layout_marginBottom="15dp"
                                     android:layout_marginTop="13dp"
-                                    android:layout_marginBottom="15dp" />
+                                    android:ems="10"
+                                    android:inputType="numberDecimal" />
                             </FrameLayout>
 
                             <FrameLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginRight="10dp"
-                                android:layout_weight="1" >
+                                android:layout_weight="1">
 
                                 <TextView
+                                    android:id="@+id/heightErr"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:id="@+id/heightErr"
                                     android:layout_gravity="left|top"
                                     android:layout_marginLeft="15dp"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="#a90000" />
 
                                 <ImageView
+                                    android:id="@+id/heightStatus"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/heightStatus"
                                     android:layout_gravity="right|top"
                                     android:layout_marginRight="10dp"
                                     android:layout_marginTop="5dp" />
@@ -214,35 +218,67 @@
                                     android:id="@+id/height"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:ems="10"
-                                    android:inputType="numberDecimal"
                                     android:layout_gravity="left|top"
+                                    android:layout_marginBottom="15dp"
                                     android:layout_marginTop="13dp"
-                                    android:layout_marginBottom="15dp" />
+                                    android:ems="10"
+                                    android:inputType="numberDecimal" />
                             </FrameLayout>
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </FrameLayout>
-                </ScrollView>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/indicator_white" />
+
+                        <View
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/indicator_blue" />
+
+                        <View
+                            android:layout_width="7dp"
+                            android:layout_height="7dp"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/indicator_white" />
+                    </LinearLayout>
+                </FrameLayout>
             </LinearLayout>
 
-    </FrameLayout>
+        </FrameLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Next"
-        android:background="@drawable/bg_button_blue"
-        android:id="@+id/save"
-        android:textColor="#fff"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20dp"
-        android:textAllCaps="false"
-        android:textStyle="normal"/>
-</RelativeLayout>
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/bg_button_blue"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="20dp"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+</ScrollView>

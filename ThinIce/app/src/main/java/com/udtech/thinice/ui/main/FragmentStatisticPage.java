@@ -4,17 +4,17 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
+import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.udtech.thinice.R;
 
 import butterknife.Bind;
@@ -60,14 +60,50 @@ public class FragmentStatisticPage extends Fragment {
         int width = size.x;
         ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphBase))
                 .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(TOTAL_VALUE))
-                .setLineWidth((float) (0.06*width))
+                .setLineWidth((float) (0.06 * width))
                 .build());
-        ((DecoView) view.findViewById(R.id.graph)).addSeries(new SeriesItem.Builder(getResources().getColor(R.color.graphState))
-                .setRange(0, getArguments().getInt(TOTAL_VALUE), getArguments().getInt(DONE_VALUE))
-                .setInterpolator(new DecelerateInterpolator())
-                .setLineWidth((float) (0.06*width))
-                .build());
-        done.setText(getArguments().getInt(DONE_VALUE)+" hrs");
-        planned.setText(getArguments().getInt(TOTAL_VALUE)+" hrs");
+        final SeriesItem item = new SeriesItem.Builder(getResources().getColor(R.color.graphState))
+                .setRange(0, getArguments().getInt(TOTAL_VALUE), 0)
+                .setInterpolator(new AccelerateInterpolator())
+                .setSpinDuration(3000)
+                .setLineWidth((float) (0.06 * width))
+                .build();
+        item.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
+            @Override
+            public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
+                float percentFilled = ((currentPosition - item.getMinValue()) / (item.getMaxValue() - item.getMinValue()));
+            }
+
+            @Override
+            public void onSeriesItemDisplayProgress(float percentComplete) {
+
+            }
+        });
+                ((DecoView) view.findViewById(R.id.graph)).addSeries(item);
+        done.setText(getArguments().getInt(DONE_VALUE) + " hrs");
+        planned.setText(getArguments().getInt(TOTAL_VALUE) + " hrs");
+    }
+    public float getRatio(){
+        return (float)getArguments().getInt(DONE_VALUE);
+    }
+    public void addEvent(final DecoEvent event) {
+        if(getView()!=null)((DecoView) getView().findViewById(R.id.graph)).addEvent(event);
+        else new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(getView()==null)
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((DecoView) getView().findViewById(R.id.graph)).addEvent(event);
+                    }
+                });
+            }
+        }).start();
     }
 }

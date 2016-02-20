@@ -5,128 +5,150 @@
     android:background="@mipmap/bg_statistics"
     android:orientation="vertical">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_auth"
-        android:padding="10dp"
         android:layout_above="@+id/btn_exit"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp">
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_auth"
+        android:padding="10dp">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollView"
-            android:layout_gravity="center" >
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/exit"
-                        android:layout_gravity="center_vertical|right"
-                        android:src="@drawable/ic_cross"
-                        android:padding="10dp" />
-                </FrameLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView10"
-                    android:layout_gravity="right" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView5"
-                    android:layout_gravity="center_horizontal|top"
-                    android:src="@mipmap/ic_logo"
-                    android:layout_marginTop="20dp" />
-
-                <ProgressBar
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/progressBar"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="35dp"
-                    android:indeterminate="false" />
-            </LinearLayout>
-        </ScrollView>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|bottom"
-                android:weightSum="2">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/insoles"
-                    android:layout_gravity="left|bottom"
-                    android:layout_margin="20dp"
-                    android:src="@mipmap/ic_insoles"
-                    android:layout_weight="1"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tshirt"
-                    android:layout_gravity="right|bottom"
-                    android:layout_margin="20dp"
-                    android:src="@mipmap/ic_add_tshirt"
-                    android:layout_weight="1"
-                    android:visibility="gone" />
-            </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="To activate the detection Thin Ice device  and turn on bluetooth on your device"
-                android:id="@+id/textView15"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="15dp"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_horizontal"
-                android:layout_margin="15dp" />
+                android:text="To activate the detection Thin Ice device  and turn on bluetooth on your device"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_cross" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/ic_logo" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/container_refresh"
+                        android:orientation="vertical">
+
+                        <ListView
+                            android:id="@+id/listView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:divider="#33c6cb" />
+                        <View
+                            android:layout_height="1px"
+                            android:background="#33c6cb"
+                            android:layout_width="match_parent"
+                            android:id="@+id/divider_top"/>
+
+                        <View
+                            android:layout_height="1px"
+                            android:background="#33c6cb"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:id="@+id/divider_bottom" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:indeterminate="false" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/container_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true">
+
+                        <ImageView
+                            android:id="@+id/ic_refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical|right"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_refresh" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
         </LinearLayout>
 
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_exit"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Done"
-        android:background="@drawable/bg_button_blue"
-        android:id="@+id/btn_exit"
-        android:textColor="#fff"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="20dp"
-        android:textAllCaps="false"/>
+        android:background="@drawable/bg_button_blue"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="20dp" />
 </RelativeLayout>

@@ -15,6 +15,7 @@
             android:src="@drawable/btn_menu"
             android:padding="15dp"
             android:id="@+id/menu"
+            android:layout_marginLeft="15dp"
             android:layout_centerVertical="true" />
 
         <TextView
@@ -26,8 +27,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/menu"
             android:layout_toEndOf="@+id/menu"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" />
+            android:layout_marginLeft="18dp" />
 
     </RelativeLayout>
 

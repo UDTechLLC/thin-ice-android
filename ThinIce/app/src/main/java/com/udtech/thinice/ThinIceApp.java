@@ -28,5 +28,4 @@ public class ThinIceApp extends com.orm.SugarApp {
         Locale.setDefault(Locale.UK);
         Resources.getSystem().updateConfiguration(configuration, null);
     }
-
 }

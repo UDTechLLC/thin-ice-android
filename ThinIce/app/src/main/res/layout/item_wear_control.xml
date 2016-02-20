@@ -96,14 +96,14 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="45dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/bg_selection">
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:weightSum="2">
                         <View
                             android:layout_width="0dp"
@@ -120,7 +120,7 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="30 min"
                             android:id="@+id/one"
@@ -130,7 +130,7 @@
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="50dp"
+                            android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="1 hour"
                             android:id="@+id/two"

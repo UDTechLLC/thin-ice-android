@@ -6,10 +6,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="@drawable/bg_card"
         android:id="@+id/card"
-        >
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="20dp">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -74,13 +74,13 @@
 
                     <ImageView
                         android:id="@+id/imageView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:src="@mipmap/ic_thinice_with_bg" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingLeft="10dp"
                         android:layout_gravity="center_vertical"
@@ -123,8 +123,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="6dp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="8dp"
                             android:progressDrawable="@drawable/progress_bar"
                             android:indeterminate="false" />
 
@@ -189,6 +189,7 @@
                     android:layout_height="1px"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
+                    android:alpha="0.3"
                     android:background="#33c6cb" />
 
                 <LinearLayout
@@ -226,6 +227,7 @@
                     android:layout_height="1px"
                     android:layout_marginBottom="15dp"
                     android:layout_marginTop="15dp"
+                    android:alpha="0.3"
                     android:background="#33c6cb" />
 
                 <com.wefika.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"

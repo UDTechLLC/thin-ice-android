@@ -1,5 +1,8 @@
 package com.udtech.thinice.ui;
 
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -11,18 +14,27 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.bluetooth.BluetoothManager;
+import com.udtech.thinice.bluetooth.bus.BluetoothCommunicator;
+import com.udtech.thinice.bluetooth.bus.BondedDevice;
+import com.udtech.thinice.bluetooth.bus.ClientConnectionFail;
+import com.udtech.thinice.bluetooth.bus.ClientConnectionSuccess;
+import com.udtech.thinice.bluetooth.bus.ServeurConnectionFail;
+import com.udtech.thinice.bluetooth.bus.ServeurConnectionSuccess;
 import com.udtech.thinice.model.Achievement;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.users.User;
+import com.udtech.thinice.StepService;
 import com.udtech.thinice.ui.main.FragmentAchievements;
 import com.udtech.thinice.ui.main.FragmentChangeRegistration;
 import com.udtech.thinice.ui.main.FragmentControl;
@@ -31,11 +43,13 @@ import com.udtech.thinice.ui.main.FragmentDialogAchievement;
 import com.udtech.thinice.ui.main.FragmentSettings;
 import com.udtech.thinice.ui.main.FragmentStatistics;
 import com.udtech.thinice.ui.main.MenuHolder;
+import com.udtech.thinice.utils.AchievementManager;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
 
@@ -45,7 +59,8 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends SlidingFragmentActivity implements MenuHolder {
     private LinearLayout menu;
     private int openedMenuItem;
-
+    protected BluetoothManager mBluetoothManager;
+    private ProgressDialog  mProgressDialog;
     private int getNavigationBarHeight() {
         Resources resources = getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
@@ -58,6 +73,9 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBluetoothManager = new BluetoothManager(this);
+        checkBluetoothAviability();
+        startService(new Intent(this, StepService.class));
         AchievementManager.getInstance(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -73,6 +91,17 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         sm.setShadowWidthRes(R.dimen.shadow_width);
         sm.setShadowDrawable(R.drawable.shadow);
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        sm.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+                if (getCurrentFocus() != null)
+                    if (getCurrentFocus().getWindowToken() != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(
+                                getCurrentFocus().getWindowToken(), 0);
+                    }
+            }
+        });
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -84,7 +113,9 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+        mBluetoothManager.setUUID(myUUID());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int navBarHeight = getNavigationBarHeight();
             findViewById(R.id.container).setPadding(0, 0, 0, navBarHeight);
@@ -253,6 +284,119 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopService(new Intent(this, StepService.class));
         EventBus.getDefault().unregister(this);
+        closeAllConnexion();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BluetoothManager.REQUEST_DISCOVERABLE_CODE) {
+            if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_REFUSED) {
+            } else if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_ACCEPTED) {
+                onBluetoothStartDiscovery();
+            } else {
+            }
+        }
+    }
+
+    public void closeAllConnexion(){
+        mBluetoothManager.closeAllConnexion();
+    }
+
+    public void checkBluetoothAviability(){
+        if(!mBluetoothManager.checkBluetoothAviability()){
+            onBluetoothNotAviable();
+        }
+    }
+
+    public void setTimeDiscoverable(int timeInSec){
+        mBluetoothManager.setTimeDiscoverable(timeInSec);
+    }
+
+    public void startDiscovery(){
+        mBluetoothManager.startDiscovery();
+    }
+
+    public void scanAllBluetoothDevice(){
+        mBluetoothManager.scanAllBluetoothDevice();
+    }
+
+    public void createServeur(){
+        mBluetoothManager.createServeur();
+    }
+
+    public void createClient(String addressMac){
+        mBluetoothManager.createClient(addressMac);
+    }
+
+    public void sendMessage(String message){
+        mBluetoothManager.sendMessage(message);
+    }
+
+
+    public void onEventMainThread(BluetoothDevice device){
+        onBluetoothDeviceFound(device);
+    }
+
+    public void onEventMainThread(ClientConnectionSuccess event){
+        mBluetoothManager.isConnected = true;
+        onClientConnectionSuccess();
+    }
+
+    public void onEventMainThread(ClientConnectionFail event){
+        mBluetoothManager.isConnected = false;
+        onClientConnectionFail();
+        mBluetoothManager.resetClient();
+    }
+
+    public void onEventMainThread(ServeurConnectionSuccess event){
+        mBluetoothManager.isConnected = true;
+        onServeurConnectionSuccess();
+    }
+
+    public void onEventMainThread(ServeurConnectionFail event){
+        mBluetoothManager.isConnected = false;
+        onServeurConnectionFail();
+        mBluetoothManager.resetServer();
+    }
+
+    public void onEventMainThread(BluetoothCommunicator event){
+        onBluetoothCommunicator(event.mMessageReceive);
+    }
+
+    public void onEventMainThread(BondedDevice event){
+        //mBluetoothManager.sendMessage("BondedDevice");
+    }
+
+    public UUID myUUID(){
+        return  UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+    }
+    public void onBluetoothDeviceFound(BluetoothDevice device){
+        mProgressDialog.dismiss();
+    }
+    public void onClientConnectionSuccess(){
+        Toast.makeText(this,"Connection success.",Toast.LENGTH_LONG);
+    }
+    public void onClientConnectionFail(){
+        Toast.makeText(this,"Connection failed try again later.",Toast.LENGTH_LONG);
+    }
+    public void onServeurConnectionSuccess(){
+
+    }
+    public void onServeurConnectionFail(){
+
+    }
+    public void onBluetoothStartDiscovery(){
+        mProgressDialog = new ProgressDialog(
+                this);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage("Connecting...");
+    }
+    public void onBluetoothCommunicator(String messageReceive){
+
+    }
+    public void onBluetoothNotAviable(){
+
     }
 }

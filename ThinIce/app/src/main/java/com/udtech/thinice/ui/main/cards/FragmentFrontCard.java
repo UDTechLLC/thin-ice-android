@@ -20,6 +20,7 @@ public class FragmentFrontCard extends ListView {
 
     public FragmentFrontCard(Context context) {
         super(context);
+        setVerticalScrollBarEnabled(false);
         setFadingEdgeLength(0);
         setDividerHeight(0);
         setDivider(null);
@@ -34,9 +35,12 @@ public class FragmentFrontCard extends ListView {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     Point endPoint = new Point((int) event.getX(), (int) event.getY());
                     int xDiff, yDiff;
+                    if(startPosition == null)
+                        startPosition = endPoint;
                     xDiff = Math.abs(startPosition.x - endPoint.x);
                     yDiff = Math.abs(startPosition.y - endPoint.y);
-                    if (xDiff > yDiff) {
+                    Log.d("Scrol defined as ",( Math.abs(startPosition.x-endPoint.x)>100?Math.abs(startPosition.y-endPoint.y) > Math.abs(startPosition.x-endPoint.x):false)?"X":"Y");
+                    if ( Math.abs(startPosition.x-endPoint.x)>100?Math.abs(startPosition.y-endPoint.y) > Math.abs(startPosition.x-endPoint.x):false) {
                         CardView card = (CardView) getChildAt(pointToPosition(endPoint.x, endPoint.y));
                         if(card!=null)
                         if (startPosition.x - endPoint.x > 0)

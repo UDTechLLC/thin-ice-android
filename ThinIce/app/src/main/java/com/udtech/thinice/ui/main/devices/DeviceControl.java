@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.rey.material.widget.Switch;
 import com.udtech.thinice.R;
+import com.udtech.thinice.eventbus.model.BluetoothCommand;
 import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.eventbus.model.devices.ShowFrontDevice;
@@ -32,6 +33,7 @@ import de.greenrobot.event.EventBus;
  */
 public class DeviceControl extends FrameLayout {
     private Device device;
+    private boolean deviceRunned;
     private int selectedPosition = 1;
 
     public DeviceControl(Context context) {
@@ -44,6 +46,7 @@ public class DeviceControl extends FrameLayout {
             this.device = TShirt.findById(TShirt.class, ((TShirt) device).getId());
         else
             this.device = Insole.findById(Insole.class, ((Insole) device).getId());
+        deviceRunned = !device.isDisabled();
         initView();
     }
 
@@ -88,7 +91,12 @@ public class DeviceControl extends FrameLayout {
                 }
                 switchCards();
                 device.save();
-                EventBus.getDefault().post(new DeviceChanged(device));
+                if(deviceRunned==device.isDisabled()){
+                    BluetoothCommand command = new BluetoothCommand(device);
+                    if(device.isDisabled()) command.setStopCommand();
+                    else command.setStartCommand();
+                    EventBus.getDefault().post(command);
+                }
             }
         });
 
