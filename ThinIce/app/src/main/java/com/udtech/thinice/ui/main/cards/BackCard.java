@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.udtech.thinice.R;
 import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.model.Day;
+import com.udtech.thinice.model.Settings;
 import com.udtech.thinice.utils.AchievementManager;
 
 import de.greenrobot.event.EventBus;
@@ -25,11 +26,15 @@ import de.greenrobot.event.EventBus;
  */
 public class BackCard extends FrameLayout implements CardEventListener {
     private Day day;
+    private Settings settings;
     private Point startPosition;
-
+    private String[] values = new String[3];
     public BackCard(Context context) {
         super(context);
         this.addView(View.inflate(context, R.layout.item_dashboard_day_back, null));
+        values[0] = ((TextView)findViewById(R.id.textCarbs)).getText().toString();
+        values[1] = ((TextView)findViewById(R.id.textWater)).getText().toString();
+        values[2] = ((TextView)findViewById(R.id.textProtein)).getText().toString();
         findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,15 +167,25 @@ public class BackCard extends FrameLayout implements CardEventListener {
 
 
     }
-
+    public void onEvent(Settings settings){
+        this.settings.fetch(getContext());
+        ((TextView)findViewById(R.id.textCarbs)).setText(values[0]+(settings.isWeight()?"oz":"g"));
+        ((TextView)findViewById(R.id.textWater)).setText(values[1] + (settings.isVolume() ? "oz" : "ml"));
+        ((TextView)findViewById(R.id.textProtein)).setText(values[2] + (settings.isWeight() ? "oz" : "g"));
+    }
     public void updateView(View view) {
         long now = System.currentTimeMillis();
+        settings = new Settings().fetch(getContext());
+        ((TextView)findViewById(R.id.textCarbs)).setText(values[0]+(settings.isWeight()?"oz":"g"));
+        ((TextView)findViewById(R.id.textWater)).setText(values[1] + (settings.isVolume() ? "oz" : "ml"));
+        ((TextView)findViewById(R.id.textProtein)).setText(values[2]+(settings.isWeight()?"oz":"g"));
         ((TextView) view.findViewById(R.id.food_edit)).setText(day.getJunkFood() + "");
         ((TextView) view.findViewById(R.id.water_edit)).setText(day.getWaterIntake() + "");
         ((TextView) view.findViewById(R.id.protein_edit)).setText(day.gethProteinMeals() + "");
         ((TextView) view.findViewById(R.id.sleep_edit)).setText(day.getHoursSlept() + "");
         ((TextView) view.findViewById(R.id.carb_edit)).setText(day.getCarbsConsumed() + "");
         ((TextView) view.findViewById(R.id.gym_edit)).setText(day.getGymHours() + "");
+
     }
 
     public void save() {

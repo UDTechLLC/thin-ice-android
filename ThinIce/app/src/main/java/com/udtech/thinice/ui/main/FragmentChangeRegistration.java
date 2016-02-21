@@ -93,7 +93,7 @@ public class FragmentChangeRegistration extends UserDataForm {
         view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((MainActivity)getActivity()).resetCurrentClient();
                 AchievementManager.getInstance(getContext()).commit(getContext());
                 Intent logout = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(logout);

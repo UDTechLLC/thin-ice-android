@@ -36,13 +36,16 @@ public class BluetoothClient implements Runnable {
     private OutputStreamWriter mOutputStreamWriter;
 
     private BluetoothConnector mBluetoothConnector;
+    private boolean isRunning;
 
     public BluetoothClient(BluetoothAdapter bluetoothAdapter, UUID uuid, String adressMac) {
         mBluetoothAdapter = bluetoothAdapter;
         mUuid = uuid;
         mAdressMac = adressMac;
     }
-
+    public void kill() {
+        isRunning = false;
+    }
     @Override
     public void run() {
 
@@ -74,7 +77,7 @@ public class BluetoothClient implements Runnable {
 
             EventBus.getDefault().post(new ClientConnectionSuccess());
 
-            while (CONTINUE_READ_WRITE) {
+            while (CONTINUE_READ_WRITE||isRunning) {
 
                 final StringBuilder sb = new StringBuilder();
                 bytesRead = mInputStream.read(buffer);
@@ -97,7 +100,7 @@ public class BluetoothClient implements Runnable {
 
     public void write(String message) {
         try {
-            mOutputStreamWriter.write(message);
+            mOutputStreamWriter.write(message+"\r\n");
             mOutputStreamWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();

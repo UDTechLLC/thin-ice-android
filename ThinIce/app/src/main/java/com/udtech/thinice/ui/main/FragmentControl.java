@@ -98,8 +98,11 @@ public class FragmentControl extends Fragment {
         Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
         while(tempInsoleIterator.hasNext())
             devices.add(tempInsoleIterator.next());
+        if(devices.size()>0)
+            getView().findViewById(R.id.action).setVisibility(View.GONE);
+        else
+            getView().findViewById(R.id.action).setVisibility(View.VISIBLE);
         front.setAdapter(new ControlAdapter(getContext(), devices));
-
     }
     @Nullable
     @Override
@@ -136,7 +139,13 @@ public class FragmentControl extends Fragment {
         Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
         while(tempInsoleIterator.hasNext())
             devices.add(tempInsoleIterator.next());
+
+        if(devices.size()>0)
+            getView().findViewById(R.id.action).setVisibility(View.GONE);
+        else
+            getView().findViewById(R.id.action).setVisibility(View.VISIBLE);
         front.setAdapter(new ControlAdapter(getContext(), devices));
+
 
     }
 

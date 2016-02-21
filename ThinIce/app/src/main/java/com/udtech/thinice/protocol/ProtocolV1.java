@@ -23,11 +23,11 @@ public class ProtocolV1 implements Protocol {
 
     @Override
     public byte[] setTemperature(int temperature) throws UnsupportedEncodingException {
-        byte[] bytes = ByteBuffer.allocate(4).putInt(Settings.convertTemperature(temperature) *10).array();
+        byte[] bytes = ByteBuffer.allocate(4).putInt(Math.round(temperature)).array();
         byte[] value = new byte[2];
         value[0] = bytes[2];
         value[1] = bytes[3];
-        return (COMMAND_SET_TEMP+"2" + "00"+bytesToHex(value)).getBytes();
+        return (COMMAND_SET_TEMP+"1" + "000"+bytesToHex(value)).getBytes();
     }
 
     @Override
@@ -38,6 +38,15 @@ public class ProtocolV1 implements Protocol {
     @Override
     public byte[] off() throws UnsupportedEncodingException {
         return (COMMAND_OFF + new String(new byte[]{0x0d})).getBytes("UTF-8");
+    }
+
+    @Override
+    public byte[] setRawTemperature(int temperature) {
+        byte[] bytes = ByteBuffer.allocate(4).putInt(Math.round(Settings.convertTemperatureToCelsium(temperature))).array();
+        byte[] value = new byte[2];
+        value[0] = bytes[2];
+        value[1] = bytes[3];
+        return (COMMAND_SET_TEMP+"1" + "00"+bytesToHex(value)).getBytes();
     }
 
     public static String bytesToHex(byte[] bytes) {

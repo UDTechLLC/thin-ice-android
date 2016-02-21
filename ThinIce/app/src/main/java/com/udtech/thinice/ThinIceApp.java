@@ -5,8 +5,14 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import com.squareup.picasso.Picasso;
+import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
+import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
+import com.udtech.thinice.model.devices.TShirt;
 
+import java.util.Iterator;
 import java.util.Locale;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by JOkolot on 03.11.2015.
@@ -27,5 +33,12 @@ public class ThinIceApp extends com.orm.SugarApp {
             configuration.setLocale(Locale.UK);
         Locale.setDefault(Locale.UK);
         Resources.getSystem().updateConfiguration(configuration, null);
+        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
+        while (tempIterator.hasNext()) {
+            TShirt tshirt = tempIterator.next();
+            EventBus.getDefault().post(new DeleteDevice(tshirt));
+            EventBus.getDefault().post(new DeviceChanged(tshirt));
+            tshirt.delete();
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.graphics.Color;
 
 import com.orm.SugarRecord;
 import com.udtech.thinice.model.users.User;
+import com.udtech.thinice.protocol.CaloryesUtils;
 import com.udtech.thinice.utils.SessionManager;
 
 import java.util.ArrayList;
@@ -101,11 +102,11 @@ public class Day extends SugarRecord<Day> {
         return date;
     }
 
-    public int calcCalories() {List<Session> sessions = Session.find(Session.class,"day = "+getId(),null);
+    public int calcTime() {List<Session> sessions = Session.find(Session.class,"day = "+getId(),null);
         if (sessions != null ? sessions.size() > 0 : false) {
             int sumTemp = 0;
             for (Session session : sessions) {
-                sumTemp += SessionManager.getCaloriesRatePerSecondPerSession(session)*(session.getEndTime().getTime()-session.getStartTime().getTime())/1000;
+                sumTemp += SessionManager.getCaloriesRatePerSecondPerSession(session)*(session.getEndTime().getTime()-session.getStartTime().getTime());
             }
             return sumTemp;
         } else {
@@ -120,13 +121,13 @@ public class Day extends SugarRecord<Day> {
         return super.equals(o);
     }
 
-    public float getTotalCalories() {
+    public float getTotalCalories(Context context) {
         List<Session> sessions = Session.find(Session.class,"day = "+getId(),null);
         if (sessions != null ? sessions.size() > 0 : false) {
             float totalCalories = 0;
             for (Session session: sessions){
-                float time = (session.getEndTime().getTime() -session.getStartTime().getTime())/1000;
-                totalCalories += time*SessionManager.getCaloriesRatePerSecondPerSession(session);
+                float time = (session.getEndTime().getTime() -session.getStartTime().getTime());
+                totalCalories += time* CaloryesUtils.getBurningSpeed(getAverageTemp(context))/60000;
             }
             return totalCalories;
         } else {

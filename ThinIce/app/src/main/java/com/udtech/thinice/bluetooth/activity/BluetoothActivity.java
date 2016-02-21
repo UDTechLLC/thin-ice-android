@@ -28,7 +28,7 @@ public abstract class BluetoothActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBluetoothManager = new BluetoothManager(this);
+        mBluetoothManager = BluetoothManager.getInstance(this);
         checkBluetoothAviability();
     }
 
@@ -44,7 +44,6 @@ public abstract class BluetoothActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        closeAllConnexion();
     }
 
     @Override

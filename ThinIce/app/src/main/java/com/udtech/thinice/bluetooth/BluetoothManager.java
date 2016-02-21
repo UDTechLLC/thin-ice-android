@@ -13,6 +13,7 @@ import android.util.Log;
 import com.udtech.thinice.BuildConfig;
 import com.udtech.thinice.bluetooth.bus.BondedDevice;
 
+import java.util.Date;
 import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
@@ -21,6 +22,8 @@ import de.greenrobot.event.EventBus;
  * Created by Rami MARTIN on 13/04/2014.
  */
 public class BluetoothManager extends BroadcastReceiver {
+
+    private Thread clientThread;
 
     public enum TypeBluetooth{
         Client,
@@ -44,14 +47,25 @@ public class BluetoothManager extends BroadcastReceiver {
     private UUID mUUID = null;
     private TypeBluetooth mType;
     private int mTimeDiscoverable;
-    public boolean isConnected;
+    public volatile boolean isConnected;
     private boolean mBluetoothIsEnableOnStart;
-
+    private static volatile BluetoothManager managerInstance;
     public BluetoothManager(){
 
     }
-
-    public BluetoothManager(Activity activity) {
+    public static BluetoothManager getInstance(Activity activity){
+        if(managerInstance == null)
+            managerInstance = new BluetoothManager(activity);
+        else
+            managerInstance.setActivity(activity);
+        return managerInstance;
+    }
+    private void setActivity(Activity activity){
+        mActivity = activity;
+        if(mBluetoothAdapter == null)
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    }
+    private BluetoothManager(Activity activity) {
         mActivity = activity;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mBluetoothIsEnableOnStart = mBluetoothAdapter.isEnabled();
@@ -111,15 +125,21 @@ public class BluetoothManager extends BroadcastReceiver {
     public void scanAllBluetoothDevice() {
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mActivity.registerReceiver(this, intentFilter);
+        if(mBluetoothAdapter == null)
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mBluetoothAdapter.startDiscovery();
     }
 
     public void createClient(String addressMac) {
+        if(mBluetoothClient!=null){
+            resetClient();
+        }
         mType = TypeBluetooth.Client;
         IntentFilter bondStateIntent = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         mActivity.registerReceiver(this, bondStateIntent);
         mBluetoothClient = new BluetoothClient(mBluetoothAdapter, mUUID, addressMac);
-        new Thread(mBluetoothClient).start();
+        clientThread = new Thread(mBluetoothClient);
+        clientThread.start();
     }
 
     public void createServeur(){
@@ -131,6 +151,12 @@ public class BluetoothManager extends BroadcastReceiver {
     }
 
     public void sendMessage(String message) {
+            while (!isConnected)
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         if(mType != null && isConnected){
             if(mType == TypeBluetooth.Server && mBluetoothServer != null){
                 mBluetoothServer.write(message);
@@ -172,13 +198,14 @@ public class BluetoothManager extends BroadcastReceiver {
     public void resetClient(){
         if(mType == TypeBluetooth.Client && mBluetoothClient != null){
             mBluetoothClient.closeConnexion();
+            mBluetoothClient.kill();
             mBluetoothClient = null;
         }
     }
 
     public void closeAllConnexion(){
         if(BuildConfig.DEBUG){
-            Log.e("","===> Bluetooth Lib Destroy");
+            Log.e("", "===> Bluetooth Lib Destroy");
         }
         try{
             mActivity.unregisterReceiver(this);

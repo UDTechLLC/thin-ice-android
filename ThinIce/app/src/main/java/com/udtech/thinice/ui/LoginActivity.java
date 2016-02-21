@@ -1,22 +1,25 @@
 package com.udtech.thinice.ui;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.udtech.thinice.R;
+import com.udtech.thinice.bluetooth.activity.BluetoothActivityInterface;
+import com.udtech.thinice.bluetooth.activity.BluetoothFragmentActivity;
 import com.udtech.thinice.eventbus.model.user.CreatedUser;
 import com.udtech.thinice.eventbus.model.user.UserInfoAdded;
 import com.udtech.thinice.ui.authorization.FragmentAddWear;
@@ -26,13 +29,15 @@ import com.udtech.thinice.ui.authorization.FragmentInnerLogin;
 import com.udtech.thinice.ui.authorization.FragmentProfileInfo;
 import com.udtech.thinice.ui.authorization.ProgressFragment;
 
+import java.util.UUID;
+
 import de.greenrobot.event.EventBus;
 import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by JOkolot on 04.11.2015.
  */
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends BluetoothFragmentActivity implements BluetoothActivityInterface {
     private static final String TWITTER_KEY = "Q02k1l8wzOy8uKqJjiKtFMv2r";
     private static final String TWITTER_SECRET = "Aow41K2OKhX7Q9RO4QyJP7a8g9kgvp1IaIbhbXWP3WT0ZibBPM";
 
@@ -84,9 +89,69 @@ public class LoginActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         try {
-            auth.onActivityResult(requestCode, resultCode, data);
+            last.onActivityResult(requestCode, resultCode, data);
         } catch (NullPointerException e) {
         }
+    }
+
+    @Override
+
+    public UUID myUUID() {
+        return UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+    }
+
+    @Override
+    public void onBluetoothDeviceFound(BluetoothDevice device) {
+
+    }
+
+    public void onClientConnectionSuccess(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, "Connection success.", Toast.LENGTH_LONG);
+            }
+        });
+    }
+    public void onClientConnectionFail(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, "Connection failed try again later.", Toast.LENGTH_LONG);
+            }
+        });
+    }
+
+    @Override
+    public void onServeurConnectionSuccess() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        this.startActivity(mainIntent);
+        this.finish();
+    }
+
+    @Override
+    public void onServeurConnectionFail() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this,"Connection failed. Try again later.",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onBluetoothStartDiscovery() {
+
+    }
+
+    @Override
+    public void onBluetoothCommunicator(String messageReceive) {
+
+    }
+
+    @Override
+    public void onBluetoothNotAviable() {
+
     }
 
     @Override
@@ -123,5 +188,10 @@ public class LoginActivity extends FragmentActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_in_from_right, 0, 0, R.anim.anim_out_to_right).replace(R.id.container, new FragmentAddWear()).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void resetCurrentClient() {
+        mBluetoothManager.resetClient();
     }
 }

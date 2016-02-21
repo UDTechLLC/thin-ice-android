@@ -27,6 +27,7 @@ import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.Settings;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.protocol.CaloryesUtils;
 import com.udtech.thinice.utils.SessionManager;
 import com.wefika.flowlayout.FlowLayout;
 
@@ -50,6 +51,7 @@ public class CardView extends FrameLayout {
     private float calories;
     private Settings settings;
     final GestureDetector gdt;
+    private float totalCalories;
 
     public CardView(Context context) {
         this(context, null);
@@ -97,6 +99,11 @@ public class CardView extends FrameLayout {
             tShirt = tsIterator.next();
         if (inIterator.hasNext())
             insole = inIterator.next();
+        if (tShirt == null && insole == null) {
+            findViewById(R.id.timeTotal).setAlpha(0.0f);
+            findViewById(R.id.textView17).setAlpha(0.0f);
+            findViewById(R.id.textView19).setAlpha(0.0f);
+        }
         if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate()))
             if (tShirt != null ? tShirt.isDisabled() : true && insole != null ? insole.isDisabled() : true) {
                 findViewById(R.id.imageTemp).setAlpha(0.0f);
@@ -108,17 +115,23 @@ public class CardView extends FrameLayout {
         else {
             findViewById(R.id.imageTemp).setAlpha(0.0f);
             findViewById(R.id.temperature).setAlpha(0.0f);
+            findViewById(R.id.timeTotal).setAlpha(0.0f);
+            findViewById(R.id.textView17).setAlpha(0.0f);
+            findViewById(R.id.textView19).setAlpha(0.0f);
         }
         dayId++;
         this.day = day;
-        calories = day.getTotalCalories();
+        calories = day.getTotalCalories(getContext());
+        totalCalories = day.getTotalCalories(getContext());
         try {
             base = new SimpleDateFormat("HH mm ss").parse("00 00 00").getTime();
-            total = new SimpleDateFormat("HH mm ss").parse("07 00 00").getTime();
+            total = (long) CaloryesUtils.getTimeLeft(day.getAverageTemp(getContext()), (int) calories) * 60 * 1000;
             total = total - base;
+            ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(
+                    (long) (1/(SessionManager.getManager().getCurrentCaloriesRatePerSecond()))
+            )));
             spended = base;
             spended += SessionManager.getManager().getSpended();
-            calories += (SessionManager.getManager().getSpended() / 1000) * SessionManager.getManager().getCaloriesRatePerSecond();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -132,6 +145,7 @@ public class CardView extends FrameLayout {
     }
 
     private void checkTasks() {
+        settings = settings.fetch(getContext());
         Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
         int temp = 0, count = 0;
         if (tempIterator.hasNext()) {
@@ -151,7 +165,7 @@ public class CardView extends FrameLayout {
             }
         }
         int avgTemp = count != 0 ? temp / count : 15;
-        ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(avgTemp) : avgTemp)
+        ((TextView) findViewById(R.id.temperature)).setText((Math.round(settings.isTemperature() ? Settings.convertTemperatureToFaringeite(avgTemp) : avgTemp))
                 + (settings.isTemperature() ? "°F" : "°C"));
         FlowLayout container = (FlowLayout) frontSide.findViewById(R.id.container_tasks);
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -160,7 +174,7 @@ public class CardView extends FrameLayout {
         int width = size.x;
         int margins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getContext().getResources().getDisplayMetrics());
         width -= margins;
-        width = width / 4;
+        width = (int) (width / 4.3);
         container.removeAllViews();
         if (day.getGymHours() != 0) {
             View view = View.inflate(getContext(), R.layout.item_day_task, null);
@@ -173,7 +187,7 @@ public class CardView extends FrameLayout {
         }
         if (day.getCarbsConsumed() != 0) {
             View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((TextView) view.findViewById(R.id.description)).setText("Carbs, g");
+            ((TextView) view.findViewById(R.id.description)).setText("Carbs, "+(settings.isWeight()?"oz":"g"));
             ((TextView) view.findViewById(R.id.value)).setText(day.getCarbsConsumed() + "");
             ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(255, 111, 64));
             ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_carbohydrates));
@@ -192,7 +206,7 @@ public class CardView extends FrameLayout {
         if (day.gethProteinMeals() != 0) {
             View view = View.inflate(getContext(), R.layout.item_day_task, null);
             ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_proteins));
-            ((TextView) view.findViewById(R.id.description)).setText("H-protein Meals");
+            ((TextView) view.findViewById(R.id.description)).setText("H-protein Meals, "+(settings.isWeight()?"oz":"g"));
             ((TextView) view.findViewById(R.id.value)).setText(day.gethProteinMeals() + "");
             ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(178, 255, 89));
             FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -210,7 +224,7 @@ public class CardView extends FrameLayout {
         if (day.getWaterIntake() != 0) {
             View view = View.inflate(getContext(), R.layout.item_day_task, null);
             ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_water));
-            ((TextView) view.findViewById(R.id.description)).setText("Water Intake, ml");
+            ((TextView) view.findViewById(R.id.description)).setText("Water Intake, "+(settings.isVolume()?"oz":"ml"));
             ((TextView) view.findViewById(R.id.value)).setText(day.getWaterIntake() + "");
             ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(0, 176, 255));
             FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -281,12 +295,19 @@ public class CardView extends FrameLayout {
         day = Day.findById(Day.class, day.getId());
         checkTasks();
     }
-
+    public void  onEvent(Settings settings){
+        ((Activity)getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                checkTasks();
+            }
+        });
+    }
     public void update(final int dayId) {
         if (dayId == this.dayId)
             if (!FragmentFrontCard.isMoving()) {
                 if (SessionManager.getManager().checkDay(day)) {
-                    calories += SessionManager.getManager().getCaloriesRatePerSecond();
+                    calories += SessionManager.getManager().getCurrentCaloriesRatePerSecond();
                     spended += SessionManager.getManager().getSecondsRate() * 1000;
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -295,10 +316,14 @@ public class CardView extends FrameLayout {
                         }
                     }, 1000);
                 }
-                ((ProgressBar) findViewById(R.id.progressBar)).setMax((int) total);
-                ((ProgressBar) findViewById(R.id.progressBar)).setProgress((int) (spended - base));
+                ((ProgressBar) findViewById(R.id.progressBar)).setMax(CaloryesUtils.RECOMENDED_KKALORIES);
+                ((ProgressBar) findViewById(R.id.progressBar)).setProgress((int) (calories));
                 ((TextView) findViewById(R.id.time_spended)).setText(new SimpleDateFormat("H:m.s").format(new Date(spended)));
                 ((TextView) findViewById(R.id.calories)).setText(Math.round(calories) + " Cal");
+                float temp = 1/(SessionManager.getManager().getCurrentCaloriesRatePerSecond())*(1000-totalCalories);
+                ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(
+                                (long) (temp + base))
+                ));
             } else {
                 new Handler().postDelayed(new Runnable() {
                     @Override

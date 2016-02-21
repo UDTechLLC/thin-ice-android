@@ -86,15 +86,15 @@ public class AchievementManager {
         if (user != null) {
             long timeDif = (session.getEndTime().getTime() - session.getStartTime().getTime());
             timeSpending.addAndGet(timeDif);
-            if ((timeSpending.get() / 60) > FRESH_START_COUNT)
+            if ((timeSpending.get() / 60000) > FRESH_START_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.FRESH_START), context);
-            if ((timeSpending.get() / 60) > MOVING_FORWARD_COUNT)
+            if ((timeSpending.get() / 60000) > MOVING_FORWARD_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.MOVING_FORWARD), context);
-            if ((timeSpending.get() / 60) > THE_MOTIVATED_COUNT)
+            if ((timeSpending.get() / 60000) > THE_MOTIVATED_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.THE_MOTIVATED), context);
-            if ((timeSpending.get() / 60) > THE_ENTHUSIAST_COUNT)
+            if ((timeSpending.get() / 60000) > THE_ENTHUSIAST_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.THE_ENTHUSIAST), context);
-            if ((timeSpending.get() / 60) > THE_MARATHONER_COUNT)
+            if ((timeSpending.get() / 60000) > THE_MARATHONER_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.THE_MARATHONER), context);
             List<Day> days = new ArrayList<>();
             Iterator<Day> daysIterator = Day.findAll(Day.class);
@@ -106,7 +106,7 @@ public class AchievementManager {
             }
             int totalCalories = 0;
             for (Day day : days)
-                totalCalories += day.calcCalories();
+                totalCalories += day.getTotalCalories(context);
             if (totalCalories > FIRESTARTER_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.FIRESTARTER), context);
             if (totalCalories > FEELIN_THE_BURN_COUNT)

@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by JOkolot on 27.11.2015.
@@ -49,6 +50,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 settings.setVolume(position != 0);
                 settings.save(getContext());
+                EventBus.getDefault().post(settings);
             }
 
             @Override
@@ -64,6 +66,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 settings.setTemperature(position != 0);
                 settings.save(getContext());
+                EventBus.getDefault().post(settings);
             }
 
             @Override
@@ -79,6 +82,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 settings.setWeight(position != 0);
                 settings.save(getContext());
+                EventBus.getDefault().post(settings);
             }
 
             @Override
@@ -94,6 +98,7 @@ public class FragmentSettingsMeasurements extends Fragment{
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 settings.setLenght(position!=0);
                 settings.save(getContext());
+                EventBus.getDefault().post(settings);
             }
 
             @Override

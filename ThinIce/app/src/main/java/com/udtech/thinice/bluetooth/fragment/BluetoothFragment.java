@@ -28,7 +28,7 @@ public abstract class BluetoothFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBluetoothManager = new BluetoothManager(getActivity());
+        mBluetoothManager = BluetoothManager.getInstance(getActivity());
         checkBluetoothAviability();
         mBluetoothManager.setUUID(myUUID());
     }

@@ -193,7 +193,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal|bottom"
-                                android:layout_marginTop="50dp"
+                                android:layout_marginTop="15dp"
                                 android:gravity="center"
                                 android:text="By clicking "
                                 android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -209,8 +209,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center">
                             <View android:layout_width="7dp" android:layout_height="7dp" android:background="@drawable/indicator_blue"
-                                android:layout_margin="4dp" />
-                            <View android:layout_width="7dp" android:layout_height="7dp" android:background="@drawable/indicator_white"
                                 android:layout_margin="4dp" />
                             <View android:layout_width="7dp" android:layout_height="7dp" android:background="@drawable/indicator_white"
                                 android:layout_margin="4dp" />

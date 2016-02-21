@@ -8,6 +8,7 @@ import com.udtech.thinice.model.Session;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.protocol.CaloryesUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class SessionManager {
             TShirt tShirt = tempIterator.next();
             if (!tShirt.isDisabled()) {
                 tShirtSession = new Session(day);
-                tShirtSession.openSession(tShirt.getTemperature());
+                tShirtSession.openSession(Math.round(tShirt.getTemperature()));
             }
         }
         Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
@@ -72,7 +73,7 @@ public class SessionManager {
             Insole insole = tempInsoleIterator.next();
             if (!insole.isDisabled()) {
                 insolesSession = new Session(day);
-                insolesSession.openSession(insole.getTemperature());
+                insolesSession.openSession(Math.round(insole.getTemperature()));
             }
         }
     }
@@ -97,13 +98,11 @@ public class SessionManager {
         forceClose();
     }
 
-    public float getCaloriesRatePerSecond() {
-        float rate = 0;
+    public float getCurrentCaloriesRatePerSecond() {
         if (tShirtSession != null)
-            rate = rate + getCaloriesRatePerSecondPerSession(tShirtSession);
-        if (insolesSession != null)
-            rate = rate + getCaloriesRatePerSecondPerSession(insolesSession);
-        return rate;
+            return CaloryesUtils.getBurningSpeed(tShirtSession.getTemperature()) / 60000f;
+        else
+            return 0;
     }
 
     public int getSecondsRate() {

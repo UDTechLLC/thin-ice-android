@@ -28,7 +28,7 @@ public abstract class BluetoothFragmentActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBluetoothManager = new BluetoothManager(this);
+        mBluetoothManager = BluetoothManager.getInstance(this);
         checkBluetoothAviability();
     }
 
@@ -44,7 +44,6 @@ public abstract class BluetoothFragmentActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        closeAllConnexion();
     }
 
     @Override
@@ -105,35 +104,35 @@ public abstract class BluetoothFragmentActivity extends FragmentActivity {
     public abstract void onBluetoothCommunicator(String messageReceive);
     public abstract void onBluetoothNotAviable();
 
-    public void onEventMainThread(BluetoothDevice device){
+    public void onEvent(BluetoothDevice device){
         onBluetoothDeviceFound(device);
     }
 
-    public void onEventMainThread(ClientConnectionSuccess event){
+    public void onEvent(ClientConnectionSuccess event){
         mBluetoothManager.isConnected = true;
         onClientConnectionSuccess();
     }
 
-    public void onEventMainThread(ClientConnectionFail event){
+    public void onEvent(ClientConnectionFail event){
         mBluetoothManager.isConnected = false;
         onClientConnectionFail();
     }
 
-    public void onEventMainThread(ServeurConnectionSuccess event){
+    public void onEvent(ServeurConnectionSuccess event){
         mBluetoothManager.isConnected = true;
         onServeurConnectionSuccess();
     }
 
-    public void onEventMainThread(ServeurConnectionFail event){
+    public void onEvent(ServeurConnectionFail event){
         mBluetoothManager.isConnected = false;
         onServeurConnectionFail();
     }
 
-    public void onEventMainThread(BluetoothCommunicator event){
+    public void onEvent(BluetoothCommunicator event){
         onBluetoothCommunicator(event.mMessageReceive);
     }
 
-    public void onEventMainThread(BondedDevice event){
+    public void onEvent(BondedDevice event){
         //mBluetoothManager.sendMessage("BondedDevice");
     }
 }

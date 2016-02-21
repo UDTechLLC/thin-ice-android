@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -149,6 +151,16 @@ public class FragmentAuth extends Fragment {
                     public void onError(FacebookException exception) {
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CookieSyncManager.createInstance(getActivity());
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeSessionCookie();
+        Twitter.getSessionManager().clearActiveSession();
+        Twitter.logOut();
     }
 
     @OnClick(R.id.login)

@@ -10,15 +10,15 @@ import java.util.Date;
 public class Insole extends SugarRecord<Insole> implements Device  {
     private final static int MAX_TEMPERATURE = 40;
     private final static int MIN_TEMPERATURE = 15;
-    private int temperature;
+    private float temperature;
     private int charge;
     private long timer;
     private boolean disabled;
-    public int getTemperature() {
+    public float getTemperature() {
         return temperature<MIN_TEMPERATURE?MIN_TEMPERATURE:(temperature>MAX_TEMPERATURE?MAX_TEMPERATURE:temperature);
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
@@ -35,6 +35,16 @@ public class Insole extends SugarRecord<Insole> implements Device  {
 
     public Date getTimer() {
         return new Date(timer);
+    }
+
+    @Override
+    public int getMax() {
+        return MAX_TEMPERATURE;
+    }
+
+    @Override
+    public int getMin() {
+        return MIN_TEMPERATURE;
     }
 
 

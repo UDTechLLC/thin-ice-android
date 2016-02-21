@@ -73,7 +73,8 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_spinner"
                         android:popupBackground="#3b5568"
-                        android:spinnerMode="dropdown" />
+                        android:spinnerMode="dropdown"
+                        android:padding="0dp" />
 
                     <TextView
                         android:id="@+id/textView5"
@@ -96,7 +97,8 @@
                             android:layout_weight="2"
                             android:background="@drawable/bg_spinner"
                             android:popupBackground="#3b5568"
-                            android:spinnerMode="dropdown" />
+                            android:spinnerMode="dropdown"
+                            android:padding="0dp" />
 
                         <Spinner
                             android:id="@+id/months"
@@ -107,7 +109,8 @@
                             android:layout_weight="5"
                             android:background="@drawable/bg_spinner"
                             android:popupBackground="#3b5568"
-                            android:spinnerMode="dropdown" />
+                            android:spinnerMode="dropdown"
+                            android:padding="0dp" />
 
                         <Spinner
                             android:id="@+id/year"
@@ -116,7 +119,8 @@
                             android:layout_weight="3"
                             android:background="@drawable/bg_spinner"
                             android:popupBackground="#3b5568"
-                            android:spinnerMode="dropdown" />
+                            android:spinnerMode="dropdown"
+                            android:padding="0dp" />
                     </LinearLayout>
 
                     <LinearLayout

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.rey.material.widget.Switch;
 import com.udtech.thinice.R;
-import com.udtech.thinice.eventbus.model.BluetoothCommand;
+import com.udtech.thinice.device.controll.DeviceController;
 import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.eventbus.model.devices.ShowFrontDevice;
@@ -20,6 +20,7 @@ import com.udtech.thinice.model.Notification;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
 import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.utils.DelayedDeviceStart;
 
 import java.util.Arrays;
@@ -80,9 +81,9 @@ public class DeviceControl extends FrameLayout {
             public void onClick(View v) {
                 if (device.getTimer().getTime() != 0) {
                     if (device instanceof Insole)
-                        DelayedDeviceStart.getInsolesInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()));
+                        DelayedDeviceStart.getInsolesInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()), (MainActivity) getContext());
                     else
-                        DelayedDeviceStart.getTShirtInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()));
+                        DelayedDeviceStart.getTShirtInstance(device).start((int) (device.getTimer().getTime() - new Date().getTime()), (MainActivity) getContext());
                 } else {
                     if (device instanceof Insole)
                         DelayedDeviceStart.getInsolesInstance(device).cancel();
@@ -91,12 +92,10 @@ public class DeviceControl extends FrameLayout {
                 }
                 switchCards();
                 device.save();
-                if(deviceRunned==device.isDisabled()){
-                    BluetoothCommand command = new BluetoothCommand(device);
-                    if(device.isDisabled()) command.setStopCommand();
-                    else command.setStartCommand();
-                    EventBus.getDefault().post(command);
-                }
+                if (device.isDisabled())
+                    DeviceController.getInstance((MainActivity) getContext()).off(device);
+                else
+                    DeviceController.getInstance((MainActivity) getContext()).on(device);
             }
         });
 
@@ -136,6 +135,7 @@ public class DeviceControl extends FrameLayout {
             @Override
             public void onClick(View v) {
                 switchCards();
+                DeviceController.getInstance((MainActivity) getContext()).delete(device);
                 EventBus.getDefault().post(new DeleteDevice(device));
                 EventBus.getDefault().post(new DeviceChanged(device));
             }

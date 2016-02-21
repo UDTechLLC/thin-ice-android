@@ -2,9 +2,11 @@ package com.udtech.thinice.utils;
 
 import android.os.Handler;
 
+import com.udtech.thinice.device.controll.DeviceController;
 import com.udtech.thinice.eventbus.model.BluetoothCommand;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.model.devices.Device;
+import com.udtech.thinice.ui.MainActivity;
 
 import java.util.Date;
 
@@ -34,11 +36,11 @@ public class DelayedDeviceStart {
         this.device = device;
     }
 
-    public void start(int timeOffset) {
+    public void start(int timeOffset, MainActivity activity) {
         if (runnable != null) {
             runnable.cancel();
         }
-        runnable = new CancelableRunnable(device);
+        runnable = new CancelableRunnable(device,activity);
         new Handler().postDelayed(runnable, timeOffset);
     }
 
@@ -48,13 +50,14 @@ public class DelayedDeviceStart {
         }
     }
 
-    private static class CancelableRunnable implements Runnable {
+    private class CancelableRunnable implements Runnable {
         private Device device;
         private boolean cancel;
-
-        public CancelableRunnable(Device device) {
+        private MainActivity activity;
+        public CancelableRunnable(Device device, MainActivity activity) {
             this.device = device;
             cancel = false;
+            this.activity = activity;
         }
 
         public void cancel() {
@@ -67,9 +70,7 @@ public class DelayedDeviceStart {
                 device.setDisabled(false);
                 device.setTimer(new Date(0));
                 device.save();
-                BluetoothCommand command = new BluetoothCommand(device);
-                command.setStartCommand();
-                EventBus.getDefault().postSticky(command);
+                DeviceController.getInstance(activity).on(device);
             }
         }
     }

@@ -57,12 +57,12 @@ public class Settings {
     public Settings fetch(Context context) {
         User user = UserSessionManager.getSession(context);
         if (user != null) {
-            SharedPreferences sPref = context.getSharedPreferences(NAME+user.getId(), Context.MODE_PRIVATE);
+            SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
             temperature = sPref.getBoolean(TEMPERATURE, false);
             lenght = sPref.getBoolean(LENGHT, false);
             volume = sPref.getBoolean(VOLUME, false);
             weight = sPref.getBoolean(WEIGHT, false);
-        }else{
+        } else {
             temperature = false;
             lenght = false;
             volume = false;
@@ -72,7 +72,8 @@ public class Settings {
     }
 
     public Settings save(Context context) {
-        SharedPreferences sPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        User user = UserSessionManager.getSession(context);
+        SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putBoolean(TEMPERATURE, temperature);
         ed.putBoolean(LENGHT, lenght);
@@ -82,9 +83,12 @@ public class Settings {
         return this;
     }
 
-    public static int convertTemperature(int temp) {
+    public static int convertTemperatureToFaringeite(float temp) {
         return Math.round((9.0f / 5.0f) * temp + 32);
+    }
 
+    public static float convertTemperatureToCelsium(float temp) {
+        return (float) ((temp - 32) / 1.8);
     }
 
     public static int convertWeight(int weight) {

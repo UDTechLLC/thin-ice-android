@@ -8,18 +8,18 @@ import java.util.Date;
  * Created by JOkolot on 18.11.2015.
  */
 public class TShirt extends SugarRecord<TShirt> implements Device {
-    private final static int MAX_TEMPERATURE = 50;
-    private final static int MIN_TEMPERATURE = 15;
-    private int temperature;
+    private final static int MAX_TEMPERATURE = 8;
+    private final static int MIN_TEMPERATURE = 5;
+    private float temperature;
     private int charge;
     private long timer;
     private boolean disabled;
-    public int getTemperature() {
+    public float getTemperature() {
 
         return temperature<MIN_TEMPERATURE?MIN_TEMPERATURE:(temperature>MAX_TEMPERATURE?MAX_TEMPERATURE:temperature);
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
@@ -50,5 +50,14 @@ public class TShirt extends SugarRecord<TShirt> implements Device {
         if(o instanceof TShirt)
             return ((TShirt)o).getId().equals(getId());
         return super.equals(o);
+    }
+    @Override
+    public int getMax() {
+        return MAX_TEMPERATURE;
+    }
+
+    @Override
+    public int getMin() {
+        return MIN_TEMPERATURE;
     }
 }

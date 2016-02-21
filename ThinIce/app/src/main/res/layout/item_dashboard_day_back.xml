@@ -65,22 +65,38 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_proteins" />
 
-                        <EditText
-                            android:id="@+id/protein_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="H-protein Meals, "
+                                android:id="@+id/textProtein"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/protein_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -98,22 +114,38 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_gym" />
 
-                        <EditText
-                            android:id="@+id/gym_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Gym Sessions, hrs"
+                                android:id="@+id/textView18"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/gym_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -131,22 +163,38 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_water" />
 
-                        <EditText
-                            android:id="@+id/water_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Water Intake, "
+                                android:id="@+id/textWater"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/water_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -164,22 +212,39 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_food" />
 
-                        <EditText
-                            android:id="@+id/food_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Junk Food, servings"
+                                android:id="@+id/textView24"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/food_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -197,22 +262,38 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_sleep" />
 
-                        <EditText
-                            android:id="@+id/sleep_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Hours Slept, hrs"
+                                android:id="@+id/textView27"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/sleep_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <View
@@ -230,22 +311,38 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:src="@mipmap/ic_carbohydrates" />
 
-                        <EditText
-                            android:id="@+id/carb_edit"
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="#0000"
-                            android:ems="10"
-                            android:gravity="center_vertical"
-                            android:inputType="number"
-                            android:text="0"
-                            android:textColor="#fff" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Carbs, "
+                                android:id="@+id/textCarbs"
+                                android:layout_marginLeft="23dp" />
+
+                            <EditText
+                                android:id="@+id/carb_edit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="#0000"
+                                android:ems="10"
+                                android:gravity="center_vertical"
+                                android:inputType="number"
+                                android:text="0"
+                                android:textColor="#fff" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>

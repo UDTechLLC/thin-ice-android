@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.udtech.thinice.utils.AchievementManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.main.adapters.FragmentAdapterStatistics;
+import com.udtech.thinice.utils.AchievementManager;
 
 import java.util.Arrays;
 
@@ -56,11 +56,13 @@ public class FragmentStatistics extends Fragment {
         allTime = FragmentStatisticPage.getInstance(3000, 2056);
         final FragmentAdapterStatistics adapter = new FragmentAdapterStatistics(getChildFragmentManager(), Arrays.asList(new Fragment[]{week, twoWeeks, month, allTime}));
         viewPager.setAdapter(adapter);
-        ((FragmentStatisticPage)adapter.getItem(0)).addEvent(new DecoEvent.Builder(((FragmentStatisticPage) adapter.getItem(0)).getRatio())
+        ((FragmentStatisticPage) adapter.getItem(0)).addEvent(new DecoEvent.Builder(((FragmentStatisticPage) adapter.getItem(0)).getRatio())
                 .setIndex(1)
+                .setDuration(1000)
                 .build());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             FragmentStatisticPage prev;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -68,13 +70,15 @@ public class FragmentStatistics extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                if(prev!=null)
-                    prev.addEvent(new  DecoEvent.Builder(0f)
-                        .setIndex(1)
-                        .build());
+                if (prev != null)
+                    prev.addEvent(new DecoEvent.Builder(0f)
+                            .setIndex(1)
+                            .setDuration(1000)
+                            .build());
                 prev = (FragmentStatisticPage) adapter.getItem(position);
-                prev.addEvent(new  DecoEvent.Builder(prev.getRatio())
+                prev.addEvent(new DecoEvent.Builder(prev.getRatio())
                         .setIndex(1)
+                        .setDuration(1000)
                         .build());
             }
 
@@ -93,7 +97,7 @@ public class FragmentStatistics extends Fragment {
     }
 
     @OnClick(R.id.menu)
-    void showMenu(){
+    void showMenu() {
         holder.show();
     }
 }

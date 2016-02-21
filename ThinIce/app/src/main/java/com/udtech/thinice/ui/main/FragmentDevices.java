@@ -117,6 +117,7 @@ public class FragmentDevices extends Fragment {
             view.findViewById(R.id.insoles_container).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.separator).setVisibility(View.GONE);
         }
+
         if(devices.first == null&& devices.second == null){
             ((TextView)view.findViewById(R.id.devices_tittle)).setText("No connected devices");
         }

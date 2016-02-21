@@ -10,5 +10,5 @@ public interface Protocol {
     public byte[] setTemperature(int temperature) throws UnsupportedEncodingException;
     public byte[] on() throws UnsupportedEncodingException;
     public byte[] off() throws UnsupportedEncodingException;
-
+    public byte[] setRawTemperature(int temperature);
 }

@@ -78,14 +78,7 @@ public class StepService extends Service {
     @Override
     public void onCreate() {
         EventBus.getDefault().register(this);
-        boolean deviceOpened = false;
-        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
-        while (tempIterator.hasNext()) {
-            TShirt tshirt = tempIterator.next();
-            EventBus.getDefault().post(new DeleteDevice(tshirt));
-            EventBus.getDefault().post(new DeviceChanged(tshirt));
-            tshirt.delete();
-        }
+
         Log.i(TAG, "[SERVICE] onCreate");
         super.onCreate();
         mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -245,8 +238,8 @@ public class StepService extends Service {
 //            socket.connect();
             BluetoothSocket socket = null;
             try {
-                while(socket==null)
-                socket = bDevicesList.get(position).createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+                while (socket == null)
+                    socket = bDevicesList.get(position).createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
                 socket.connect();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -262,14 +255,15 @@ public class StepService extends Service {
                     os.close();
                     is.close();
                     break;
-                }case BluetoothCommand.GET_TEMP: {
+                }
+                case BluetoothCommand.GET_TEMP: {
                     OutputStream os = socket.getOutputStream();
                     InputStream is = socket.getInputStream();
                     boolean res = socket.isConnected();
                     String query = new String(protocol.setTemperature(command.getValue()));
                     os.write(protocol.setTemperature(command.getValue()));
                     os.flush();
-                    while (is.available()==0){
+                    while (is.available() == 0) {
                         try {
                             Thread.sleep(300);
                         } catch (InterruptedException e) {

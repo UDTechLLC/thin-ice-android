@@ -10,12 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.udtech.thinice.R;
-import com.udtech.thinice.eventbus.model.BluetoothCommand;
+import com.udtech.thinice.device.controll.DeviceController;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.eventbus.model.devices.ShowBackDevice;
 import com.udtech.thinice.model.Settings;
 import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.model.devices.Insole;
+import com.udtech.thinice.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
 
@@ -83,26 +84,62 @@ public class DeviceView extends FrameLayout {
         else
             ((ImageView) findViewById(R.id.ic_type)).setImageDrawable(getContext().getResources().getDrawable(R.mipmap.ic_tshirt_large));
         setCharge(findViewById(R.id.charge), device.getCharge());
-        ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+        ((TextView) findViewById(R.id.temperature)).setText(Math.round((settings.isTemperature() ? Settings.convertTemperatureToFaringeite(device.getTemperature()) : device.getTemperature())) + (settings.isTemperature() ? "°F" : "°C"));
         findViewById(R.id.plus).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!device.isDisabled()) {
-                    ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
-                    BluetoothCommand command = new BluetoothCommand(device);
-                    command.setTemperature(device.getTemperature()+1);
-                    EventBus.getDefault().post(command);
+                float deviceActualTemp = settings.isTemperature() ? Settings.convertTemperatureToFaringeite(device.getTemperature()) : device.getTemperature();
+                float newTemp = deviceActualTemp + 1;
+                if (!device.isDisabled() && !((settings.isTemperature() ? Settings.convertTemperatureToCelsium(newTemp) : newTemp) > device.getMax())) {
+                    if (settings.isTemperature()) {
+                        device.setTemperature(Settings.convertTemperatureToCelsium(newTemp));
+                        DeviceController.getInstance((MainActivity) getContext()).setTemperatureInFaringeite(device, newTemp);
+                    } else {
+                        device.setTemperature(newTemp);
+                        DeviceController.getInstance((MainActivity) getContext()).setTemperatureInCelsium(device, newTemp);
+                    }
+                    device.save();
+                    ((TextView) findViewById(R.id.temperature)).setText(Math.round(newTemp) + (settings.isTemperature() ? "°F" : "°C"));
+                    if (settings.isTemperature())
+                        newTemp = Settings.convertTemperatureToCelsium(newTemp);
+                    if (newTemp <= device.getMin())
+                        findViewById(R.id.minus).setAlpha((float) 0.5);
+                    else
+                        findViewById(R.id.minus).setAlpha((float) 1);
+                    if (newTemp >= device.getMax())
+                        findViewById(R.id.plus).setAlpha((float) 0.5);
+                    else
+                        findViewById(R.id.plus).setAlpha((float) 1);
+                    EventBus.getDefault().post(new DeviceChanged(device));
                 }
             }
         });
         findViewById(R.id.minus).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!device.isDisabled()) {
-                    BluetoothCommand command = new BluetoothCommand(device);
-                    command.setTemperature(device.getTemperature()+1);
-                    EventBus.getDefault().post(command);
-                    ((TextView) findViewById(R.id.temperature)).setText((settings.isTemperature() ? Settings.convertTemperature(device.getTemperature()) : device.getTemperature()) + (settings.isTemperature() ? "°F" : "°C"));
+                float deviceActualTemp = settings.isTemperature() ? Settings.convertTemperatureToFaringeite(device.getTemperature()) : device.getTemperature();
+                float newTemp = deviceActualTemp - 1;
+                if (!device.isDisabled() && !((settings.isTemperature() ? Settings.convertTemperatureToCelsium(newTemp) : newTemp) < device.getMin())) {
+                    if (settings.isTemperature()) {
+                        device.setTemperature(Settings.convertTemperatureToCelsium(newTemp));
+                        DeviceController.getInstance((MainActivity) getContext()).setTemperatureInFaringeite(device, newTemp);
+                    } else {
+                        device.setTemperature(newTemp);
+                        DeviceController.getInstance((MainActivity) getContext()).setTemperatureInCelsium(device, newTemp);
+                    }
+                    device.save();
+                    ((TextView) findViewById(R.id.temperature)).setText(Math.round(newTemp) + (settings.isTemperature() ? "°F" : "°C"));
+                    if (settings.isTemperature())
+                        newTemp = Settings.convertTemperatureToCelsium(newTemp);
+                    if (newTemp <= device.getMin())
+                        findViewById(R.id.minus).setAlpha((float) 0.5);
+                    else
+                        findViewById(R.id.minus).setAlpha((float) 1);
+                    if (newTemp >= device.getMax())
+                        findViewById(R.id.plus).setAlpha((float) 0.5);
+                    else
+                        findViewById(R.id.plus).setAlpha((float) 1);
+                    EventBus.getDefault().post(new DeviceChanged(device));
                 }
             }
         });

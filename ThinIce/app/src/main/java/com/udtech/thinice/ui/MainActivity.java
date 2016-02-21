@@ -25,12 +25,14 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.bluetooth.BluetoothManager;
+import com.udtech.thinice.bluetooth.activity.BluetoothActivityInterface;
 import com.udtech.thinice.bluetooth.bus.BluetoothCommunicator;
 import com.udtech.thinice.bluetooth.bus.BondedDevice;
 import com.udtech.thinice.bluetooth.bus.ClientConnectionFail;
 import com.udtech.thinice.bluetooth.bus.ClientConnectionSuccess;
 import com.udtech.thinice.bluetooth.bus.ServeurConnectionFail;
 import com.udtech.thinice.bluetooth.bus.ServeurConnectionSuccess;
+import com.udtech.thinice.device.controll.DeviceController;
 import com.udtech.thinice.model.Achievement;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.users.User;
@@ -56,7 +58,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Sofi on 16.11.2015.
  */
-public class MainActivity extends SlidingFragmentActivity implements MenuHolder {
+public class MainActivity extends SlidingFragmentActivity implements MenuHolder, BluetoothActivityInterface {
     private LinearLayout menu;
     private int openedMenuItem;
     protected BluetoothManager mBluetoothManager;
@@ -73,9 +75,9 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBluetoothManager = new BluetoothManager(this);
+        mBluetoothManager = BluetoothManager.getInstance(this);
         checkBluetoothAviability();
-        startService(new Intent(this, StepService.class));
+       // startService(new Intent(this, StepService.class));
         AchievementManager.getInstance(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -294,7 +296,6 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         if (requestCode == BluetoothManager.REQUEST_DISCOVERABLE_CODE) {
             if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_REFUSED) {
             } else if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_ACCEPTED) {
-                onBluetoothStartDiscovery();
             } else {
             }
         }
@@ -315,6 +316,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     }
 
     public void startDiscovery(){
+        setTimeDiscoverable(200);
         mBluetoothManager.startDiscovery();
     }
 
@@ -335,33 +337,34 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     }
 
 
-    public void onEventMainThread(BluetoothDevice device){
-        onBluetoothDeviceFound(device);
-    }
-
-    public void onEventMainThread(ClientConnectionSuccess event){
+    public void onEvent(ClientConnectionSuccess event){
         mBluetoothManager.isConnected = true;
         onClientConnectionSuccess();
     }
 
-    public void onEventMainThread(ClientConnectionFail event){
+    public void onEvent(ClientConnectionFail event){
         mBluetoothManager.isConnected = false;
         onClientConnectionFail();
         mBluetoothManager.resetClient();
     }
 
-    public void onEventMainThread(ServeurConnectionSuccess event){
+    public void onEven(ServeurConnectionSuccess event){
         mBluetoothManager.isConnected = true;
         onServeurConnectionSuccess();
     }
 
-    public void onEventMainThread(ServeurConnectionFail event){
+    @Override
+    public void resetCurrentClient() {
+        mBluetoothManager.resetClient();
+    }
+
+    public void onEvent(ServeurConnectionFail event){
         mBluetoothManager.isConnected = false;
         onServeurConnectionFail();
         mBluetoothManager.resetServer();
     }
 
-    public void onEventMainThread(BluetoothCommunicator event){
+    public void onEven(BluetoothCommunicator event){
         onBluetoothCommunicator(event.mMessageReceive);
     }
 
@@ -372,14 +375,21 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     public UUID myUUID(){
         return  UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
     }
-    public void onBluetoothDeviceFound(BluetoothDevice device){
-        mProgressDialog.dismiss();
-    }
     public void onClientConnectionSuccess(){
-        Toast.makeText(this,"Connection success.",Toast.LENGTH_LONG);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Connection success.", Toast.LENGTH_LONG);
+            }
+        });
     }
     public void onClientConnectionFail(){
-        Toast.makeText(this,"Connection failed try again later.",Toast.LENGTH_LONG);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Connection failed try again later.", Toast.LENGTH_LONG);
+            }
+        });
     }
     public void onServeurConnectionSuccess(){
 
@@ -387,14 +397,13 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     public void onServeurConnectionFail(){
 
     }
-    public void onBluetoothStartDiscovery(){
-        mProgressDialog = new ProgressDialog(
-                this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage("Connecting...");
-    }
-    public void onBluetoothCommunicator(String messageReceive){
-
+    public void onBluetoothCommunicator(final String messageReceive){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, messageReceive, Toast.LENGTH_LONG).show();
+            }
+        });
     }
     public void onBluetoothNotAviable(){
 

@@ -1,6 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_statistics"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_exit"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_auth"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="15dp"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:text="To activate the detection Thin Ice device  and turn on bluetooth on your device"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/exit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_cross" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/ic_logo" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/container_refresh"
+                        android:orientation="vertical">
+
+                        <ListView
+                            android:id="@+id/listView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:divider="#33c6cb" />
+                        <View
+                            android:layout_height="1px"
+                            android:background="#33c6cb"
+                            android:layout_width="match_parent"
+                            android:id="@+id/divider_top"/>
+
+                        <View
+                            android:layout_height="1px"
+                            android:background="#33c6cb"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:id="@+id/divider_bottom" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:indeterminate="false" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/container_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true">
+
+                        <ImageView
+                            android:id="@+id/ic_refresh"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical|right"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_refresh" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_button_blue"
+        android:text="Skip"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="20dp" />
+</RelativeLayout>
