@@ -5,13 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -69,8 +66,8 @@ public class FragmentInnerLogin extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(email.requestFocus()){
-                            InputMethodManager imm =(InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (email.requestFocus()) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.showSoftInput(email, InputMethodManager.SHOW_IMPLICIT);
                         }
                     }
@@ -85,7 +82,7 @@ public class FragmentInnerLogin extends Fragment {
                     boolean contains = false;
                     while (users.hasNext()) {
                         User dbUser = users.next();
-                        if (dbUser.getEmail() == email.getText().toString()) {
+                        if (dbUser.getEmail().equals( email.getText().toString())&&pass.getText().toString().equals(dbUser.getPassword())) {
                             contains = true;
                             UserSessionManager.saveSession(dbUser, getContext());
                         }
@@ -96,7 +93,8 @@ public class FragmentInnerLogin extends Fragment {
                         Intent mainIntent = new Intent(getActivity(), MainActivity.class);
                         getActivity().startActivity(mainIntent);
                         getActivity().finish();
-                    }                }
+                    }
+                }
                 return false;
             }
         });

@@ -35,18 +35,18 @@ public class FragmentFrontCard extends ListView {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     Point endPoint = new Point((int) event.getX(), (int) event.getY());
                     int xDiff, yDiff;
-                    if(startPosition == null)
+                    if (startPosition == null)
                         startPosition = endPoint;
                     xDiff = Math.abs(startPosition.x - endPoint.x);
                     yDiff = Math.abs(startPosition.y - endPoint.y);
-                    Log.d("Scrol defined as ",( Math.abs(startPosition.x-endPoint.x)>100?Math.abs(startPosition.y-endPoint.y) > Math.abs(startPosition.x-endPoint.x):false)?"X":"Y");
-                    if ( Math.abs(startPosition.x-endPoint.x)>100?Math.abs(startPosition.y-endPoint.y) > Math.abs(startPosition.x-endPoint.x):false) {
+                    Log.d("Scrol defined as ", (Math.abs(startPosition.x - endPoint.x) > 100 ? Math.abs(startPosition.y - endPoint.y) > Math.abs(startPosition.x - endPoint.x) : false) ? "X" : "Y");
+                    if (Math.abs(startPosition.x - endPoint.x) > 100 ? Math.abs(startPosition.y - endPoint.y) > Math.abs(startPosition.x - endPoint.x) : false) {
                         CardView card = (CardView) getChildAt(pointToPosition(endPoint.x, endPoint.y));
-                        if(card!=null)
-                        if (startPosition.x - endPoint.x > 0)
-                            card.reverseSwitchCards();
-                        else
-                            card.switchCards();
+                        if (card != null)
+                            if (startPosition.x - endPoint.x > 0)
+                                card.reverseSwitchCards();
+                            else
+                                card.switchCards();
                         return true;
 
                     }

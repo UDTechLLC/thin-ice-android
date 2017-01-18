@@ -23,6 +23,6 @@ public class DecoView extends com.hookedonplay.decoviewlib.DecoView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(getMeasuredWidth(),
-                getMeasuredWidth());
+                getMeasuredWidth()); //measure view by width
     }
 }

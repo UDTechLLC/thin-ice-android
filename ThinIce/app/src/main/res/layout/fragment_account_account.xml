@@ -53,7 +53,8 @@
                             android:hint="Email"
                             android:inputType="textPersonName"
                             android:paddingBottom="3dp"
-                            android:paddingLeft="15dp" />
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
 
                         <TextView
                             android:id="@+id/emailErr"
@@ -61,7 +62,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|top"
                             android:layout_marginLeft="15dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
 
                         <ImageView
                             android:id="@+id/emailStatus"
@@ -89,7 +91,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|top"
                             android:layout_marginLeft="15dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
 
                         <ImageView
                             android:id="@+id/passStatus"
@@ -110,7 +113,8 @@
                             android:hint="Password"
                             android:inputType="textPassword"
                             android:paddingBottom="3dp"
-                            android:paddingLeft="15dp" />
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -124,7 +128,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left|top"
                             android:layout_marginLeft="15dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
 
                         <ImageView
                             android:id="@+id/passConfirmStatus"
@@ -144,7 +149,8 @@
                             android:hint="Confirm Password"
                             android:inputType="textPassword"
                             android:paddingBottom="3dp"
-                            android:paddingLeft="15dp" />
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
                     </FrameLayout>
 
                 </LinearLayout>
@@ -163,7 +169,8 @@
                 android:gravity="center"
                 android:text="Save"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:layout_marginBottom="10dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

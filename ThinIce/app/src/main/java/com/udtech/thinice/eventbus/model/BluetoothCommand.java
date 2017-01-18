@@ -14,23 +14,28 @@ public class BluetoothCommand {
     private int command;
     private int value;
     private Device device;
+
     public BluetoothCommand(Device device) {
         this.device = device;
     }
 
-    public void setTemperature( int value){
+    public void setTemperature(int value) {
         this.command = SET_TEMP;
         this.value = value;
     }
-    public void setStartCommand(){
+
+    public void setStartCommand() {
         command = START;
     }
-    public void setStopCommand(){
+
+    public void setStopCommand() {
         command = STOP;
     }
-    public void getTemperatureCommand(){
+
+    public void getTemperatureCommand() {
         command = GET_TEMP;
     }
+
     public int getCommand() {
         return command;
     }

@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
-import com.udtech.thinice.model.devices.Insole;
-import com.udtech.thinice.model.devices.TShirt;
 import com.udtech.thinice.model.users.User;
 import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.main.cards.FragmentCards;
@@ -32,15 +29,11 @@ import butterknife.OnClick;
  */
 public class FragmentDashBoard extends Fragment {
     private MenuHolder holder;
-    private Pair<TShirt, Insole> devices;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         holder = (MainActivity) getActivity();
-        devices = new Pair<>(new TShirt(), new Insole());
-        devices.first.setCharge(88);
-        devices.second.setCharge(28);
     }
 
     @Nullable
@@ -71,7 +64,7 @@ public class FragmentDashBoard extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         holder.openPosition(MenuHolder.DASHBOARD);
-        getChildFragmentManager().beginTransaction().replace(R.id.device_container, FragmentDevices.getInstance(devices)).commit();
+        getChildFragmentManager().beginTransaction().replace(R.id.device_container, FragmentDevices.getInstance()).commit();
         initDays(view);
         User user = UserSessionManager.getSession(getActivity());
         updateAvatar(user.getImageUrl(), (ImageView) view.findViewById(R.id.avatar));

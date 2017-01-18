@@ -12,9 +12,15 @@ import java.util.Locale;
  */
 public class Utils implements TextToSpeech.OnInitListener {
     private static final String TAG = "Utils";
-    private Service mService;
-
     private static Utils instance = null;
+    private Service mService;
+    /**********
+     * SPEAKING
+     **********/
+
+    private TextToSpeech mTts;
+    private boolean mSpeak = false;
+    private boolean mSpeakingEngineAvailable = false;
 
     private Utils() {
     }
@@ -26,15 +32,19 @@ public class Utils implements TextToSpeech.OnInitListener {
         return instance;
     }
 
+    /**********
+     * Time
+     **********/
+
+    public static long currentTimeInMillis() {
+        Time time = new Time();
+        time.setToNow();
+        return time.toMillis(false);
+    }
+
     public void setService(Service service) {
         mService = service;
     }
-
-    /********** SPEAKING **********/
-
-    private TextToSpeech mTts;
-    private boolean mSpeak = false;
-    private boolean mSpeakingEngineAvailable = false;
 
     public void initTTS() {
         // Initialize text-to-speech. This is an asynchronous operation.
@@ -44,6 +54,7 @@ public class Utils implements TextToSpeech.OnInitListener {
                 this  // TextToSpeech.OnInitListener
         );
     }
+
     public void shutdownTTS() {
         Log.i(TAG, "Shutting Down TextToSpeech...");
 
@@ -52,6 +63,7 @@ public class Utils implements TextToSpeech.OnInitListener {
         Log.i(TAG, "TextToSpeech Shut Down.");
 
     }
+
     public void say(String text) {
         if (mSpeak && mSpeakingEngineAvailable) {
             mTts.speak(text,
@@ -92,13 +104,5 @@ public class Utils implements TextToSpeech.OnInitListener {
     }
 
     public void ding() {
-    }
-
-    /********** Time **********/
-
-    public static long currentTimeInMillis() {
-        Time time = new Time();
-        time.setToNow();
-        return time.toMillis(false);
     }
 }

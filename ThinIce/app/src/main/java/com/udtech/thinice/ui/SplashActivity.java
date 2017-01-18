@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.bluetooth.BluetoothLeService;
 
 /**
  * Created by JOkolot on 30.11.2015.
@@ -21,7 +22,7 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//status bar color for android >=5
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.rgb(34, 46, 59));
@@ -30,6 +31,7 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                startService(new Intent(SplashActivity.this, BluetoothLeService.class));
                 if (UserSessionManager.getSession(getApplicationContext()) == null) {
                     Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                     SplashActivity.this.startActivity(mainIntent);
@@ -41,5 +43,6 @@ public class SplashActivity extends Activity {
                 }
             }
         }, SPLASH_DISPLAY_LENGTH);
+
     }
 }

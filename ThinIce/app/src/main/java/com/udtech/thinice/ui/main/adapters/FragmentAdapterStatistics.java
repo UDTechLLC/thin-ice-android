@@ -29,11 +29,19 @@ public class FragmentAdapterStatistics extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch(position){
-            case  0 :{return "Week";}
-            case  1 :{return "Two Weeks";}
-            case  2 :{return "Month";}
-            case  3 :{return "All Time";}
+        switch (position) {
+            case 0: {
+                return "Week";
+            }
+            case 1: {
+                return "Two Weeks";
+            }
+            case 2: {
+                return "Month";
+            }
+            case 3: {
+                return "All Time";
+            }
         }
         return "";
     }

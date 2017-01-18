@@ -5,5 +5,6 @@ package com.udtech.thinice.ui.main.cards;
  */
 public interface CardEventListener {
     public void switchCards();
+
     public void reverseSwitchCards();
 }

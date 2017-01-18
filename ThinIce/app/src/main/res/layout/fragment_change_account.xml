@@ -2,44 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/bg_account"
     android:orientation="vertical"
-    android:weightSum="12"
-    android:background="@mipmap/bg_account">
+    android:weightSum="12">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material" >
+        android:layout_height="@dimen/abc_action_bar_default_height_material">
 
         <ImageView
+            android:id="@+id/menu"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/btn_menu"
-            android:padding="15dp"
-            android:id="@+id/menu"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true" />
+            android:padding="15dp"
+            android:src="@drawable/btn_menu" />
 
         <TextView
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Thin Ice Control"
-            android:id="@+id/textView13"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/menu"
+            android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/menu"
-            android:layout_marginLeft="15dp" />
+            android:layout_toRightOf="@+id/menu"
+            android:text="Thin Ice Control"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
+            android:id="@+id/action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/action"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="15dp"
             android:src="@drawable/btn_logout"
-            android:padding="15dp" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
     <FrameLayout
@@ -51,64 +51,72 @@
             android:id="@+id/avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:src="@drawable/btn_avatar"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:paddingTop="20dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:paddingTop="20dp"
+            android:src="@drawable/btn_avatar" />
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="9">
 
-        <com.udtech.thinice.ui.widgets.TabsView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/tabs"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            app:stl_clickable="true"
-            app:stl_defaultTabBackground="?attr/selectableItemBackground"
-            app:stl_defaultTabTextAllCaps="false"
-            app:stl_defaultTabTextColor="@drawable/color_tabs"
-            app:stl_defaultTabTextHorizontalPadding="53dp"
-            app:stl_defaultTabTextMinWidth="0dp"
-            app:stl_defaultTabTextSize="18sp"
-            app:stl_distributeEvenly="false"
-            app:stl_dividerColor="#0000"
-            app:stl_dividerThickness="0dp"
-            app:stl_indicatorAlwaysInCenter="false"
-            app:stl_indicatorColor="@color/colorAccent"
-            app:stl_indicatorCornerRadius="0dp"
-            app:stl_indicatorGravity="bottom"
-            app:stl_indicatorInFront="false"
-            app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorThickness="4dp"
-            app:stl_indicatorWithoutPadding="false"
-            app:stl_overlineColor="#0000"
-            app:stl_overlineThickness="0dp"
-            app:stl_underlineColor="#0000"
-            app:stl_underlineThickness="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_gravity="top|center_horizontal" />
-
-        <View
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:foregroundGravity="bottom"
-            android:background="@mipmap/bg_tabs"
-            android:layout_gravity="center_horizontal|bottom" />
-    </FrameLayout>
+            android:layout_height="50dp"
+            android:id="@+id/tabsContainer">
+
+            <com.udtech.thinice.ui.widgets.TabsView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginBottom="1dp"
+                app:stl_clickable="true"
+                app:stl_defaultTabBackground="?attr/selectableItemBackground"
+                app:stl_defaultTabTextAllCaps="false"
+                app:stl_defaultTabTextColor="@drawable/color_tabs"
+                app:stl_defaultTabTextHorizontalPadding="@dimen/tab_width"
+                app:stl_defaultTabTextMinWidth="0dp"
+                app:stl_defaultTabTextSize="18sp"
+                app:stl_distributeEvenly="false"
+                app:stl_dividerColor="#0000"
+                app:stl_dividerThickness="0dp"
+                app:stl_indicatorAlwaysInCenter="false"
+                app:stl_indicatorColor="@color/colorAccent"
+                app:stl_indicatorCornerRadius="0dp"
+                app:stl_indicatorGravity="bottom"
+                app:stl_indicatorInFront="false"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorThickness="4dp"
+                app:stl_indicatorWithoutPadding="false"
+                app:stl_overlineColor="#0000"
+                app:stl_overlineThickness="0dp"
+                app:stl_underlineColor="#0000"
+                app:stl_underlineThickness="1dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:background="@mipmap/bg_tabs"
+                android:foregroundGravity="bottom" />
+        </FrameLayout>
+
+        <android.support.v4.view.ViewPager
+            android:layout_below="@+id/tabsContainer"
+            android:layout_marginTop="-5dp"
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
 
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8" />
 
 </LinearLayout>

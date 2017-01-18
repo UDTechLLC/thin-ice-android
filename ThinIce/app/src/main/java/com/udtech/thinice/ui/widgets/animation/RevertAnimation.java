@@ -10,7 +10,7 @@ import android.view.animation.Transformation;
 /**
  * Created by JOkolot on 20.11.2015.
  */
-public class RevertAnimation extends Animation {
+public class RevertAnimation extends Animation { //reverse version of flip animation
     private Camera camera;
 
     private View fromView;
@@ -41,8 +41,9 @@ public class RevertAnimation extends Animation {
         toView = fromView;
         fromView = switchView;
     }
-    public boolean isReversed(View forward){
-        return  !forward.equals(fromView);
+
+    public boolean isReversed(View forward) {
+        return !forward.equals(fromView);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class RevertAnimation extends Animation {
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         final double radians = Math.PI * interpolatedTime;
         float degrees = (float) (180.0 * radians / Math.PI);
-        if (interpolatedTime >= 0.5f) {
+        if (interpolatedTime > 0.5f) {
             degrees -= 180.f;
             fromView.setAlpha(0.0f);
             toView.setAlpha(1.0f);

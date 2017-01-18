@@ -23,16 +23,25 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by JOkolot on 05.11.2015.
  */
-public class FragmentAccount extends UserDataForm{
-    @Bind(R.id.email) EditText email;
-    @Bind(R.id.pass) EditText pass;
-    @Bind(R.id.passConfirm) EditText passConfirm;
-    @Bind(R.id.emailErr) TextView emailError;
-    @Bind(R.id.passErr) TextView passError;
-    @Bind(R.id.passConfirmErr) TextView passConfirmError;
-    @Bind(R.id.emailStatus) ImageView emailStatus;
-    @Bind(R.id.passStatus) ImageView passStatus;
-    @Bind(R.id.passConfirmStatus) ImageView passConfirmStatus;
+public class FragmentAccount extends UserDataForm {
+    @Bind(R.id.email)
+    EditText email;
+    @Bind(R.id.pass)
+    EditText pass;
+    @Bind(R.id.passConfirm)
+    EditText passConfirm;
+    @Bind(R.id.emailErr)
+    TextView emailError;
+    @Bind(R.id.passErr)
+    TextView passError;
+    @Bind(R.id.passConfirmErr)
+    TextView passConfirmError;
+    @Bind(R.id.emailStatus)
+    ImageView emailStatus;
+    @Bind(R.id.passStatus)
+    ImageView passStatus;
+    @Bind(R.id.passConfirmStatus)
+    ImageView passConfirmStatus;
 
     @Nullable
     @Override
@@ -45,7 +54,7 @@ public class FragmentAccount extends UserDataForm{
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         User user = UserSessionManager.getSession(getContext());
-        if(user != null){
+        if (user != null) {
             email.setText(user.getEmail());
         }
         email.setOnTouchListener(new View.OnTouchListener() {
@@ -84,53 +93,57 @@ public class FragmentAccount extends UserDataForm{
     }
 
     @OnClick(R.id.save)
-    void save(){
-        EventBus.getDefault().post(new SaveUser());
+    void save() {
+        EventBus.getDefault().post(new SaveUser(true));
     }
+
     @Override
     public User collectData(User user) {
-        String email, pass,passConfirm;
+        String email, pass, passConfirm;
         email = this.email.getText().toString();
         pass = this.pass.getText().toString();
         passConfirm = this.passConfirm.getText().toString();
-        if(email!= null?email.equals(""):true){
+        if (email != null ? email.equals("") : true) {
             showEmailError("Empty e-mail.");
         }
-        if(pass != null?pass.equals(""):true) {
-            showPassError("Empty password.");
-        }else if(passConfirm != null?passConfirm.equals("")||!passConfirm.equals(pass):true){
-            showPassConfirmError("Wrong confirm password.");
-        }else{
+        if (pass != null ? pass.equals("") : true) {
+            showPassError("Field empty.");
+        } else if (passConfirm != null ? passConfirm.equals("") || !passConfirm.equals(pass) : true) {
+            showPassConfirmError("Password doesn't match.");
+        } else {
             user.setEmail(email);
             user.setPassword(pass);
             return user;
         }
         return null;
     }
-    private void showEmailError(String string){
+
+    private void showEmailError(String string) {
         email.setText("");
         emailError.setText(string);
         email.setHint("");
         emailError.setVisibility(View.VISIBLE);
         emailStatus.setVisibility(View.VISIBLE);
-        emailStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        emailStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
-    private void showPassError(String string){
+
+    private void showPassError(String string) {
         passError.setText(string);
         pass.setHint("");
         pass.setText("");
         passConfirm.setText("");
         passError.setVisibility(View.VISIBLE);
         passStatus.setVisibility(View.VISIBLE);
-        passStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        passStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
-    private void showPassConfirmError(String string){
+
+    private void showPassConfirmError(String string) {
         passConfirmError.setText(string);
         passConfirm.setHint("");
         passConfirm.setText("");
         pass.setText("");
         passConfirmError.setVisibility(View.VISIBLE);
         passConfirmStatus.setVisibility(View.VISIBLE);
-        passConfirmStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        passConfirmStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 }

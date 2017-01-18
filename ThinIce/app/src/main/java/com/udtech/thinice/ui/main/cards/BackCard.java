@@ -3,9 +3,7 @@ package com.udtech.thinice.ui.main.cards;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,15 +24,26 @@ import de.greenrobot.event.EventBus;
  */
 public class BackCard extends FrameLayout implements CardEventListener {
     private Day day;
+    final GestureDetector gdt;
     private Settings settings;
     private Point startPosition;
-    private String[] values = new String[3];
+    private String[] values = new String[2];
+    private TextView water, carbs;
+
     public BackCard(Context context) {
         super(context);
+        gdt = new GestureDetector(context, new GestureListener());
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         this.addView(View.inflate(context, R.layout.item_dashboard_day_back, null));
-        values[0] = ((TextView)findViewById(R.id.textCarbs)).getText().toString();
-        values[1] = ((TextView)findViewById(R.id.textWater)).getText().toString();
-        values[2] = ((TextView)findViewById(R.id.textProtein)).getText().toString();
+        water = (TextView) findViewById(R.id.text_water);
+        carbs = (TextView) findViewById(R.id.text_carbs);
+        values[0] = (String) water.getText();
+        values[1] = (String) carbs.getText();
         findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,115 +56,6 @@ public class BackCard extends FrameLayout implements CardEventListener {
             }
         });
         this.setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.food_edit)).setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.water_edit)).setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.protein_edit)).setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.sleep_edit)).setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.carb_edit)).setOnTouchListener(new SwipeListener());
-        ((TextView) findViewById(R.id.gym_edit)).setOnTouchListener(new SwipeListener());
-
-        ((EditText) findViewById(R.id.food_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-        ((EditText) findViewById(R.id.water_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-        ((EditText) findViewById(R.id.protein_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-        ((EditText) findViewById(R.id.sleep_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-        ((EditText) findViewById(R.id.carb_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
-        ((EditText) findViewById(R.id.gym_edit)).setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                return false;
-            }
-        });
 
         findViewById(R.id.save).setOnClickListener(new OnClickListener() {
             @Override
@@ -164,41 +64,45 @@ public class BackCard extends FrameLayout implements CardEventListener {
                 EventBus.getDefault().post(new ShowFrontCard());
             }
         });
-
-
     }
-    public void onEvent(Settings settings){
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        gdt.onTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    public void onEvent(Settings settings) {
         this.settings.fetch(getContext());
-        ((TextView)findViewById(R.id.textCarbs)).setText(values[0]+(settings.isWeight()?"oz":"g"));
-        ((TextView)findViewById(R.id.textWater)).setText(values[1] + (settings.isVolume() ? "oz" : "ml"));
-        ((TextView)findViewById(R.id.textProtein)).setText(values[2] + (settings.isWeight() ? "oz" : "g"));
+        updateView(this);
     }
+
     public void updateView(View view) {
         long now = System.currentTimeMillis();
         settings = new Settings().fetch(getContext());
-        ((TextView)findViewById(R.id.textCarbs)).setText(values[0]+(settings.isWeight()?"oz":"g"));
-        ((TextView)findViewById(R.id.textWater)).setText(values[1] + (settings.isVolume() ? "oz" : "ml"));
-        ((TextView)findViewById(R.id.textProtein)).setText(values[2]+(settings.isWeight()?"oz":"g"));
-        ((TextView) view.findViewById(R.id.food_edit)).setText(day.getJunkFood() + "");
-        ((TextView) view.findViewById(R.id.water_edit)).setText(day.getWaterIntake() + "");
-        ((TextView) view.findViewById(R.id.protein_edit)).setText(day.gethProteinMeals() + "");
-        ((TextView) view.findViewById(R.id.sleep_edit)).setText(day.getHoursSlept() + "");
-        ((TextView) view.findViewById(R.id.carb_edit)).setText(day.getCarbsConsumed() + "");
-        ((TextView) view.findViewById(R.id.gym_edit)).setText(day.getGymHours() + "");
+        water.setText(values[0] + (settings.isVolume() ? "oz" : "ml"));
+        carbs.setText(values[1] + "g");
+        ((EditText) this.findViewById(R.id.water_edit)).setText(Math.round(settings.isVolume() ? day.getWaterIntake() / 28.3495 : day.getWaterIntake()) + "");
+        ((EditText) this.findViewById(R.id.food_edit)).setText(day.getJunkFood() + "");
+        ((EditText) this.findViewById(R.id.protein_edit)).setText(day.gethProteinMeals() + "");
+        ((EditText) this.findViewById(R.id.sleep_edit)).setText(day.getHoursSlept() + "");
+        ((EditText) this.findViewById(R.id.carb_edit)).setText(day.getCarbsConsumed() + "");
+        ((EditText) this.findViewById(R.id.gym_edit)).setText(day.getGymHours() + "");
 
     }
 
     public void save() {
         day.setJunkFood(Integer.parseInt(((TextView) this.findViewById(R.id.food_edit)).getText().toString().equals("") ?
                 "0" : ((TextView) this.findViewById(R.id.food_edit)).getText().toString()));
-        day.setWaterIntake(Integer.parseInt(((TextView) this.findViewById(R.id.water_edit)).getText().toString().equals("") ?
-                "0" : ((TextView) this.findViewById(R.id.water_edit)).getText().toString()));
+        day.setWaterIntake(((TextView) this.findViewById(R.id.water_edit)).getText().toString().equals("") ?
+                0 : (int) (Math.round(settings.isVolume() ? (Integer.parseInt(((TextView) this.findViewById(R.id.water_edit)).getText().toString()) * 28.3495) :
+                Integer.parseInt(((TextView) this.findViewById(R.id.water_edit)).getText().toString()))));
         day.sethProteinMeals(Integer.parseInt(((TextView) this.findViewById(R.id.protein_edit)).getText().toString().equals("") ?
                 "0" : ((TextView) this.findViewById(R.id.protein_edit)).getText().toString()));
         day.setHoursSlept(Integer.parseInt(((TextView) this.findViewById(R.id.sleep_edit)).getText().toString().equals("") ?
                 "0" : ((TextView) this.findViewById(R.id.sleep_edit)).getText().toString()));
-        day.setCarbsConsumed(Integer.parseInt(((TextView) this.findViewById(R.id.carb_edit)).getText().toString().equals("") ?
-                "0" : ((TextView) this.findViewById(R.id.carb_edit)).getText().toString()));
+        day.setCarbsConsumed(((TextView) this.findViewById(R.id.carb_edit)).getText().toString().equals("") ?
+                0 : Integer.parseInt(((TextView) this.findViewById(R.id.carb_edit)).getText().toString()));
         day.setGymHours(Integer.parseInt(((TextView) this.findViewById(R.id.gym_edit)).getText().toString().equals("") ?
                 "0" : ((TextView) this.findViewById(R.id.gym_edit)).getText().toString()));
         View view = ((Activity) getContext()).getCurrentFocus();
@@ -224,13 +128,15 @@ public class BackCard extends FrameLayout implements CardEventListener {
     public void reverseSwitchCards() {
         EventBus.getDefault().post(new ShowFrontCard(true));
     }
-    private class SwipeListener implements  OnTouchListener{
+
+    private class SwipeListener implements OnTouchListener {
 
         @Override
-        public boolean onTouch(View v, MotionEvent event) { if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if (startPosition == null)
-                startPosition = new Point((int) event.getX(), (int) event.getY());
-        }
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (startPosition == null)
+                    startPosition = new Point((int) event.getX(), (int) event.getY());
+            }
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (startPosition != null) {
                     Point endPoint = new Point((int) event.getX(), (int) event.getY());
@@ -250,5 +156,30 @@ public class BackCard extends FrameLayout implements CardEventListener {
             }
             return false;
         }
+    }
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_MIN_DISTANCE = 30;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 60;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Bottom to top
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                return false; // Top to bottom
+            }
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                reverseSwitchCards();
+                return false; // Right to left
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                switchCards();
+                return false; // Right to left
+            }
+
+
+            return true;
+        }
+
     }
 }

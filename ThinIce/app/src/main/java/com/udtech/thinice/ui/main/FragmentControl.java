@@ -7,25 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
+import com.udtech.thinice.DeviceManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
+import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
+import com.udtech.thinice.eventbus.model.devices.SearchDevices;
 import com.udtech.thinice.eventbus.model.devices.ShowBackDevice;
 import com.udtech.thinice.eventbus.model.devices.ShowFrontDevice;
 import com.udtech.thinice.model.devices.Device;
-import com.udtech.thinice.model.devices.Insole;
-import com.udtech.thinice.model.devices.TShirt;
 import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.main.devices.DeviceControl;
 import com.udtech.thinice.ui.main.devices.DeviceView;
 import com.udtech.thinice.ui.widgets.animation.FlipAnimation;
 import com.udtech.thinice.ui.widgets.animation.RevertAnimation;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
@@ -33,10 +28,10 @@ import de.greenrobot.event.EventBus;
  * Created by Sofi on 30.11.2015.
  */
 public class FragmentControl extends Fragment {
+    DeviceControl back;
     private FlipAnimation swipe;
     private RevertAnimation reverse;
-    private ListView front;
-    DeviceControl back;
+    private View front;
     private MenuHolder holder;
 
     @Override
@@ -48,7 +43,7 @@ public class FragmentControl extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        holder = (MainActivity)getActivity();
+        holder = (MainActivity) getActivity();
         EventBus.getDefault().register(this);
     }
 
@@ -86,24 +81,51 @@ public class FragmentControl extends Fragment {
     public void onEvent(ShowBackDevice event) {
         switchCards(event.isReverse(), event.getDevice());
     }
+
     public void onEvent(ShowFrontDevice event) {
         switchCards(event.isReverse());
     }
-    public void onEvent(DeleteDevice event){
-        event.getDevice().delete();
-        List<Device> devices = new ArrayList<>();
-        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
-        while(tempIterator.hasNext())
-            devices.add(tempIterator.next());
-        Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
-        while(tempInsoleIterator.hasNext())
-            devices.add(tempInsoleIterator.next());
-        if(devices.size()>0)
-            getView().findViewById(R.id.action).setVisibility(View.GONE);
-        else
-            getView().findViewById(R.id.action).setVisibility(View.VISIBLE);
-        front.setAdapter(new ControlAdapter(getContext(), devices));
+
+    private Boolean isDevice = null;
+
+    public void onEvent(DeviceChanged event) {
+        if (getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (getView() != null && !isDevice.equals(DeviceManager.getDevice() != null)) {
+                        isDevice = DeviceManager.getDevice() != null;
+                        if (isDevice) {
+                            front = new DeviceView(getActivity());
+                            ((DeviceView) front).setDevice(DeviceManager.getDevice());
+                            back = new DeviceControl(getContext());
+                            back.setDevice(DeviceManager.getDevice());
+                            ((ViewGroup) getView().findViewById(R.id.container)).addView(back);
+                            ((ViewGroup) getView().findViewById(R.id.container)).addView(front);
+                            back.setVisibility(View.GONE);
+                            swipe = new FlipAnimation(front, back);
+                            reverse = new RevertAnimation(front, back);
+                        } else {
+                            if (((ViewGroup) getView().findViewById(R.id.container)) != null)
+                                ((ViewGroup) getView().findViewById(R.id.container)).removeAllViews();
+                        }
+                    }
+                }
+            });
+
     }
+
+    public void onEvent(DeleteDevice event) {
+        if (getView() != null && getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    getView().findViewById(R.id.action).setVisibility(View.VISIBLE);
+                }
+            });
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,6 +135,10 @@ public class FragmentControl extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        isDevice = DeviceManager.getDevice() != null;
+        if (isDevice) {
+            view.findViewById(R.id.action).setVisibility(View.GONE);
+        }
         holder.openPosition(MenuHolder.CONTROL);
         view.findViewById(R.id.menu).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,42 +152,26 @@ public class FragmentControl extends Fragment {
                 getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).addToBackStack(null).add(R.id.fragment_container, new FragmentAddWear()).commit();
             }
         });
-        front = (ListView) view.findViewById(R.id.devices);
-        back = new DeviceControl(getContext());
-        ((ViewGroup) view.findViewById(R.id.container)).addView(back);
-        back.setVisibility(View.GONE);
-        swipe = new FlipAnimation(front, back);
-        reverse = new RevertAnimation(front, back);
-        List<Device> devices = new ArrayList<>();
-        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
-        while(tempIterator.hasNext())
-            devices.add(tempIterator.next());
-        Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
-        while(tempInsoleIterator.hasNext())
-            devices.add(tempInsoleIterator.next());
-
-        if(devices.size()>0)
-            getView().findViewById(R.id.action).setVisibility(View.GONE);
-        else
-            getView().findViewById(R.id.action).setVisibility(View.VISIBLE);
-        front.setAdapter(new ControlAdapter(getContext(), devices));
-
-
+        if (DeviceManager.getDevice() != null) {
+            front = new DeviceView(getActivity());
+            ((DeviceView) front).setDevice(DeviceManager.getDevice());
+            back = new DeviceControl(getContext());
+            back.setDevice(DeviceManager.getDevice());
+            ((ViewGroup) view.findViewById(R.id.container)).addView(back);
+            ((ViewGroup) view.findViewById(R.id.container)).addView(front);
+            back.setVisibility(View.GONE);
+            swipe = new FlipAnimation(front, back);
+            reverse = new RevertAnimation(front, back);
+        }
     }
 
-    private class ControlAdapter extends ArrayAdapter<Device> {
-        public ControlAdapter(Context context, List<Device> objects) {
-            super(context, R.layout.item_wear, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null){
-                convertView = new DeviceView(getContext());
-            }
-            DeviceView deviceView = (DeviceView) convertView;
-            deviceView.setDevice(getItem(position));
-            return deviceView;
-        }
+    public void onEvent(SearchDevices event) {
+        if (getView() != null && getActivity() != null)
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getView().findViewById(R.id.action).performClick();
+                }
+            });
     }
 }

@@ -9,6 +9,11 @@ import java.util.Date;
 public class DateUtils {
 
     /**
+     * The maximum date possible.
+     */
+    public static Date MAX_DATE = new Date(Long.MAX_VALUE);
+
+    /**
      * <p>Checks if two dates are on the same day ignoring time.</p>
      *
      * @param date1 the first date, not altered, not null
@@ -42,6 +47,66 @@ public class DateUtils {
         return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR));
+    }
+
+    public static boolean isSameWeek(Calendar cal1, Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.WEEK_OF_YEAR) == cal2.get(Calendar.WEEK_OF_YEAR));
+    }
+
+    public static boolean isSameWeek(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        return isSameWeek(cal1, cal2);
+    }
+
+    public static boolean isSameMonth(Calendar cal1, Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH));
+    }
+
+    public static boolean inTwoWeeks(Calendar cal1, Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) && (
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) || cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) - 1 || cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) + 1));
+    }
+
+    public static boolean inTwoWeeks(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        return inTwoWeeks(cal1, cal2);
+    }
+
+    public static boolean isSameMonth(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+        return isSameWeek(cal1, cal2);
     }
 
     /**
@@ -184,6 +249,9 @@ public class DateUtils {
         return clearTime(date);
     }
 
+    /** Determines whether or not a date has any time values (hour, minute,
+     * seconds or millisecondsReturns the given date with the time values cleared. */
+
     /**
      * Returns the given date with the time values cleared.
      */
@@ -199,9 +267,6 @@ public class DateUtils {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
-
-    /** Determines whether or not a date has any time values (hour, minute,
-     * seconds or millisecondsReturns the given date with the time values cleared. */
 
     /**
      * Determines whether or not a date has any time values.
@@ -268,10 +333,5 @@ public class DateUtils {
         if (d2 == null) return d1;
         return (d1.before(d2)) ? d1 : d2;
     }
-
-    /**
-     * The maximum date possible.
-     */
-    public static Date MAX_DATE = new Date(Long.MAX_VALUE);
 
 }

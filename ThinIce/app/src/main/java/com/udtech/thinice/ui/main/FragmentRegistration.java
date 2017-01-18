@@ -139,7 +139,7 @@ public class FragmentRegistration extends UserDataForm {
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File destFile=new File(directory,"profile.jpg");
+        File destFile = new File(directory, "profile.jpg");
 
         FileOutputStream fos = null;
         try {
@@ -177,36 +177,39 @@ public class FragmentRegistration extends UserDataForm {
             }
         }).start();
     }
-    private Bitmap cropSquare(Bitmap bitmap){
+
+    private Bitmap cropSquare(Bitmap bitmap) {
         Bitmap dstBmp = null;
-        if (bitmap.getWidth() >= bitmap.getHeight()){
+        if (bitmap.getWidth() >= bitmap.getHeight()) {
 
             dstBmp = Bitmap.createBitmap(
                     bitmap,
-                    bitmap.getWidth()/2 - bitmap.getHeight()/2,
+                    bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
                     0,
                     bitmap.getHeight(),
                     bitmap.getHeight()
             );
 
-        }else{
+        } else {
 
             dstBmp = Bitmap.createBitmap(
                     bitmap,
                     0,
-                    bitmap.getHeight()/2 - bitmap.getWidth()/2,
+                    bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
                     bitmap.getWidth(),
                     bitmap.getWidth()
             );
         }
         return dstBmp;
     }
-    private Bitmap scaleBitmapToMask(Bitmap src, Bitmap mask){
+
+    private Bitmap scaleBitmapToMask(Bitmap src, Bitmap mask) {
         return Bitmap.createScaledBitmap(src, mask.getWidth(), mask.getHeight(), true);
     }
+
     private Bitmap cropByMask(Bitmap bmp) {
         Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask);
-        bmp = scaleBitmapToMask(cropSquare(bmp),mask);
+        bmp = scaleBitmapToMask(cropSquare(bmp), mask);
         BitmapFactory.Options options = new BitmapFactory.Options();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             options.inMutable = true;
@@ -229,7 +232,8 @@ public class FragmentRegistration extends UserDataForm {
         mask.recycle();
         return addBorder(bitmap);
     }
-    private Bitmap addBorder(Bitmap bmp){
+
+    private Bitmap addBorder(Bitmap bmp) {
         Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask_add);
         BitmapFactory.Options options = new BitmapFactory.Options();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -253,9 +257,10 @@ public class FragmentRegistration extends UserDataForm {
         mask.recycle();
         return bitmap;
     }
-    private void updateView(){
-        if(avatarUrl!=null){
-            File bitmap=new File(avatarUrl);
+
+    private void updateView() {
+        if (avatarUrl != null) {
+            File bitmap = new File(avatarUrl);
             try {
                 final Bitmap b = BitmapFactory.decodeStream(new FileInputStream(bitmap));
                 getActivity().runOnUiThread(new Runnable() {

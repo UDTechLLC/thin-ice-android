@@ -55,7 +55,7 @@
                     android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="30dp">
+                    android:padding="25dp">
 
 
                     <LinearLayout
@@ -145,7 +145,7 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="15dp"
                                 android:layout_weight="1"
-                                android:text="Heght*"
+                                android:text="Height*"
                                 android:textSize="18dp" />
                         </LinearLayout>
 

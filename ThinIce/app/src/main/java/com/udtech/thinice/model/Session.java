@@ -12,12 +12,22 @@ public class Session extends SugarRecord<Session> {
     private Date startTime;
     private Date endTime;
     private int temperature;
+    private long step;
+    private boolean statistics;
+    public void clearStatistics(){
+        statistics = false;
+        save();
+    }
+    public boolean isForStatistics() {
+        return statistics;
+    }
 
     public Session() {
     }
 
     public Session(Day day) {
         this.day = day;
+        statistics = true;
     }
 
     public Date getStartTime() {
@@ -37,12 +47,29 @@ public class Session extends SugarRecord<Session> {
         return day;
     }
 
-    public void openSession(int temperature){
+    public void openSession(int temperature) {
         startTime = new Date();
         this.temperature = temperature;
     }
-    public void closeSession(){
-        endTime = new Date();
-        save();
+
+    public void closeSession() {
+        if (startTime != null) {
+            endTime = new Date();
+            save();
+        }
+    }
+
+    @Override
+    public void save() {
+        super.save();
+        day.recalc();
+    }
+
+    public void addStep() {
+        step++;
+    }
+
+    public long getStep() {
+        return step;
     }
 }

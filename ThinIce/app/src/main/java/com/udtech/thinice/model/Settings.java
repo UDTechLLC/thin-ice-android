@@ -22,6 +22,44 @@ public class Settings {
     private boolean lenght;
     private boolean volume;
 
+    public static int convertTemperatureToFaringeite(float temp) {
+        return Math.round((9.0f / 5.0f) * temp + 32);
+    }
+
+    public static float convertTemperatureToCelsium(float temp) {
+        return (float) ((temp - 32) / 1.8);
+    }
+
+    public static float convertWeight(float weight) {
+        return 2.2f * weight;
+    }
+
+    public static float convertLenght(float lenght) {
+        double inches = (lenght / 2.54f);
+        return (float) inches;
+    }
+
+    public static int convertVolume(float vol) {
+        return Math.round(0.008345f * vol);
+    }
+
+    public static int deconvertVolume(float volume) {
+        return Math.round(volume / 0.008345f);
+
+    }
+
+    public static int deconvertTemperature(int temp) {
+        return Math.round((temp - 32f) * 5f / 9f);
+    }
+
+    public static float deconvertWeight(float weight) {
+        return weight / 2.2f;
+    }
+
+    public static float deconvertLenght(float temp) {
+        return temp * 2.54f;
+    }
+
     public boolean isTemperature() {
         return temperature;
     }
@@ -81,43 +119,5 @@ public class Settings {
         ed.putBoolean(WEIGHT, weight);
         ed.commit();
         return this;
-    }
-
-    public static int convertTemperatureToFaringeite(float temp) {
-        return Math.round((9.0f / 5.0f) * temp + 32);
-    }
-
-    public static float convertTemperatureToCelsium(float temp) {
-        return (float) ((temp - 32) / 1.8);
-    }
-
-    public static int convertWeight(int weight) {
-        return Math.round(2.2f * weight);
-    }
-
-    public static int convertLenght(int lenght) {
-        double inches = (lenght / 2.54f);
-        return (int) Math.round(inches);
-    }
-
-    public static int convertVolume(int vol) {
-        return Math.round(0.008345f * vol);
-    }
-
-    public static int deconvertVolume(int volume) {
-        return Math.round(volume / 0.008345f);
-
-    }
-
-    public static int deconvertTemperature(int temp) {
-        return Math.round((temp - 32f) * 5f / 9f);
-    }
-
-    public static int deconvertWeight(int weight) {
-        return Math.round(weight / 2.2f);
-    }
-
-    public static int deconvertLenght(int temp) {
-        return Math.round(temp / 2.54f);
     }
 }

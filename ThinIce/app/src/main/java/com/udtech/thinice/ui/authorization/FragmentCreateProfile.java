@@ -128,10 +128,9 @@ public class FragmentCreateProfile extends Fragment {
             showEmailError("Empty e-mail.");
         }
         if (pass != null ? pass.equals("") : true) {
-            showPassError("Empty password.");
-            showPassConfirmError("Empty password.");
+            showPassError("Field empty.");
         } else if (passConfirm != null ? passConfirm.equals("") || !passConfirm.equals(pass) : true) {
-            showPassConfirmError("Wrong confirm password.");
+            showPassConfirmError("Password doesn't match.");
         } else {
             Iterator<User> users = User.findAll(User.class);
             boolean exist = false;

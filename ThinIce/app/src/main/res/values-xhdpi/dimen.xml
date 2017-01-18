@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="shadow_width">15dp</dimen>
-    <dimen name="tab_width">30dp</dimen>
+    <dimen name="shadow_width">13dp</dimen>
+    <dimen name="tab_width">39dp</dimen>
+    <dimen name="tab_width_statistics">11dp</dimen>
+    <dimen name="tab_width_settings">33dp</dimen>
 </resources>

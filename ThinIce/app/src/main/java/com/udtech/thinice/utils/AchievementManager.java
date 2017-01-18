@@ -2,7 +2,9 @@ package com.udtech.thinice.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Pair;
 
+import com.udtech.thinice.DeviceManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.Achievement;
@@ -10,9 +12,12 @@ import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.Session;
 import com.udtech.thinice.model.users.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,9 +30,8 @@ import de.greenrobot.event.EventBus;
  */
 public class AchievementManager {
     private static final String NAME = "acvmnt";
-    private static final String TEMP = "acvmnt";
     private static final String COMPLETED = "compltd";
-
+    private User user;
     private static final String TIME = "time";
     private static final String TARGETS = "targets";
     private static final String CALORIES = "calories";
@@ -39,7 +43,7 @@ public class AchievementManager {
     private static final int THE_ENTHUSIAST_COUNT = 30000;
     private static final int THE_MARATHONER_COUNT = 60000;
     private static final int THE_DABBLER_COUNT = 1;
-    private static final int THE_SCHEMER_COUNT = 5;
+    private static final int THE_SCHEMER_COUNT = 10;
     private static final int THE_STRATEGIST_COUNT = 20;
     private static final int FIRESTARTER_COUNT = 100;
     private static final int FEELIN_THE_BURN_COUNT = 1000;
@@ -58,19 +62,25 @@ public class AchievementManager {
     private AtomicInteger calories;
     private AtomicInteger statistics;
 
-    public static AchievementManager getInstance(Context context) {
-        if (instance == null)
-            instance = new AchievementManager(context);
-        return instance;
+    private AchievementManager(Context context) {
+        user = UserSessionManager.getSession(context);
+        if (user != null) {
+            SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
+            this.timeSpending = new AtomicLong(sPref.getLong(TIME, 0));
+            this.targets = new AtomicInteger(sPref.getInt(TARGETS, 0));
+            this.calories = new AtomicInteger(sPref.getInt(CALORIES, 0));
+            this.statistics = new AtomicInteger(sPref.getInt(STATISTICS, 0));
+        }
     }
 
-    private AchievementManager(Context context) {
-        User user = UserSessionManager.getSession(context);
-        SharedPreferences sPref = context.getSharedPreferences(TEMP + user.getId(), Context.MODE_PRIVATE);
-        this.timeSpending = new AtomicLong(sPref.getLong(TIME, 0));
-        this.targets = new AtomicInteger(sPref.getInt(TARGETS, 0));
-        this.calories = new AtomicInteger(sPref.getInt(CALORIES, 0));
-        this.statistics = new AtomicInteger(sPref.getInt(STATISTICS, 0));
+    public static AchievementManager getInstance(Context context) {
+        if (instance == null || instance.user == null)
+            instance = new AchievementManager(context);
+        if (UserSessionManager.getSession(context) != null)
+            if (instance.user.getId() != UserSessionManager.getSession(context).getId()) {
+                instance = new AchievementManager(context);
+            }
+        return instance;
     }
 
     private void saveAchievement(Achievement achievement, Context context) {
@@ -81,11 +91,14 @@ public class AchievementManager {
         ed.commit();
     }
 
-    public synchronized void sessionClosed(Context context, Session session) {
+    public synchronized void checkTime(Context context) {
+        if (DeviceManager.getDevice() != null)
+            if (!DeviceManager.getDevice().isDisabled()) {
+                timeSpending.addAndGet(3000);
+            }
         User user = UserSessionManager.getSession(context);
         if (user != null) {
-            long timeDif = (session.getEndTime().getTime() - session.getStartTime().getTime());
-            timeSpending.addAndGet(timeDif);
+            ;
             if ((timeSpending.get() / 60000) > FRESH_START_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.FRESH_START), context);
             if ((timeSpending.get() / 60000) > MOVING_FORWARD_COUNT)
@@ -106,7 +119,7 @@ public class AchievementManager {
             }
             int totalCalories = 0;
             for (Day day : days)
-                totalCalories += day.getTotalCalories(context);
+                totalCalories += day.getTotalCalories();
             if (totalCalories > FIRESTARTER_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.FIRESTARTER), context);
             if (totalCalories > FEELIN_THE_BURN_COUNT)
@@ -116,7 +129,34 @@ public class AchievementManager {
             if (totalCalories > SEEING_RESULTS_COUNT)
                 showAchievement(getAchievement(context, Achievement.Type.SEEING_RESULTS), context);
         }
+    }
 
+    public void sessionClosed(final Context context) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Iterator<Day> days = Day.findAll(Day.class);
+                long correction = 0;
+                long totalTime = 0;
+                try {
+                    correction = new SimpleDateFormat("HH mm ss").parse("00 00 00").getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                while (days.hasNext()) {
+                    Day day = days.next();
+                    if (day.getUser().getId() == UserSessionManager.getSession(context).getId()) {
+                        Pair<Long, Long> data = day.getTotalDataForStatistics();
+                        long dayTime = data.first;
+                        long dayCal = data.second;
+                        if (DateUtils.isSameWeek(new Date(), day.getDate())) {
+                            totalTime += dayTime - correction;
+                        }
+                    }
+                }
+                timeSpending = new AtomicLong(totalTime);
+            }
+        }).start();
     }
 
     public synchronized void settingsChanged(Context context) {
@@ -137,46 +177,62 @@ public class AchievementManager {
             showAchievement(getAchievement(context, Achievement.Type.RESULTS_OBSESSED), context);
     }
 
-    public synchronized void dayChanged(Context context) {
-        int count = 0;
-        User user = UserSessionManager.getSession(context);
-        List<Day> days = new ArrayList<>();
-        Iterator<Day> daysIterator = Day.findAll(Day.class);
-        while (daysIterator.hasNext()) {
-            Day day = daysIterator.next();
-            if (user.equals(day.getUser())) {
-                days.add(day);
+    public synchronized void dayChanged(final Context context) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int count = 0;
+                User user = UserSessionManager.getSession(context);
+                List<Day> days = new ArrayList<>();
+                Iterator<Day> daysIterator = Day.findAll(Day.class);
+                while (daysIterator.hasNext()) {
+                    Day day = daysIterator.next();
+                    if (user.equals(day.getUser())) {
+                        days.add(day);
+                    }
+                }
+                for (Day day : days) {
+                    if (day.getGymHours() != 0)
+                        count++;
+                    if (day.gethProteinMeals() != 0)
+                        count++;
+                    if (day.getWaterIntake() != 0)
+                        count++;
+                    if (day.getHoursSlept() != 0)
+                        count++;
+                    if (day.getJunkFood() != 0)
+                        count++;
+                    if (day.getCarbsConsumed() != 0)
+                        count++;
+                }
+                if (count > 0) {
+                    showAchievement(getAchievement(context, Achievement.Type.THE_DABBLER), context);
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (count >= 10) {
+                    showAchievement(getAchievement(context, Achievement.Type.THE_SCHEMER), context);
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (count > 20) {
+                    showAchievement(getAchievement(context, Achievement.Type.THE_STRATEGIST), context);
+                }
             }
-        }
-        for (Day day : days) {
-            if (day.getGymHours() != 0)
-                count++;
-            if (day.gethProteinMeals() != 0)
-                count++;
-            if (day.getWaterIntake() != 0)
-                count++;
-            if (day.getHoursSlept() != 0)
-                count++;
-            if (day.getJunkFood() != 0)
-                count++;
-            if (day.getCarbsConsumed() != 0)
-                count++;
-        }
-        if (count > 0) {
-            showAchievement(getAchievement(context, Achievement.Type.THE_DABBLER), context);
-        }
-        if (count >= 5) {
-            showAchievement(getAchievement(context, Achievement.Type.THE_SCHEMER), context);
-        }
-        if (count > 20) {
-            showAchievement(getAchievement(context, Achievement.Type.THE_STRATEGIST), context);
-        }
+        }).start();
+
     }
 
     public void commit(Context context) {
         User user = UserSessionManager.getSession(context);
         if (user != null) {
-            SharedPreferences sPref = context.getSharedPreferences(TEMP + user.getId(), Context.MODE_PRIVATE);
+            SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sPref.edit();
             editor.putLong(TIME, timeSpending.get());
             editor.putInt(TARGETS, targets.get());
@@ -450,23 +506,23 @@ public class AchievementManager {
         String description = "";
         switch (id) {
             case 0: {
-                description = "You used Thin Ice clothing for your very first 30 minutes!";
+                description = "You used Thin Ice vest for your very first 30 minutes!";
                 break;
             }
             case 1: {
-                description = "You have used Thin Ice clothing for 10 hours!";
+                description = "You have used Thin Ice vest for 10 hours!";
                 break;
             }
             case 2: {
-                description = "You have used Thin Ice clothing for 500 hours!";
+                description = "You have used Thin Ice vest for 500 hours!";
                 break;
             }
             case 3: {
-                description = "You have used Thin Ice clothing for 100 hours!";
+                description = "You have used Thin Ice vest for 100 hours!";
                 break;
             }
             case 4: {
-                description = "You have used Thin Ice clothing for 1000 hours!";
+                description = "You have used Thin Ice vest for 1000 hours!";
                 break;
             }
             case 5: {
@@ -474,7 +530,7 @@ public class AchievementManager {
                 break;
             }
             case 6: {
-                description = "You have successfully created 5 personal goals!";
+                description = "You have successfully created 10 personal goals!";
                 break;
             }
             case 7: {
@@ -482,19 +538,19 @@ public class AchievementManager {
                 break;
             }
             case 8: {
-                description = "You have burnt your first 100 calories with Thin Ice clothing!";
+                description = "You have burnt your first 100 calories with Thin Ice vest!";
                 break;
             }
             case 9: {
-                description = "You have burnt 1000 calories with Thin Ice clothing!";
+                description = "You have burnt 1000 calories with Thin Ice vest!";
                 break;
             }
             case 10: {
-                description = "You have burnt 10,000 calories with Thin Ice clothing!";
+                description = "You have burnt 10,000 calories with Thin Ice vest!";
                 break;
             }
             case 11: {
-                description = "You have burnt 50,000 calories with Thin Ice clothing!";
+                description = "You have burnt 50,000 calories with Thin Ice vest!";
                 break;
             }
             case 12: {

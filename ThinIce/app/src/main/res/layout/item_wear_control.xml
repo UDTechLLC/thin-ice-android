@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
 
     <FrameLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:background="@drawable/bg_card">
 
@@ -63,7 +63,8 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:layout_margin="10dp"
+                    android:visibility="gone">
 
                     <com.rey.material.widget.Switch
                         style="@style/Material.Widget.Switch"
@@ -92,13 +93,15 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_margin="10dp"
-                    android:background="@drawable/bg_selection">
+                    android:background="@drawable/bg_selection"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -148,43 +151,65 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp" />
-                <FrameLayout
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Name"
+                    android:id="@+id/textView10"
+                    android:layout_marginLeft="10dp" />
+
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp">
+                    android:id="@+id/name"
+                    android:background="@drawable/bg_edit_text"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
 
-                    <com.rey.material.widget.Switch
-                        style="@style/Material.Widget.Switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:sw_trackColor="@drawable/switch_bg_color"
-                        app:sw_thumbColor="@drawable/switch_color"
-                        android:checked="false"
-                        android:layout_gravity="right|center_vertical"
-                        android:id="@+id/disable" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Disable device"
-                        android:id="@+id/disable_text"
-                        android:layout_gravity="left|center_vertical"
-                        android:textColor="@color/textViewColor" />
-                </FrameLayout>
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="By clicking «Delete Device» your device will be deleted. In order to connect to the device  again, you need to use the button «Add Device»"
+                        android:id="@+id/textView24"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_above="@+id/delete"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp" />
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Delete device"
-                    android:id="@+id/delete"
-                    android:background="@drawable/bg_button"
-                    android:layout_margin="10dp"
-                    android:textColor="#fff"
-                    android:textAllCaps="false"
-                    android:layout_marginBottom="20dp" />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Delete device"
+                        android:id="@+id/delete"
+                        android:background="@drawable/bg_button"
+                        android:textColor="#fff"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView4"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
+
             </LinearLayout>
 
         </LinearLayout>

@@ -2,40 +2,33 @@ package com.udtech.thinice.ui.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.udtech.thinice.DeviceManager;
 import com.udtech.thinice.R;
 import com.udtech.thinice.eventbus.model.cards.ShowBackCard;
 import com.udtech.thinice.eventbus.model.cards.ShowFrontCard;
 import com.udtech.thinice.eventbus.model.devices.DeviceChanged;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.Settings;
-import com.udtech.thinice.model.devices.Insole;
-import com.udtech.thinice.model.devices.TShirt;
+import com.udtech.thinice.model.devices.Device;
 import com.udtech.thinice.protocol.CaloryesUtils;
 import com.udtech.thinice.utils.SessionManager;
-import com.wefika.flowlayout.FlowLayout;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
@@ -44,13 +37,12 @@ import de.greenrobot.event.EventBus;
  * Created by JOkolot on 18.11.2015.
  */
 public class CardView extends FrameLayout {
+    private GestureDetector gdt;
     private View frontSide;
     private Day day;
     private volatile int dayId = 0;
-    private long spended, total, base;
     private float calories;
     private Settings settings;
-    final GestureDetector gdt;
     private float totalCalories;
 
     public CardView(Context context) {
@@ -63,15 +55,8 @@ public class CardView extends FrameLayout {
 
     public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setVisibility(INVISIBLE);
         settings = new Settings().fetch(getContext());
-        gdt = new GestureDetector(context, new GestureListener());
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gdt.onTouchEvent(event);
-                return true;
-            }
-        });
         frontSide = View.inflate(getContext(), R.layout.item_dashboard_day, null);
         frontSide.findViewById(R.id.switchCard).setOnClickListener(new OnClickListener() {
             @Override
@@ -91,145 +76,56 @@ public class CardView extends FrameLayout {
     }
 
     public void setDay(Day day) {
-        Iterator<TShirt> tsIterator = TShirt.findAll(TShirt.class);
-        Iterator<Insole> inIterator = Insole.findAll(Insole.class);
-        TShirt tShirt = null;
-        Insole insole = null;
-        if (tsIterator.hasNext())
-            tShirt = tsIterator.next();
-        if (inIterator.hasNext())
-            insole = inIterator.next();
-        if (tShirt == null && insole == null) {
-            findViewById(R.id.timeTotal).setAlpha(0.0f);
-            findViewById(R.id.textView17).setAlpha(0.0f);
-            findViewById(R.id.textView19).setAlpha(0.0f);
+        if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate())) {
+
+            gdt = new GestureDetector(getContext(), new GestureListener());
+            this.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    gdt.onTouchEvent(event);
+                    return true;
+                }
+            });
         }
-        if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate()))
-            if (tShirt != null ? tShirt.isDisabled() : true && insole != null ? insole.isDisabled() : true) {
-                findViewById(R.id.imageTemp).setAlpha(0.0f);
-                findViewById(R.id.temperature).setAlpha(0.0f);
-            } else {
-                findViewById(R.id.imageTemp).setAlpha(1.0f);
-                findViewById(R.id.temperature).setAlpha(1.0f);
-            }
-        else {
-            findViewById(R.id.imageTemp).setAlpha(0.0f);
-            findViewById(R.id.temperature).setAlpha(0.0f);
-            findViewById(R.id.timeTotal).setAlpha(0.0f);
-            findViewById(R.id.textView17).setAlpha(0.0f);
-            findViewById(R.id.textView19).setAlpha(0.0f);
-        }
-        dayId++;
         this.day = day;
-        calories = day.getTotalCalories(getContext());
-        totalCalories = day.getTotalCalories(getContext());
-        try {
-            base = new SimpleDateFormat("HH mm ss").parse("00 00 00").getTime();
-            total = (long) CaloryesUtils.getTimeLeft(day.getAverageTemp(getContext()), (int) calories) * 60 * 1000;
-            total = total - base;
-            ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(
-                    (long) (1/(SessionManager.getManager().getCurrentCaloriesRatePerSecond()))
-            )));
-            spended = base;
-            spended += SessionManager.getManager().getSpended();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        spended += day.getTotalTime();
-        update(dayId);
+        ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(
+                (long) (1 / (SessionManager.getManager().getCurrentCaloriesRatePerSecond()))
+        )));
+        update((int) (long) day.getId());
         checkTasks();
-        ((TextView) findViewById(R.id.date)).setText(DateFormat.getDateInstance(DateFormat.LONG, Locale.UK).format(day.getDate()));
-        ((TextView) findViewById(R.id.day)).setText(DateUtils.getRelativeTimeSpanString(day.getDate().getTime(), new Date().getTime(), DateUtils.DAY_IN_MILLIS));
+        ((TextView) findViewById(R.id.date)).setText(new SimpleDateFormat("MMMM dd, yyyy").format(day.getDate()));
+        if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate())) {
+            ((TextView) findViewById(R.id.day)).setText(DateUtils.getRelativeTimeSpanString(day.getDate().getTime(), new Date().getTime(), DateUtils.DAY_IN_MILLIS));
+        } else {
+            findViewById(R.id.switchCard).setVisibility(GONE);
+        }
         GradientDrawable bgShape = (GradientDrawable) findViewById(R.id.header).getBackground();
         bgShape.setColor(day.getHeaderColor());
     }
 
     private void checkTasks() {
-        settings = settings.fetch(getContext());
-        Iterator<TShirt> tempIterator = TShirt.findAll(TShirt.class);
-        int temp = 0, count = 0;
-        if (tempIterator.hasNext()) {
-            TShirt tShirt = tempIterator.next();
-            if (!tShirt.isDisabled()) {
-                temp += tShirt.getTemperature();
-                count++;
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                settings = settings.fetch(getContext());
+                int temp = 0, count = 0;
+                Device tShirt = DeviceManager.getDevice();
+                if (tShirt != null)
+                    temp = (int) tShirt.getTemperature();
+                else {
+                    temp = day.getLastTemp();
+                }
+                ((TextView) findViewById(R.id.temperature)).setText((Math.round(settings.isTemperature() ? Settings.convertTemperatureToFaringeite(temp) : temp))
+                        + (settings.isTemperature() ? "°F" : "°C"));
+                ((TextView) findViewById(R.id.value_gym)).setText(day.getGymHours() + "");
+                ((TextView) findViewById(R.id.value_carbs)).setText(day.getCarbsConsumed()+"");
+                ((TextView) findViewById(R.id.value_food)).setText(day.getJunkFood() + "");
+                ((TextView) findViewById(R.id.value_proteins)).setText(day.gethProteinMeals() + "");
+                ((TextView) findViewById(R.id.value_sleep)).setText(day.getHoursSlept() + "");
+                ((TextView) findViewById(R.id.value_water)).setText(Math.round(settings.isVolume() ? day.getWaterIntake() / 28.3495 : day.getWaterIntake()) + "");
             }
-        }
+        });
 
-        Iterator<Insole> tempInsoleIterator = Insole.findAll(Insole.class);
-        if (tempInsoleIterator.hasNext()) {
-            Insole insole = tempInsoleIterator.next();
-            if (!insole.isDisabled()) {
-                temp += insole.getTemperature();
-                count++;
-            }
-        }
-        int avgTemp = count != 0 ? temp / count : 15;
-        ((TextView) findViewById(R.id.temperature)).setText((Math.round(settings.isTemperature() ? Settings.convertTemperatureToFaringeite(avgTemp) : avgTemp))
-                + (settings.isTemperature() ? "°F" : "°C"));
-        FlowLayout container = (FlowLayout) frontSide.findViewById(R.id.container_tasks);
-        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int margins = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, getContext().getResources().getDisplayMetrics());
-        width -= margins;
-        width = (int) (width / 4.3);
-        container.removeAllViews();
-        if (day.getGymHours() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((TextView) view.findViewById(R.id.description)).setText("Gym Session, hrs");
-            ((TextView) view.findViewById(R.id.value)).setText(day.getGymHours() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(0, 246, 118));
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_gym));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
-        if (day.getCarbsConsumed() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((TextView) view.findViewById(R.id.description)).setText("Carbs, "+(settings.isWeight()?"oz":"g"));
-            ((TextView) view.findViewById(R.id.value)).setText(day.getCarbsConsumed() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(255, 111, 64));
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_carbohydrates));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
-        if (day.getHoursSlept() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_sleep));
-            ((TextView) view.findViewById(R.id.description)).setText("Hours Slept, hrs");
-            ((TextView) view.findViewById(R.id.value)).setText(day.getHoursSlept() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(255, 215, 64));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
-        if (day.gethProteinMeals() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_proteins));
-            ((TextView) view.findViewById(R.id.description)).setText("H-protein Meals, "+(settings.isWeight()?"oz":"g"));
-            ((TextView) view.findViewById(R.id.value)).setText(day.gethProteinMeals() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(178, 255, 89));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
-        if (day.getJunkFood() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_food));
-            ((TextView) view.findViewById(R.id.description)).setText("Junk Food, servings");
-            ((TextView) view.findViewById(R.id.value)).setText(day.getJunkFood() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(100, 255, 218));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
-        if (day.getWaterIntake() != 0) {
-            View view = View.inflate(getContext(), R.layout.item_day_task, null);
-            ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(getResources().getDrawable(R.mipmap.ic_water));
-            ((TextView) view.findViewById(R.id.description)).setText("Water Intake, "+(settings.isVolume()?"oz":"ml"));
-            ((TextView) view.findViewById(R.id.value)).setText(day.getWaterIntake() + "");
-            ((TextView) view.findViewById(R.id.value)).setTextColor(Color.rgb(0, 176, 255));
-            FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-            container.addView(view, params);
-        }
     }
 
     public void switchCards() {
@@ -238,6 +134,122 @@ public class CardView extends FrameLayout {
 
     public void reverseSwitchCards() {
         EventBus.getDefault().post(new ShowBackCard(day, true));
+    }
+
+    public void onEvent(DeviceChanged event) {
+        checkTasks();
+    }
+
+    public void onEvent(ShowFrontCard event) {
+        checkTasks();
+    }
+
+    public void onEvent(Settings settings) {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                checkTasks();
+            }
+        });
+    }
+
+    public void update(final int dayId) {
+        if (!FragmentFrontCard.isMoving()) {
+            if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate())) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int targetCalories = (int) SessionManager.getManager().getTargetCalories();
+                        final int spendedCalories = (int) SessionManager.getManager().getSpendedCallories();
+                        final long spendedTime = SessionManager.getManager().getSpended();
+                        final long targetTime = (long) SessionManager.getManager().getTargetTime();
+                        ((Activity) getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((ProgressBar) findViewById(R.id.progressBar)).setMax(targetCalories);
+                                ((ProgressBar) findViewById(R.id.progressBar)).setProgress(spendedCalories);
+                                ((TextView) findViewById(R.id.time_spended)).setText(new SimpleDateFormat("H:m.s").format(new Date(spendedTime)));
+                                ((TextView) findViewById(R.id.calories)).setText(spendedCalories + " Cal");
+                                if (DeviceManager.getDevice() != null) {
+                                    if (DeviceManager.getDevice().isDisabled() || !com.udtech.thinice.utils.DateUtils.isToday(day.getDate())) {
+                                        if (targetCalories < spendedCalories) {
+                                            ((TextView) findViewById(R.id.timeTotal)).setText("achieved!");
+                                            findViewById(R.id.textView19).setVisibility(GONE);
+                                        } else if (day.getLastTemp() == 20) {
+                                            ((TextView) findViewById(R.id.timeTotal)).setText("comfort");
+                                            findViewById(R.id.textView19).setVisibility(GONE);
+                                        } else {
+                                            Calendar calendar = Calendar.getInstance();
+                                            calendar.setTimeInMillis(targetTime);
+                                            ((TextView) findViewById(R.id.timeTotal)).setText(calendar.get(Calendar.HOUR)+":"+(calendar.get(Calendar.MINUTE)+1));
+                                            findViewById(R.id.textView19).setVisibility(VISIBLE);
+                                        }
+                                    } else {
+                                        if (targetCalories < spendedCalories) {
+                                            ((TextView) findViewById(R.id.timeTotal)).setText("achieved!");
+                                            findViewById(R.id.textView19).setVisibility(GONE);
+                                        } else if (DeviceManager.getDevice().getTemperature() == 20) {
+                                            ((TextView) findViewById(R.id.timeTotal)).setText("comfort");
+                                            findViewById(R.id.textView19).setVisibility(GONE);
+                                        } else {
+                                            ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(targetTime)));
+                                            findViewById(R.id.textView19).setVisibility(VISIBLE);
+                                        }
+                                    }
+                                } else {
+                                    if (targetCalories < spendedCalories) {
+                                        ((TextView) findViewById(R.id.timeTotal)).setText("achieved!");
+                                        findViewById(R.id.textView19).setVisibility(GONE);
+                                    } else if (day.getLastTemp() == 20) {
+                                        ((TextView) findViewById(R.id.timeTotal)).setText("comfort");
+                                        findViewById(R.id.textView19).setVisibility(GONE);
+                                    } else {
+                                        ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(targetTime)));
+                                        findViewById(R.id.textView19).setVisibility(VISIBLE);
+                                    }
+                                }
+                                setVisibility(VISIBLE);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        update(dayId);
+                                    }
+                                }, 1000);
+                            }
+                        });
+                    }
+                }).start();
+
+            } else {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int targetCalories = (int) SessionManager.getManager().getTargetCalories();
+                        final int totalCalories = (int) day.getTotalCalories();
+                        final long totalTime = day.getTotalTime();
+                        final int lastTemp = day.getLastTemp();
+                        ((Activity) getContext()).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((ProgressBar) findViewById(R.id.progressBar)).setMax(targetCalories);
+                                ((ProgressBar) findViewById(R.id.progressBar)).setProgress(totalCalories);
+                                ((TextView) findViewById(R.id.time_spended)).setText(new SimpleDateFormat("H:m.s").format(new Date(totalTime)));
+                                ((TextView) findViewById(R.id.calories)).setText(totalCalories + " Cal");
+                                ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date((long) (totalTime + 1000 * (targetCalories - totalCalories) / CaloryesUtils.getBurningSpeedPerSecond(lastTemp)))));
+                                setVisibility(VISIBLE);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    update(dayId);
+                }
+            }, 1000);
+        }
     }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -263,74 +275,5 @@ public class CardView extends FrameLayout {
             return true;
         }
 
-    }
-
-    public void onEvent(DeviceChanged event) {
-        Iterator<TShirt> tsIterator = TShirt.findAll(TShirt.class);
-        Iterator<Insole> inIterator = Insole.findAll(Insole.class);
-        TShirt tShirt = null;
-        Insole insole = null;
-        if (tsIterator.hasNext())
-            tShirt = tsIterator.next();
-        if (inIterator.hasNext())
-            insole = inIterator.next();
-
-        if (com.udtech.thinice.utils.DateUtils.isToday(day.getDate()))
-            if (tShirt != null ? tShirt.isDisabled() : true && insole != null ? insole.isDisabled() : true) {
-                findViewById(R.id.imageTemp).setAlpha(0.0f);
-                findViewById(R.id.temperature).setAlpha(0.0f);
-            } else {
-                findViewById(R.id.imageTemp).setAlpha(1.0f);
-                findViewById(R.id.temperature).setAlpha(1.0f);
-            }
-        else {
-            findViewById(R.id.imageTemp).setAlpha(0.0f);
-            findViewById(R.id.temperature).setAlpha(0.0f);
-        }
-        day = Day.findById(Day.class, day.getId());
-        checkTasks();
-    }
-
-    public void onEvent(ShowFrontCard event) {
-        day = Day.findById(Day.class, day.getId());
-        checkTasks();
-    }
-    public void  onEvent(Settings settings){
-        ((Activity)getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                checkTasks();
-            }
-        });
-    }
-    public void update(final int dayId) {
-        if (dayId == this.dayId)
-            if (!FragmentFrontCard.isMoving()) {
-                if (SessionManager.getManager().checkDay(day)) {
-                    calories += SessionManager.getManager().getCurrentCaloriesRatePerSecond();
-                    spended += SessionManager.getManager().getSecondsRate() * 1000;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            update(dayId);
-                        }
-                    }, 1000);
-                }
-                ((ProgressBar) findViewById(R.id.progressBar)).setMax(CaloryesUtils.RECOMENDED_KKALORIES);
-                ((ProgressBar) findViewById(R.id.progressBar)).setProgress((int) (calories));
-                ((TextView) findViewById(R.id.time_spended)).setText(new SimpleDateFormat("H:m.s").format(new Date(spended)));
-                ((TextView) findViewById(R.id.calories)).setText(Math.round(calories) + " Cal");
-                float temp = 1/(SessionManager.getManager().getCurrentCaloriesRatePerSecond())*(1000-totalCalories);
-                ((TextView) findViewById(R.id.timeTotal)).setText(new SimpleDateFormat("HH:mm").format(new Date(
-                                (long) (temp + base))
-                ));
-            } else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        update(dayId);
-                    }
-                }, 1000);
-            }
     }
 }

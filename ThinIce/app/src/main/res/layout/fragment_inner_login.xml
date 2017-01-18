@@ -150,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="45dp"
             android:text="Forgot password?"
-            android:textColor="#ccc" />
+            android:textColor="#ccc"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.percent.PercentRelativeLayout>

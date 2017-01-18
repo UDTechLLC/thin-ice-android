@@ -80,7 +80,7 @@ public class FragmentProfileInfo extends Fragment {
             values.add("" + i);
         }
         ((Spinner) view.findViewById(R.id.year)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-        ((Spinner) view.findViewById(R.id.year)).setSelection(values.size()-1);
+        ((Spinner) view.findViewById(R.id.year)).setSelection(values.size() - 1);
         String[] months = new DateFormatSymbols().getMonths();
         ((Spinner) view.findViewById(R.id.months)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, months));
         values = new ArrayList<>();
@@ -209,11 +209,11 @@ public class FragmentProfileInfo extends Fragment {
             }
             if (user.getWeight() != 0 && user.getHeight() != 0)
                 return user;
-        }else{
-            if(((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("")){
+        } else {
+            if (((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("")) {
                 showWeightError("Empty value");
             }
-            if(((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")){
+            if (((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")) {
                 showHeightError("Empty value");
             }
         }
@@ -221,18 +221,18 @@ public class FragmentProfileInfo extends Fragment {
     }
 
     private void showWeightError(String string) {
-        ((TextView)getView().findViewById(R.id.weight)).setText("");
-        ((TextView)getView().findViewById(R.id.weightErr)).setText(string);
+        ((TextView) getView().findViewById(R.id.weight)).setText("");
+        ((TextView) getView().findViewById(R.id.weightErr)).setText(string);
         getView().findViewById(R.id.weightErr).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.weightStatus).setVisibility(View.VISIBLE);
-        ((ImageView)getView().findViewById(R.id.weightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
+        ((ImageView) getView().findViewById(R.id.weightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 
     private void showHeightError(String string) {
-        ((TextView)getView().findViewById(R.id.height)).setText("");
-        ((TextView)getView().findViewById(R.id.heightErr)).setText(string);
+        ((TextView) getView().findViewById(R.id.height)).setText("");
+        ((TextView) getView().findViewById(R.id.heightErr)).setText(string);
         getView().findViewById(R.id.heightErr).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.heightStatus).setVisibility(View.VISIBLE);
-        ((ImageView)getView().findViewById(R.id.heightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
+        ((ImageView) getView().findViewById(R.id.heightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 }

@@ -39,7 +39,7 @@ public class CardsAdapter extends ArrayAdapter<Day> {
         for (int i = days.size() - 1; i >= 0; i--) {
             reverseDayList.add(days.get(i));
         }
-        SessionManager.initDay(reverseDayList.get(0),context);
+        SessionManager.initDay(reverseDayList.get(0), context);
         return new CardsAdapter(context, reverseDayList);
     }
 

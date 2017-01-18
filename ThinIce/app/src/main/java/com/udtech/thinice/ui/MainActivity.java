@@ -1,9 +1,12 @@
 package com.udtech.thinice.ui;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -23,20 +26,12 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.udtech.thinice.R;
+import com.udtech.thinice.ThinIceService;
 import com.udtech.thinice.UserSessionManager;
-import com.udtech.thinice.bluetooth.BluetoothManager;
-import com.udtech.thinice.bluetooth.activity.BluetoothActivityInterface;
-import com.udtech.thinice.bluetooth.bus.BluetoothCommunicator;
-import com.udtech.thinice.bluetooth.bus.BondedDevice;
-import com.udtech.thinice.bluetooth.bus.ClientConnectionFail;
-import com.udtech.thinice.bluetooth.bus.ClientConnectionSuccess;
-import com.udtech.thinice.bluetooth.bus.ServeurConnectionFail;
-import com.udtech.thinice.bluetooth.bus.ServeurConnectionSuccess;
-import com.udtech.thinice.device.controll.DeviceController;
+import com.udtech.thinice.bluetooth.BluetoothLeService;
 import com.udtech.thinice.model.Achievement;
 import com.udtech.thinice.model.Day;
 import com.udtech.thinice.model.users.User;
-import com.udtech.thinice.StepService;
 import com.udtech.thinice.ui.main.FragmentAchievements;
 import com.udtech.thinice.ui.main.FragmentChangeRegistration;
 import com.udtech.thinice.ui.main.FragmentControl;
@@ -46,23 +41,49 @@ import com.udtech.thinice.ui.main.FragmentSettings;
 import com.udtech.thinice.ui.main.FragmentStatistics;
 import com.udtech.thinice.ui.main.MenuHolder;
 import com.udtech.thinice.utils.AchievementManager;
+import com.udtech.thinice.utils.DateUtils;
 
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by Sofi on 16.11.2015.
  */
-public class MainActivity extends SlidingFragmentActivity implements MenuHolder, BluetoothActivityInterface {
+public class MainActivity extends SlidingFragmentActivity implements MenuHolder {
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private LinearLayout menu;
     private int openedMenuItem;
-    protected BluetoothManager mBluetoothManager;
-    private ProgressDialog  mProgressDialog;
+    private ProgressDialog mProgressDialog;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Functionality limited");
+                    builder.setMessage("Since location access has not been granted, this app will not be able to discover devices when in the background.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+
+                    });
+                    builder.show();
+                }
+                return;
+            }
+        }
+    }
+
     private int getNavigationBarHeight() {
         Resources resources = getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
@@ -75,9 +96,23 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBluetoothManager = BluetoothManager.getInstance(this);
-        checkBluetoothAviability();
-       // startService(new Intent(this, StepService.class));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("This app needs location access");
+                builder.setMessage("Please grant location access so this app can detect device.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    }
+
+                });
+                builder.show();
+            }
+        }
+        //initialising main app functional
+        //startService(new Intent(this, ThinIceService.class));
         AchievementManager.getInstance(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -85,6 +120,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
             window.setStatusBarColor(Color.rgb(34, 46, 59));
         }
         setContentView(R.layout.activity_main);
+        //add menu view and main view in container
         View view = getLayoutInflater().inflate(R.layout.menu, null, false);
         setBehindContentView(view);
         menu = (LinearLayout) view.findViewById(R.id.menu);
@@ -108,16 +144,15 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        sm.setBehindWidth((int) (width * 0.4));
+        sm.setBehindWidth((int) (width * 0.4)); //Size of menu in percents 0.4 = 40%
         initMenu(menu);
         try {
             checkDay();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(!EventBus.getDefault().isRegistered(this))
+        if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        mBluetoothManager.setUUID(myUUID());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int navBarHeight = getNavigationBarHeight();
             findViewById(R.id.container).setPadding(0, 0, 0, navBarHeight);
@@ -231,7 +266,14 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
         dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), null);
     }
-
+    public void onEvent(final String log){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getBaseContext(),log,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     private void deselectMenuItem(FrameLayout item) {
         TextView itemText = (TextView) (((LinearLayout) item.getChildAt(0)).getChildAt(1));
         itemText.setTextColor(getResources().getColor(R.color.textViewColor));
@@ -259,20 +301,19 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
     @Override
     protected void onPause() {
         super.onPause();
-        AchievementManager.getInstance(getApplicationContext()).commit(getApplicationContext());
+        AchievementManager.getInstance(getApplicationContext()).commit(getApplicationContext()); // committing for unexpected closing of app
     }
 
-    private void checkDay() throws ParseException {
+    private void checkDay() throws ParseException {// check is new day is already created and creating it if it is not
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         Iterator<Day> dayList = Day.findAll(Day.class);
         boolean created = false;
         User user = UserSessionManager.getSession(getApplicationContext());
+        Date currentDate = new Date();
         while (dayList.hasNext()) {
             Day day = dayList.next();
-            Calendar dayCalendar = Calendar.getInstance();
-            dayCalendar.setTime(day.getDate());
-            if ((dayCalendar.get(Calendar.DAY_OF_YEAR) == calendar.get(Calendar.DAY_OF_YEAR) && (dayCalendar.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)))) {
+            if (DateUtils.isSameDay(day.getDate(), currentDate)) {
                 if (user.equals(day.getUser())) {
                     created = true;
                     break;
@@ -286,126 +327,15 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, StepService.class));
+        //closing service< bluetooth connections and event bus registration
+        stopService(new Intent(this, ThinIceService.class));
         EventBus.getDefault().unregister(this);
-        closeAllConnexion();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == BluetoothManager.REQUEST_DISCOVERABLE_CODE) {
-            if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_REFUSED) {
-            } else if (resultCode == BluetoothManager.BLUETOOTH_REQUEST_ACCEPTED) {
-            } else {
-            }
-        }
-    }
-
-    public void closeAllConnexion(){
-        mBluetoothManager.closeAllConnexion();
-    }
-
-    public void checkBluetoothAviability(){
-        if(!mBluetoothManager.checkBluetoothAviability()){
-            onBluetoothNotAviable();
-        }
-    }
-
-    public void setTimeDiscoverable(int timeInSec){
-        mBluetoothManager.setTimeDiscoverable(timeInSec);
-    }
-
-    public void startDiscovery(){
-        setTimeDiscoverable(200);
-        mBluetoothManager.startDiscovery();
-    }
-
-    public void scanAllBluetoothDevice(){
-        mBluetoothManager.scanAllBluetoothDevice();
-    }
-
-    public void createServeur(){
-        mBluetoothManager.createServeur();
-    }
-
-    public void createClient(String addressMac){
-        mBluetoothManager.createClient(addressMac);
-    }
-
-    public void sendMessage(String message){
-        mBluetoothManager.sendMessage(message);
     }
 
 
-    public void onEvent(ClientConnectionSuccess event){
-        mBluetoothManager.isConnected = true;
-        onClientConnectionSuccess();
-    }
-
-    public void onEvent(ClientConnectionFail event){
-        mBluetoothManager.isConnected = false;
-        onClientConnectionFail();
-        mBluetoothManager.resetClient();
-    }
-
-    public void onEven(ServeurConnectionSuccess event){
-        mBluetoothManager.isConnected = true;
-        onServeurConnectionSuccess();
-    }
-
-    @Override
-    public void resetCurrentClient() {
-        mBluetoothManager.resetClient();
-    }
-
-    public void onEvent(ServeurConnectionFail event){
-        mBluetoothManager.isConnected = false;
-        onServeurConnectionFail();
-        mBluetoothManager.resetServer();
-    }
-
-    public void onEven(BluetoothCommunicator event){
-        onBluetoothCommunicator(event.mMessageReceive);
-    }
-
-    public void onEventMainThread(BondedDevice event){
-        //mBluetoothManager.sendMessage("BondedDevice");
-    }
-
-    public UUID myUUID(){
-        return  UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
-    }
-    public void onClientConnectionSuccess(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, "Connection success.", Toast.LENGTH_LONG);
-            }
-        });
-    }
-    public void onClientConnectionFail(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, "Connection failed try again later.", Toast.LENGTH_LONG);
-            }
-        });
-    }
-    public void onServeurConnectionSuccess(){
-
-    }
-    public void onServeurConnectionFail(){
-
-    }
-    public void onBluetoothCommunicator(final String messageReceive){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, messageReceive, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-    public void onBluetoothNotAviable(){
-
-    }
 }

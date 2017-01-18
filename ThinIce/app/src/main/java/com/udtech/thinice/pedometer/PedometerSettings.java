@@ -7,11 +7,10 @@ import android.content.SharedPreferences;
  */
 public class PedometerSettings {
 
-    SharedPreferences mSettings;
-
     public static int M_NONE = 1;
     public static int M_PACE = 2;
     public static int M_SPEED = 3;
+    SharedPreferences mSettings;
 
     public PedometerSettings(SharedPreferences settings) {
         mSettings = settings;
@@ -24,8 +23,7 @@ public class PedometerSettings {
     public float getStepLength() {
         try {
             return Float.valueOf(mSettings.getString("step_length", "20").trim());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             // TODO: reset value, & notify user somehow
             return 0f;
         }
@@ -34,8 +32,7 @@ public class PedometerSettings {
     public float getBodyWeight() {
         try {
             return Float.valueOf(mSettings.getString("body_weight", "50").trim());
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             // TODO: reset value, & notify user somehow
             return 0f;
         }
@@ -62,16 +59,16 @@ public class PedometerSettings {
     public int getDesiredPace() {
         return mSettings.getInt("desired_pace", 180); // steps/minute
     }
+
     public float getDesiredSpeed() {
         return mSettings.getFloat("desired_speed", 4f); // km/h or mph
     }
+
     public void savePaceOrSpeedSetting(int maintain, float desiredPaceOrSpeed) {
         SharedPreferences.Editor editor = mSettings.edit();
         if (maintain == M_PACE) {
-            editor.putInt("desired_pace", (int)desiredPaceOrSpeed);
-        }
-        else
-        if (maintain == M_SPEED) {
+            editor.putInt("desired_pace", (int) desiredPaceOrSpeed);
+        } else if (maintain == M_SPEED) {
             editor.putFloat("desired_speed", desiredPaceOrSpeed);
         }
         editor.commit();
@@ -83,35 +80,41 @@ public class PedometerSettings {
     public boolean shouldSpeak() {
         return mSettings.getBoolean("speak", false);
     }
+
     public float getSpeakingInterval() {
         try {
             return Float.valueOf(mSettings.getString("speaking_interval", "1"));
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             // This could not happen as the value is selected from a list.
             return 1;
         }
     }
+
     public boolean shouldTellSteps() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_steps", false);
     }
+
     public boolean shouldTellPace() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_pace", false);
     }
+
     public boolean shouldTellDistance() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_distance", false);
     }
+
     public boolean shouldTellSpeed() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_speed", false);
     }
+
     public boolean shouldTellCalories() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_calories", false);
     }
+
     public boolean shouldTellFasterslower() {
         return mSettings.getBoolean("speak", false)
                 && mSettings.getBoolean("tell_fasterslower", false);
@@ -120,6 +123,7 @@ public class PedometerSettings {
     public boolean wakeAggressively() {
         return mSettings.getString("operation_level", "run_in_background").equals("wake_up");
     }
+
     public boolean keepScreenOn() {
         return mSettings.getString("operation_level", "run_in_background").equals("keep_screen_on");
     }
@@ -154,7 +158,7 @@ public class PedometerSettings {
 
     public boolean isNewStart() {
         // activity last paused more than 10 minutes ago
-        return mSettings.getLong("last_seen", 0) < Utils.currentTimeInMillis() - 1000*60*10;
+        return mSettings.getLong("last_seen", 0) < Utils.currentTimeInMillis() - 1000 * 60 * 10;
     }
 
 }

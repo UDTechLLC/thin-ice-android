@@ -8,12 +8,12 @@ import com.udtech.thinice.model.devices.Device;
 public class DeleteDevice {
     private Device device;
 
-    public Device getDevice() {
-        return device;
-    }
-
     public DeleteDevice(Device device) {
 
         this.device = device;
+    }
+
+    public Device getDevice() {
+        return device;
     }
 }

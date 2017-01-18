@@ -1,7 +1,5 @@
 package com.udtech.thinice.eventbus.model.devices;
 
-import android.bluetooth.BluetoothDevice;
-
 import com.udtech.thinice.model.devices.Device;
 
 /**
@@ -9,18 +7,25 @@ import com.udtech.thinice.model.devices.Device;
  */
 public class PairDevice {
     private Device device;
-    private BluetoothDevice bluetoothDevice;
+    private String mac;
+    private String name;
 
-    public PairDevice(Device device, BluetoothDevice bluetoothDevice) {
+    public PairDevice(Device device, String mac, String name) {
         this.device = device;
-        this.bluetoothDevice = bluetoothDevice;
+        this.mac = mac;
+        this.name = name;
+    }
+
+    public String getMac() {
+        return mac;
     }
 
     public Device getDevice() {
         return device;
+
     }
 
-    public BluetoothDevice getBluetoothDevice() {
-        return bluetoothDevice;
+    public String getName() {
+        return name;
     }
 }

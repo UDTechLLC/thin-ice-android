@@ -12,13 +12,13 @@ public class Steps extends SugarRecord<Steps> {
     private String date;
     private long steps;
 
+    public Steps() {
+    }
+
     public static Steps createNewTodaySteps() {
         Steps steps = new Steps();
         steps.date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         return steps;
-    }
-
-    public Steps() {
     }
 
     public void incrementSteps() {
