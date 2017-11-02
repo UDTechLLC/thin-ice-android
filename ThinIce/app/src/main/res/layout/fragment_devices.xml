@@ -39,16 +39,6 @@
                     android:textIsSelectable="false"
                     android:id="@+id/name" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Connected devices"
-                    android:textColor="#33c6cb"
-                    android:layout_margin="1px"
-                    android:textSize="13dp"
-                    android:id="@+id/devices_tittle" />
             </LinearLayout>
         </LinearLayout>
 
@@ -66,22 +56,28 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/tshirt_container"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:id="@+id/imageView3"
                     android:layout_gravity="center"
                     android:src="@mipmap/ic_tshirt" />
-
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:weightSum="2"
                     android:touchscreenBlocksFocus="true"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/charge_container">
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -129,79 +125,37 @@
                             android:textColor="@color/colorAccent" />
                     </FrameLayout>
                 </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/charge_small"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/ic_charge" />
+                </FrameLayout>
             </LinearLayout>
             <View android:layout_height="match_parent"
                 android:layout_width="1px"
                 android:background="#33c6cb"
                 android:id="@+id/separator" />
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <FrameLayout
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:id="@+id/insoles_container"
-                android:layout_marginLeft="10dp">
+                android:layout_height="match_parent">
+
+                <View android:layout_width="50dp" android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_power_off"
+                    android:padding="5dp"
+                    android:id="@+id/power" />
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:id="@+id/imageView4"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/charge"
                     android:layout_gravity="center"
-                    android:src="@mipmap/ic_foots" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="2"
-                    android:layout_marginTop="10dp">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:id="@+id/charge_insoles"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_marginRight="7dp">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/ic_charge_empty"
-                                android:layout_margin="1px"/>
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/ic_charge_empty"
-                                android:layout_margin="1px"/>
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@mipmap/ic_charge_fill"
-                                android:layout_margin="1px"/>
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="30%"
-                            android:id="@+id/charge_insoles_text"
-                            android:layout_gravity="left|center_vertical"
-                            android:textColor="@color/colorAccent" />
-                    </FrameLayout>
-                </LinearLayout>
-            </LinearLayout>
+                    android:src="@mipmap/ic_charge" />
+            </FrameLayout>
         </LinearLayout>
 
     </LinearLayout>

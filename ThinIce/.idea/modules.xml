@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ThinIce.iml" filepath="$PROJECT_DIR$/ThinIce.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/closableview/closableview.iml" filepath="$PROJECT_DIR$/closableview/closableview.iml" />
     </modules>
   </component>
 </project>

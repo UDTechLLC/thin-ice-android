@@ -15,7 +15,8 @@
             android:src="@drawable/btn_menu"
             android:padding="15dp"
             android:id="@+id/menu"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,16 +27,17 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/menu"
             android:layout_toEndOf="@+id/menu"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" />
+            android:layout_marginLeft="15dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_help"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:id="@+id/action" />
 
     </RelativeLayout>
     <View
@@ -55,7 +57,7 @@
         app:stl_defaultTabBackground="?attr/selectableItemBackground"
         app:stl_defaultTabTextAllCaps="false"
         app:stl_defaultTabTextColor="@drawable/color_tabs"
-        app:stl_defaultTabTextHorizontalPadding="40dp"
+        app:stl_defaultTabTextHorizontalPadding="@dimen/tab_width_settings"
         app:stl_defaultTabTextMinWidth="0dp"
         app:stl_defaultTabTextSize="18sp"
         app:stl_distributeEvenly="false"

@@ -8,12 +8,12 @@ import com.udtech.thinice.model.users.User;
 public class CreatedUser {
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-
     public CreatedUser(User user) {
 
         this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

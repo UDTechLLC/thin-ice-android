@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="shadow_width">13dp</dimen>
+    <dimen name="tab_width">43dp</dimen>
+    <dimen name="tab_width_statistics">13dp</dimen>
+    <dimen name="tab_width_settings">38dp</dimen>
+</resources>

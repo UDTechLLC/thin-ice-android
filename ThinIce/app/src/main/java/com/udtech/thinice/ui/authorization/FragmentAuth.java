@@ -1,12 +1,19 @@
 package com.udtech.thinice.ui.authorization;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -92,11 +99,17 @@ public class FragmentAuth extends Fragment {
                                 newUser.setEmail(user.email);
                                 if (user.name.contains(" ")) {
                                     newUser.setFirstName(user.name.substring(0, user.name.lastIndexOf(" ")));
-                                    newUser.setLastName(user.name.substring(user.name.lastIndexOf(" "), user.name.length()));
+                                    newUser.setLastName(user.name.substring(user.name.lastIndexOf(" ")+1, user.name.length()));
                                 } else {
                                     newUser.setFirstName(user.name);
                                 }
+                                CookieSyncManager.createInstance(getActivity());
+                                CookieManager cookieManager = CookieManager.getInstance();
+                                cookieManager.removeSessionCookie();
+                                Twitter.getSessionManager().clearActiveSession();
+                                Twitter.logOut();
                                 saveSession(newUser);
+
                             }
 
                         });
@@ -124,7 +137,7 @@ public class FragmentAuth extends Fragment {
                                             Iterator<com.udtech.thinice.model.users.User> users = com.udtech.thinice.model.users.User.findAll(com.udtech.thinice.model.users.User.class);
                                             while (users.hasNext()) {
                                                 com.udtech.thinice.model.users.User savedUser = users.next();
-                                                if (savedUser.getTwitterId() != 0 ? savedUser.getTwitterId() == Integer.valueOf(me.optString("id")) : false) {
+                                                if (savedUser.getFacebookId() != 0 ? savedUser.getFacebookId() == id : false) {
                                                     openSession(savedUser);
                                                     return;
                                                 }
@@ -132,7 +145,8 @@ public class FragmentAuth extends Fragment {
                                             innerUser = new com.udtech.thinice.model.users.User();
                                             innerUser.setImageUrl("https://graph.facebook.com/" + id + "/picture?type=large");
                                             innerUser.setFirstName(me.optString("name").substring(0, me.optString("name").lastIndexOf(' ')));
-                                            innerUser.setLastName(me.optString("name").substring(me.optString("name").lastIndexOf(' ')));
+                                            innerUser.setLastName(me.optString("name").substring(me.optString("name").lastIndexOf(' ')+1));
+                                            innerUser.setFacebookId(id);
                                             saveSession(innerUser);
                                         }
 
@@ -150,6 +164,16 @@ public class FragmentAuth extends Fragment {
                 });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        CookieSyncManager.createInstance(getActivity());
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeSessionCookie();
+        Twitter.getSessionManager().clearActiveSession();
+        Twitter.logOut();
+    }
+
     @OnClick(R.id.login)
     public void showLogIn() {
         ((LoginActivity) getActivity()).showLoginScreen();
@@ -157,13 +181,41 @@ public class FragmentAuth extends Fragment {
 
     @OnClick(R.id.fblogin)
     public void showLogInFacebook() {
-        LoginManager.getInstance().logOut();
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile, email"));
+        if (isOnline()) {
+            LoginManager.getInstance().logOut();
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile, email"));
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Connection failed")
+                    .setMessage("You need to be connected to the internet to log in to your account.")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            builder.create().show();
+        }
     }
 
     @OnClick(R.id.twlogin)
     public void showLogInTwitter() {
-        twitterLoginButton.performClick();
+        if (isOnline()) {
+            twitterLoginButton.performClick();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Connection failed")
+                    .setMessage("You need to be connected to the internet to log in to your account.")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+            builder.create().show();
+        }
     }
 
     @OnClick(R.id.registration)
@@ -176,6 +228,13 @@ public class FragmentAuth extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
         twitterLoginButton.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void saveSession(com.udtech.thinice.model.users.User user) {

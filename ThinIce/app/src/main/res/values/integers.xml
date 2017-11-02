@@ -2,4 +2,14 @@
 <resources>
     <integer name="card_flip_time_full">700</integer>
     <integer name="card_flip_time_half">350</integer>
+    <array name="temp_values_celsium">
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+    </array>
+    <array name="temp_values_fahrenheit">
+        <item>57</item>
+        <item>60</item>
+        <item>64</item>
+    </array>
 </resources>

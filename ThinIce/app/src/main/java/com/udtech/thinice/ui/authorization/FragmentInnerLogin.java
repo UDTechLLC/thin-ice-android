@@ -1,15 +1,16 @@
 package com.udtech.thinice.ui.authorization;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by JOkolot on 04.11.2015.
@@ -41,35 +43,37 @@ public class FragmentInnerLogin extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    getActivity().onBackPressed();
-                    getActivity().onBackPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
         ButterKnife.bind(this, view);
-        pass.addTextChangedListener(new TextWatcher() {
+        new Thread(new Runnable() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (email.requestFocus()) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(email, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    }
+                });
             }
-
+        }).start();
+        pass.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-                if (s.equals("\n")) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Iterator<User> users = User.findAll(User.class);
                     boolean contains = false;
                     while (users.hasNext()) {
                         User dbUser = users.next();
-                        if (dbUser.getEmail() == email.getText().toString()) {
+                        if (dbUser.getEmail()!=null&&dbUser.getEmail().equals(email.getText().toString()) && pass.getText().toString().equals(dbUser.getPassword())) {
                             contains = true;
-                            UserSessionManager.saveSession(dbUser,getContext());
+                            UserSessionManager.saveSession(dbUser, getContext());
                         }
                     }
                     if (!contains) {
@@ -80,11 +84,7 @@ public class FragmentInnerLogin extends Fragment {
                         getActivity().finish();
                     }
                 }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                return false;
             }
         });
         pass.setOnKeyListener(new View.OnKeyListener() {
@@ -126,6 +126,18 @@ public class FragmentInnerLogin extends Fragment {
                                        }
 
         );
+    }
+
+    @OnClick(R.id.back)
+    public void onBack() {
+        if (getActivity() != null) {
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            getActivity().onBackPressed();
+        }
     }
 
     private void showError(String s) {

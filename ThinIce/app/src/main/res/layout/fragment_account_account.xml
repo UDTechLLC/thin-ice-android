@@ -3,157 +3,174 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/bg_form"
-        android:paddingBottom="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp"
-        android:id="@+id/frameLayout">
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/bg_form"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:ems="10"
-                        android:hint="Email"
-                        android:inputType="textPersonName"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="15dp"
-                        android:paddingLeft="15dp"
-                        android:paddingBottom="3dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/emailErr"
-                        android:layout_gravity="left|top"
-                        android:layout_marginLeft="15dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/emailStatus"
-                        android:layout_gravity="right|top"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="0dp" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Password" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/passErr"
-                        android:layout_gravity="left|top"
-                        android:layout_marginLeft="15dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/passStatus"
-                        android:layout_gravity="right|top"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="0dp" />
-
-                    <EditText
-                        android:id="@+id/pass"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:paddingBottom="3dp"
-                        android:paddingLeft="15dp"
-                        android:layout_gravity="left|top"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="15dp" />
-                </FrameLayout>
-
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/passConfirmErr"
-                        android:layout_gravity="left|top"
-                        android:layout_marginLeft="15dp" />
+                        android:text="Email"
+                        android:textSize="18dp" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/passConfirmStatus"
-                        android:layout_gravity="right|top"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="0dp" />
-
-                    <EditText
-                        android:id="@+id/passConfirm"
+                    <FrameLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="12dp"
+                            android:ems="10"
+                            android:hint="Email"
+                            android:inputType="textPersonName"
+                            android:paddingBottom="3dp"
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
+
+                        <TextView
+                            android:id="@+id/emailErr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginLeft="15dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
+
+                        <ImageView
+                            android:id="@+id/emailStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|top"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Confirm Password"
-                        android:inputType="textPassword"
-                        android:paddingBottom="3dp"
-                        android:paddingLeft="15dp"
-                        android:layout_gravity="left|top"
-                        android:layout_marginBottom="15dp" />
-                </FrameLayout>
+                        android:text="Password"
+                        android:textSize="18dp" />
 
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Save"
-        android:id="@+id/save"
-        android:gravity="center"
-        android:layout_below="@+id/frameLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/bg_button_blue"
-        android:textColor="#fff" />
+                        <TextView
+                            android:id="@+id/passErr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginLeft="15dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
+
+                        <ImageView
+                            android:id="@+id/passStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|top"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp" />
+
+                        <EditText
+                            android:id="@+id/pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="12dp"
+                            android:ems="10"
+                            android:hint="Password"
+                            android:inputType="textPassword"
+                            android:paddingBottom="3dp"
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:id="@+id/passConfirmErr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginLeft="15dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#f56464" />
+
+                        <ImageView
+                            android:id="@+id/passConfirmStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|top"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="0dp" />
+
+                        <EditText
+                            android:id="@+id/passConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|top"
+                            android:layout_marginBottom="15dp"
+                            android:ems="10"
+                            android:hint="Confirm Password"
+                            android:inputType="textPassword"
+                            android:paddingBottom="3dp"
+                            android:paddingLeft="15dp"
+                            android:maxLength="20" />
+                    </FrameLayout>
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/frameLayout"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_button_blue"
+                android:gravity="center"
+                android:text="Save"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#fff"
+                android:layout_marginBottom="10dp" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

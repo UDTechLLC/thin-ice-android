@@ -7,6 +7,7 @@
         <item name="android:textViewStyle">@style/textViewStyle</item>
         <item name="android:editTextStyle">@style/editTextStyle</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
     <style name="textViewStyle">
         <item name="android:textColor">@color/textViewColor</item>
@@ -14,7 +15,8 @@
     <style name="editTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:background">@drawable/bg_edit_text</item>
-        <item name="android:textColor">#cfff</item>
+        <item name="android:textColor">#dfff</item>
+        <item name="android:textColorHint">#dfff</item>
         <item name="android:layout_marginTop">12dp</item>
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:paddingBottom">3dp</item>

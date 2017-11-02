@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="60dp"
+    android:orientation="vertical" android:layout_width="40dp"
     android:layout_height="match_parent"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
     android:paddingBottom="10dp"
     android:paddingTop="3dp">
 
@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/icon"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="2dp" />
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,14 +21,15 @@
         android:text="Medium Text ggggg"
         android:id="@+id/description"
         android:layout_gravity="center_horizontal"
-        android:textSize="12dp" />
+        android:textSize="11dp" />
 
     <View android:layout_height="1px"
         android:layout_width="match_parent"
         android:layout_marginBottom="8dp"
         android:background="#33c6cb"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="3dp" />
+        android:alpha="0.3"
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,5 +38,5 @@
         android:text="Medium Text"
         android:id="@+id/value"
         android:layout_gravity="center_horizontal"
-        android:textSize="12dp" />
+        android:textSize="11dp" />
 </LinearLayout>

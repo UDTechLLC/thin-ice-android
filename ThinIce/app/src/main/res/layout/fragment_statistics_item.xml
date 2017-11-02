@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,30 +12,72 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginRight="20dp">
 
             <com.udtech.thinice.ui.widgets.DecoView
+                android:id="@+id/graph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/graph"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Done"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#33c6cb"
+                        android:textSize="17dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:alpha="0.3"
+                        android:background="#33c6cb" />
+
+                    <TextView
+                        android:id="@+id/done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="700 hrs"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#33c6cb"
+                        android:textSize="17dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:alpha="0.3"
+                    android:background="@color/colorPrimary"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp" />
                 <LinearLayout
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -50,54 +91,22 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1px"
+                        android:alpha="0.3"
                         android:background="#33c6cb" />
 
                     <TextView
+                        android:id="@+id/planned"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:text="1500 hrs"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/colorAccentDark"
-                        android:id="@+id/planned"
                         android:textSize="19dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:layout_alignParentLeft="true"
-                    android:layout_margin="10dp">
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="Done"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#33c6cb"
-                        android:textSize="19dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:background="#33c6cb" />
-
-                    <TextView
-                        android:id="@+id/done"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="700 hrs"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="#33c6cb"
-                        android:textSize="19dp" />
-                </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
         </FrameLayout>
 
         <FrameLayout
@@ -110,19 +119,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
                 android:layout_marginLeft="23dp"
+                android:layout_marginRight="23dp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_marginRight="23dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:drawableLeft="@mipmap/ic_flame"
+                    android:drawableLeft="@mipmap/ic_time"
                     android:drawablePadding="10dp"
                     android:inputType="text"
-                    android:text="Burnt Calories"
+                    android:text="Time"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#ccc"
                     android:textSize="19dp" />
@@ -130,10 +139,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
+                    android:alpha="0.3"
                     android:background="@color/colorPrimary" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -147,10 +157,10 @@
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|top"
+                android:layout_marginLeft="23dp"
                 android:layout_marginRight="23dp"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_marginLeft="23dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,9 +176,11 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
+                    android:alpha="0.3"
                     android:background="@color/colorPrimary" />
 
                 <TextView
+                    android:id="@+id/avarage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

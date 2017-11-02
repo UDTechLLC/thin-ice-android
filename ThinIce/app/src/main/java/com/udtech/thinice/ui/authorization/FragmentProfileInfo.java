@@ -3,6 +3,7 @@ package com.udtech.thinice.ui.authorization;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,26 +40,52 @@ public class FragmentProfileInfo extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    getActivity().onBackPressed();
+                    getActivity().onBackPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
         getView().findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
+                getActivity().onBackPressed();
             }
         });
-        getView().findViewById(R.id.weight).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        getView().findViewById(R.id.weight).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                getView().findViewById(R.id.weightErr).setVisibility(View.INVISIBLE);
-                getView().findViewById(R.id.weightStatus).setVisibility(View.INVISIBLE);
+            public void onClick(View v) {
+                view.findViewById(R.id.weightErr).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.weightStatus).setVisibility(View.INVISIBLE);
             }
         });
-        getView().findViewById(R.id.height).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        view.findViewById(R.id.weight).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                getView().findViewById(R.id.heightErr).setVisibility(View.INVISIBLE);
-                getView().findViewById(R.id.heightStatus).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.weightErr).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.weightStatus).setVisibility(View.INVISIBLE);
+            }
+        });
+        view.findViewById(R.id.height).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                view.findViewById(R.id.heightErr).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.heightStatus).setVisibility(View.INVISIBLE);
+            }
+        });
+        view.findViewById(R.id.height).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.heightErr).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.heightStatus).setVisibility(View.INVISIBLE);
             }
         });
         ((Spinner) view.findViewById(R.id.sex)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, Arrays.asList(new String[]{"Male", "Female"})));
@@ -67,7 +94,7 @@ public class FragmentProfileInfo extends Fragment {
             values.add("" + i);
         }
         ((Spinner) view.findViewById(R.id.year)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-        ((Spinner) view.findViewById(R.id.year)).setSelection(values.size()-1);
+        ((Spinner) view.findViewById(R.id.year)).setSelection(values.size() - 1);
         String[] months = new DateFormatSymbols().getMonths();
         ((Spinner) view.findViewById(R.id.months)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, months));
         values = new ArrayList<>();
@@ -77,27 +104,27 @@ public class FragmentProfileInfo extends Fragment {
         ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
         ((Spinner) view.findViewById(R.id.year)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View childView, int position, long id) {
                 int g = (int) (1900 + position);
-                if (getView().findViewById(R.id.days) != null)
-                    if (g % 4 == 0 && ((g % 100 != 0) || (g % 400 == 0)) && ((Spinner) getView().findViewById(R.id.months)).getSelectedItemPosition() == 1) {
+                if (view.findViewById(R.id.days) != null)
+                    if (g % 4 == 0 && ((g % 100 != 0) || (g % 400 == 0)) && ((Spinner) view.findViewById(R.id.months)).getSelectedItemPosition() == 1) {
                         int days = 29;
                         List<String> values = new ArrayList<>();
                         for (int i = 0; i < days; i++) {
                             values.add("" + (i + 1));
                         }
-                        int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                        ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                        ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
-                    } else if ((((Spinner) getView().findViewById(R.id.months)).getSelectedItem()).equals("2")) {
+                        int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                        ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                        ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                    } else if ((((Spinner) view.findViewById(R.id.months)).getSelectedItem()).equals("2")) {
                         int days = 28;
                         List<String> values = new ArrayList<>();
                         for (int i = 0; i < days; i++) {
                             values.add("" + (i + 1));
                         }
-                        int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                        ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                        ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                        int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                        ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                        ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
                     }
             }
 
@@ -108,18 +135,18 @@ public class FragmentProfileInfo extends Fragment {
         });
         ((Spinner) view.findViewById(R.id.months)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View childview, int position, long id) {
                 if (position == 1) {
-                    int g = ((Spinner) getView().findViewById(R.id.year)).getSelectedItemPosition();
-                    if (g % 4 == 0 && ((g % 100 != 0) || (g % 400 == 0)) && ((Spinner) getView().findViewById(R.id.months)).getSelectedItemPosition() == 1) {
+                    int g = ((Spinner) view.findViewById(R.id.year)).getSelectedItemPosition();
+                    if (g % 4 == 0 && ((g % 100 != 0) || (g % 400 == 0)) && ((Spinner) view.findViewById(R.id.months)).getSelectedItemPosition() == 1) {
                         int days = 29;
                         List<String> values = new ArrayList<>();
                         for (int i = 0; i < days; i++) {
                             values.add("" + (i + 1));
                         }
-                        int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                        ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                        ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                        int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                        ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                        ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
                     } else {
 
                         int days = 28;
@@ -127,9 +154,9 @@ public class FragmentProfileInfo extends Fragment {
                         for (int i = 0; i < days; i++) {
                             values.add("" + (i + 1));
                         }
-                        int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                        ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                        ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                        int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                        ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                        ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
                     }
                 } else if (position == 3 || position == 5 || position == 8 || position == 10) {
                     int days = 30;
@@ -137,19 +164,19 @@ public class FragmentProfileInfo extends Fragment {
                     for (int i = 0; i < days; i++) {
                         values.add("" + (i + 1));
                     }
-                    int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                    ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                    ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                    int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                    ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                    ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
                 } else {
                     int days = 31;
                     List<String> values = new ArrayList<>();
                     for (int i = 0; i < days; i++) {
                         values.add("" + (i + 1));
                     }
-                    if (((Spinner) getView().findViewById(R.id.days)) != null) {
-                        int temp = ((Spinner) getView().findViewById(R.id.days)).getSelectedItemPosition();
-                        ((Spinner) getView().findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
-                        ((Spinner) getView().findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
+                    if (((Spinner) view.findViewById(R.id.days)) != null) {
+                        int temp = ((Spinner) view.findViewById(R.id.days)).getSelectedItemPosition();
+                        ((Spinner) view.findViewById(R.id.days)).setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.item_spinner, R.id.tittle, values));
+                        ((Spinner) view.findViewById(R.id.days)).setSelection(temp < days ? temp : days - 1);
                     }
                 }
             }
@@ -159,7 +186,7 @@ public class FragmentProfileInfo extends Fragment {
 
             }
         });
-        getView().findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = new User();
@@ -167,8 +194,8 @@ public class FragmentProfileInfo extends Fragment {
                 user.setPassword(getArguments().getString("pass"));
                 user.setFirstName(getArguments().getString("first_name", ""));
                 user.setLastName(getArguments().getString("last_name", ""));
-                user.setTwitterId(getArguments().getInt("twitterid", 0));
-                user.setFacebookId(getArguments().getInt("facebookid", 0));
+                user.setTwitterId(getArguments().getLong("twitterid", 0));
+                user.setFacebookId(getArguments().getLong("facebookid", 0));
                 user = collectData(user);
                 if (user != null) {
                     user.save();
@@ -196,11 +223,11 @@ public class FragmentProfileInfo extends Fragment {
             }
             if (user.getWeight() != 0 && user.getHeight() != 0)
                 return user;
-        }else{
-            if(((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("")){
+        } else {
+            if (((EditText) getView().findViewById(R.id.weight)).getText().toString().equals("")) {
                 showWeightError("Empty value");
             }
-            if(((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")){
+            if (((EditText) getView().findViewById(R.id.height)).getText().toString().equals("")) {
                 showHeightError("Empty value");
             }
         }
@@ -208,18 +235,18 @@ public class FragmentProfileInfo extends Fragment {
     }
 
     private void showWeightError(String string) {
-        ((TextView)getView().findViewById(R.id.weight)).setText("");
-        ((TextView)getView().findViewById(R.id.weightErr)).setText(string);
+        ((TextView) getView().findViewById(R.id.weight)).setText("");
+        ((TextView) getView().findViewById(R.id.weightErr)).setText(string);
         getView().findViewById(R.id.weightErr).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.weightStatus).setVisibility(View.VISIBLE);
-        ((ImageView)getView().findViewById(R.id.weightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
+        ((ImageView) getView().findViewById(R.id.weightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 
     private void showHeightError(String string) {
-        ((TextView)getView().findViewById(R.id.height)).setText("");
-        ((TextView)getView().findViewById(R.id.heightErr)).setText(string);
+        ((TextView) getView().findViewById(R.id.height)).setText("");
+        ((TextView) getView().findViewById(R.id.heightErr)).setText(string);
         getView().findViewById(R.id.heightErr).setVisibility(View.VISIBLE);
         getView().findViewById(R.id.heightStatus).setVisibility(View.VISIBLE);
-        ((ImageView)getView().findViewById(R.id.heightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
+        ((ImageView) getView().findViewById(R.id.heightStatus)).setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 }

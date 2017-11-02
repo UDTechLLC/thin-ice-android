@@ -8,10 +8,12 @@ import com.udtech.thinice.model.devices.Device;
 public class ShowBackDevice {
     private Device device;
     private boolean reverse;
+
     public ShowBackDevice(Device device) {
         this.device = device;
         reverse = false;
     }
+
     public ShowBackDevice(Device device, boolean reverse) {
         this.device = device;
         this.reverse = reverse;
