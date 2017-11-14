@@ -15,7 +15,7 @@ import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.eventbus.model.user.SaveUser;
 import com.udtech.thinice.model.users.User;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -24,23 +24,23 @@ import de.greenrobot.event.EventBus;
  * Created by JOkolot on 05.11.2015.
  */
 public class FragmentAccount extends UserDataForm {
-    @Bind(R.id.email)
+    @BindView(R.id.email)
     EditText email;
-    @Bind(R.id.pass)
+    @BindView(R.id.pass)
     EditText pass;
-    @Bind(R.id.passConfirm)
+    @BindView(R.id.passConfirm)
     EditText passConfirm;
-    @Bind(R.id.emailErr)
+    @BindView(R.id.emailErr)
     TextView emailError;
-    @Bind(R.id.passErr)
+    @BindView(R.id.passErr)
     TextView passError;
-    @Bind(R.id.passConfirmErr)
+    @BindView(R.id.passConfirmErr)
     TextView passConfirmError;
-    @Bind(R.id.emailStatus)
+    @BindView(R.id.emailStatus)
     ImageView emailStatus;
-    @Bind(R.id.passStatus)
+    @BindView(R.id.passStatus)
     ImageView passStatus;
-    @Bind(R.id.passConfirmStatus)
+    @BindView(R.id.passConfirmStatus)
     ImageView passConfirmStatus;
 
     @Nullable

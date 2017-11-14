@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by JOkolot on 05.11.2015.
  */
-public class Session extends SugarRecord<Session> {
+public class Session extends SugarRecord {
     private Day day;
     private Date startTime;
     private Date endTime;
@@ -60,9 +60,10 @@ public class Session extends SugarRecord<Session> {
     }
 
     @Override
-    public void save() {
-        super.save();
+    public long save() {
+        long id = super.save();
         day.recalc();
+        return id;
     }
 
     public void addStep() {

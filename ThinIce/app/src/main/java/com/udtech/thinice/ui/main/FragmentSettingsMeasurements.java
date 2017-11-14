@@ -16,7 +16,7 @@ import com.udtech.thinice.utils.AchievementManager;
 
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
@@ -24,13 +24,13 @@ import de.greenrobot.event.EventBus;
  * Created by JOkolot on 27.11.2015.
  */
 public class FragmentSettingsMeasurements extends Fragment {
-    @Bind(R.id.volumeSpinner)
+    @BindView(R.id.volumeSpinner)
     Spinner volume;
-    @Bind(R.id.temperatureSpinner)
+    @BindView(R.id.temperatureSpinner)
     Spinner temperature;
-    @Bind(R.id.weightSpinner)
+    @BindView(R.id.weightSpinner)
     Spinner weight;
-    @Bind(R.id.lenghtSpinner)
+    @BindView(R.id.lenghtSpinner)
     Spinner lenght;
     private Settings settings;
 

@@ -35,7 +35,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -44,13 +44,13 @@ import de.greenrobot.event.EventBus;
  * Created by JOkolot on 04.11.2015.
  */
 public class FragmentAuth extends Fragment {
-    @Bind(R.id.login)
+    @BindView(R.id.login)
     View logIn;//inner login
-    @Bind(R.id.fblogin)
+    @BindView(R.id.fblogin)
     View logInFacebook;
-    @Bind(R.id.twlogin)
+    @BindView(R.id.twlogin)
     View logInTwitter;
-    @Bind(R.id.twitter_login_button)
+    @BindView(R.id.twitter_login_button)
     TwitterLoginButton twitterLoginButton;
     private CallbackManager callbackManager;
 

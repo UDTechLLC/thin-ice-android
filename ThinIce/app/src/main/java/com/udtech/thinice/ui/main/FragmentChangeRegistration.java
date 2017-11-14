@@ -31,7 +31,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -41,11 +41,11 @@ import de.greenrobot.event.EventBus;
  */
 public class FragmentChangeRegistration extends UserDataForm {
     static final int REQUEST_IMAGE_CAPTURE = 1, REQUEST_SELECT_FILE = 2;
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     SmartTabLayout tabs;
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
     private UserDataForm account, info;
     private String avatarUrl;

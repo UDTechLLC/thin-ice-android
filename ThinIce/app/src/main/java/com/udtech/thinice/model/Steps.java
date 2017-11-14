@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by JOkolot on 08.02.2016.
  */
-public class Steps extends SugarRecord<Steps> {
+public class Steps extends SugarRecord {
     private String date;
     private long steps;
 

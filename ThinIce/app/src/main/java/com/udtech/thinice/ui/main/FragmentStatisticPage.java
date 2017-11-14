@@ -20,7 +20,7 @@ import com.udtech.thinice.model.Settings;
 import com.udtech.thinice.protocol.CaloryesUtils;
 import com.udtech.thinice.utils.SessionManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
@@ -29,13 +29,13 @@ import de.greenrobot.event.EventBus;
  */
 public class FragmentStatisticPage extends Fragment {
     private static final String TOTAL_VALUE = "total", DONE_VALUE = "value", TIME = "time";
-    @Bind(R.id.done)
+    @BindView(R.id.done)
     TextView done;
-    @Bind(R.id.planned)
+    @BindView(R.id.planned)
     TextView planned;
-    @Bind(R.id.calories)
+    @BindView(R.id.calories)
     TextView calories;
-    @Bind(R.id.avarage)
+    @BindView(R.id.avarage)
     TextView avarage;
     private Long total, value, time;
 

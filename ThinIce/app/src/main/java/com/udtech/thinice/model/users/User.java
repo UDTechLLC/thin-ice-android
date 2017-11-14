@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by JOkolot on 03.11.2015.
  */
-public class User extends SugarRecord<User> {
+public class User extends SugarRecord {
     private long twitterId;
     private long facebookId;
     private String imageUrl;

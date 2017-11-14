@@ -36,7 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,11 +45,11 @@ import butterknife.OnClick;
  */
 public class FragmentRegistration extends UserDataForm {
     static final int REQUEST_IMAGE_CAPTURE = 1, REQUEST_SELECT_FILE = 2;
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     SmartTabLayout tabs;
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
     private UserDataForm account, info;
     private String avatarUrl;

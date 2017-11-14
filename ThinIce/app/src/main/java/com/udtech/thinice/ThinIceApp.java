@@ -9,6 +9,8 @@ import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
+import com.orm.SchemaGenerator;
+import com.orm.SugarDb;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -36,6 +38,8 @@ public class ThinIceApp extends com.orm.SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
+//        SchemaGenerator schemaGenerator = new SchemaGenerator(this);
+//        schemaGenerator.createDatabase(new SugarDb(this).getDB());
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         //Picasso initialisation

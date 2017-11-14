@@ -108,10 +108,10 @@ public class ThinIceService extends Service {
                 .setContentTitle("Thin Ice")
                 .setTicker("Thin Ice started")
                 .setContentText("Thin Ice foreground work")
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(
                         Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
-                                R.drawable.ic_launcher), 128, 128, false)).build();
+                                R.mipmap.ic_launcher), 128, 128, false)).build();
         startForeground(0,
                 notification);
     }
@@ -189,7 +189,7 @@ public class ThinIceService extends Service {
 
     public void createInfoNotification(String message) {
         NotificationCompat.Builder nb = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher) //иконка уведомления
+                .setSmallIcon(R.mipmap.ic_launcher) //иконка уведомления
                 .setAutoCancel(true) //уведомление закроется по клику на него
                 .setTicker(message) //текст, который отобразится вверху статус-бара при создании уведомления
                 .setContentText(message) // Основной текст уведомления

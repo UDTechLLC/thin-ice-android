@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -41,9 +41,9 @@ import de.greenrobot.event.EventBus;
  * Created by Sofi on 16.11.2015.
  */
 public class FragmentStatistics extends Fragment {
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     SmartTabLayout tabs;
     private Fragment week, twoWeeks, month, allTime;
     private MenuHolder holder;

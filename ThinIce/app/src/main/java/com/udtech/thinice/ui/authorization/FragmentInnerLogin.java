@@ -21,7 +21,7 @@ import com.udtech.thinice.ui.MainActivity;
 
 import java.util.Iterator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,9 +29,9 @@ import butterknife.OnClick;
  * Created by JOkolot on 04.11.2015.
  */
 public class FragmentInnerLogin extends Fragment {
-    @Bind(R.id.email)
+    @BindView(R.id.email)
     EditText email;
-    @Bind(R.id.pass)
+    @BindView(R.id.pass)
     EditText pass;
 
     @Nullable

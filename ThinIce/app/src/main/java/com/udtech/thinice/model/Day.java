@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.util.Pair;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Table;
 import com.udtech.thinice.model.users.User;
 import com.udtech.thinice.protocol.CaloryesUtils;
 
@@ -16,7 +17,8 @@ import java.util.List;
 /**
  * Created by JOkolot on 18.11.2015.
  */
-public class Day extends SugarRecord<Day> {
+
+public class Day extends SugarRecord {
     private int gymHours, waterIntake, junkFood, hProteinMeals, hoursSlept, carbsConsumed;
     private Date date;
     private User user;
