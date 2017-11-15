@@ -3,6 +3,7 @@ package com.udtech.thinice.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.model.users.User;
 
@@ -21,6 +22,44 @@ public class Settings {
     private boolean weight;
     private boolean lenght;
     private boolean volume;
+
+    public static int convertTemperatureToFaringeite(float temp) {
+        return Math.round((9.0f / 5.0f) * temp + 32);
+    }
+
+    public static float convertTemperatureToCelsium(float temp) {
+        return (float) ((temp - 32) / 1.8);
+    }
+
+    public static float convertWeight(float weight) {
+        return 2.2f * weight;
+    }
+
+    public static float convertLenght(float lenght) {
+        double inches = (lenght / 2.54f);
+        return (float) inches;
+    }
+
+    public static int convertVolume(float vol) {
+        return Math.round(0.008345f * vol);
+    }
+
+    public static int deconvertVolume(float volume) {
+        return Math.round(volume / 0.008345f);
+
+    }
+
+    public static int deconvertTemperature(int temp) {
+        return Math.round((temp - 32f) * 5f / 9f);
+    }
+
+    public static float deconvertWeight(float weight) {
+        return weight / 2.2f;
+    }
+
+    public static float deconvertLenght(float temp) {
+        return temp * 2.54f;
+    }
 
     public boolean isTemperature() {
         return temperature;
@@ -57,12 +96,12 @@ public class Settings {
     public Settings fetch(Context context) {
         User user = UserSessionManager.getSession(context);
         if (user != null) {
-            SharedPreferences sPref = context.getSharedPreferences(NAME+user.getId(), Context.MODE_PRIVATE);
+            SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
             temperature = sPref.getBoolean(TEMPERATURE, false);
             lenght = sPref.getBoolean(LENGHT, false);
             volume = sPref.getBoolean(VOLUME, false);
             weight = sPref.getBoolean(WEIGHT, false);
-        }else{
+        } else {
             temperature = false;
             lenght = false;
             volume = false;
@@ -72,7 +111,8 @@ public class Settings {
     }
 
     public Settings save(Context context) {
-        SharedPreferences sPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+        User user = UserSessionManager.getSession(context);
+        SharedPreferences sPref = context.getSharedPreferences(NAME + user.getId(), Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putBoolean(TEMPERATURE, temperature);
         ed.putBoolean(LENGHT, lenght);
@@ -82,38 +122,38 @@ public class Settings {
         return this;
     }
 
-    public static int convertTemperature(int temp) {
-        return Math.round((9.0f / 5.0f) * temp + 32);
-
+    public static int convertCelsiumToFarenheitFromRes(Context context, int celsiumValue){
+        return context.getResources().getIntArray(R.array.temp_values_fahrenheit)[getCelsiumPosition(context,celsiumValue)];
     }
 
-    public static int convertWeight(int weight) {
-        return Math.round(2.2f * weight);
+    public static int convertFarenheitToCelsiumFromRes(Context context, int celsiumValue){
+        return context.getResources().getIntArray(R.array.temp_values_celsium)[getFarenheitPosition(context,celsiumValue)];
     }
-
-    public static int convertLenght(int lenght) {
-        double inches = (lenght / 2.54f);
-        return (int) Math.round(inches);
+    public static int getCelsiumPosition(Context context, int celsiumValue){
+        int[] celsium = context.getResources().getIntArray(R.array.temp_values_celsium);
+        for(int i = 0; i<celsium.length; i++){
+            if(celsium[i]==celsiumValue)
+                return i;
+        }
+        return 0;
     }
-
-    public static int convertVolume(int vol) {
-        return Math.round(0.008345f * vol);
+    public static int getFarenheitPosition(Context context, int celsiumValue){
+        int[] celsium = context.getResources().getIntArray(R.array.temp_values_celsium);
+        for(int i = 0; i<celsium.length; i++){
+            if(celsium[i]==celsiumValue)
+                return i;
+        }
+        return 0;
     }
-
-    public static int deconvertVolume(int volume) {
-        return Math.round(volume / 0.008345f);
-
-    }
-
-    public static int deconvertTemperature(int temp) {
-        return Math.round((temp - 32f) * 5f / 9f);
-    }
-
-    public static int deconvertWeight(int weight) {
-        return Math.round(weight / 2.2f);
-    }
-
-    public static int deconvertLenght(int temp) {
-        return Math.round(temp / 2.54f);
+    public static int getTemperatureByPosition(Context context, int position, boolean farenhait){
+        if(position <0)
+            position = 0;
+        if(position>=3)
+            position = 2;
+        if(farenhait){
+            return context.getResources().getIntArray(R.array.temp_values_fahrenheit)[position];
+        }else{
+            return context.getResources().getIntArray(R.array.temp_values_celsium)[position];
+        }
     }
 }

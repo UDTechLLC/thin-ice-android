@@ -2,15 +2,14 @@ package com.udtech.thinice.model.users;
 
 import com.orm.SugarRecord;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by JOkolot on 03.11.2015.
  */
-public class User extends SugarRecord<User>{
-    private int twitterId;
-    private int facebookId;
+public class User extends SugarRecord<User> {
+    private long twitterId;
+    private long facebookId;
     private String imageUrl;
     private String firstName;
     private String lastName;
@@ -18,25 +17,25 @@ public class User extends SugarRecord<User>{
     private String email;
     private Boolean sex;//true - male, false female;
     private Date dateOfBirth;
-    private Long weight;
-    private Long height;
+    private float weight;
+    private float height;
 
     public User() {
     }
 
-    public int getTwitterId() {
+    public long getTwitterId() {
         return twitterId;
     }
 
-    public void setTwitterId(Integer twitterId) {
+    public void setTwitterId(long twitterId) {
         this.twitterId = twitterId;
     }
 
-    public int getFacebookId() {
+    public long getFacebookId() {
         return facebookId;
     }
 
-    public void setFacebookId(Integer facebookId) {
+    public void setFacebookId(long facebookId) {
         this.facebookId = facebookId;
     }
 
@@ -96,26 +95,26 @@ public class User extends SugarRecord<User>{
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Long getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(Long weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
-    public Long getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public void setHeight(Long height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof  User)
-            return ((User)o).getId() == getId();
+        if (o instanceof User)
+            return ((User) o).getId() == getId();
         return super.equals(o);
     }
 }

@@ -15,6 +15,9 @@ import com.udtech.thinice.UserSessionManager;
 import com.udtech.thinice.eventbus.model.user.SaveUser;
 import com.udtech.thinice.model.users.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,16 +26,25 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by JOkolot on 05.11.2015.
  */
-public class FragmentAccount extends UserDataForm{
-    @Bind(R.id.email) EditText email;
-    @Bind(R.id.pass) EditText pass;
-    @Bind(R.id.passConfirm) EditText passConfirm;
-    @Bind(R.id.emailErr) TextView emailError;
-    @Bind(R.id.passErr) TextView passError;
-    @Bind(R.id.passConfirmErr) TextView passConfirmError;
-    @Bind(R.id.emailStatus) ImageView emailStatus;
-    @Bind(R.id.passStatus) ImageView passStatus;
-    @Bind(R.id.passConfirmStatus) ImageView passConfirmStatus;
+public class FragmentAccount extends UserDataForm {
+    @Bind(R.id.email)
+    EditText email;
+    @Bind(R.id.pass)
+    EditText pass;
+    @Bind(R.id.passConfirm)
+    EditText passConfirm;
+    @Bind(R.id.emailErr)
+    TextView emailError;
+    @Bind(R.id.passErr)
+    TextView passError;
+    @Bind(R.id.passConfirmErr)
+    TextView passConfirmError;
+    @Bind(R.id.emailStatus)
+    ImageView emailStatus;
+    @Bind(R.id.passStatus)
+    ImageView passStatus;
+    @Bind(R.id.passConfirmStatus)
+    ImageView passConfirmStatus;
 
     @Nullable
     @Override
@@ -45,7 +57,7 @@ public class FragmentAccount extends UserDataForm{
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         User user = UserSessionManager.getSession(getContext());
-        if(user != null){
+        if (user != null) {
             email.setText(user.getEmail());
         }
         email.setOnTouchListener(new View.OnTouchListener() {
@@ -84,53 +96,77 @@ public class FragmentAccount extends UserDataForm{
     }
 
     @OnClick(R.id.save)
-    void save(){
-        EventBus.getDefault().post(new SaveUser());
+    void save() {
+        EventBus.getDefault().post(new SaveUser(true));
+    }
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
     @Override
     public User collectData(User user) {
-        String email, pass,passConfirm;
+        String email, pass, passConfirm;
         email = this.email.getText().toString();
         pass = this.pass.getText().toString();
         passConfirm = this.passConfirm.getText().toString();
-        if(email!= null?email.equals(""):true){
+        if (email != null ? email.equals("") : true) {
             showEmailError("Empty e-mail.");
+            return null;
+        }else if(!isEmailValid(email)){
+            showEmailError("Email isn't valid.");
+            return null;
         }
-        if(pass != null?pass.equals(""):true) {
-            showPassError("Empty password.");
-        }else if(passConfirm != null?passConfirm.equals("")||!passConfirm.equals(pass):true){
-            showPassConfirmError("Wrong confirm password.");
-        }else{
+        int i = 0;
+        int spaces = 0;
+        while( i < pass.length() ){
+            if( pass.charAt(i) == ' ' ) {
+                spaces++;
+            }
+            i++;
+        }
+        if (pass != null ? pass.equals("") : true) {
+            showPassError("Field empty.");
+        }else if(spaces==pass.length()){
+            showPassError("Must conatins any character.");
+            showPassConfirmError("Must conatins any character.");
+        } else if (passConfirm != null ? passConfirm.equals("") || !passConfirm.equals(pass) : true) {
+            showPassConfirmError("Password doesn't match.");
+        } else {
             user.setEmail(email);
             user.setPassword(pass);
             return user;
         }
         return null;
     }
-    private void showEmailError(String string){
+
+    private void showEmailError(String string) {
         email.setText("");
         emailError.setText(string);
         email.setHint("");
         emailError.setVisibility(View.VISIBLE);
         emailStatus.setVisibility(View.VISIBLE);
-        emailStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        emailStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
-    private void showPassError(String string){
+
+    private void showPassError(String string) {
         passError.setText(string);
         pass.setHint("");
         pass.setText("");
         passConfirm.setText("");
         passError.setVisibility(View.VISIBLE);
         passStatus.setVisibility(View.VISIBLE);
-        passStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        passStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
-    private void showPassConfirmError(String string){
+
+    private void showPassConfirmError(String string) {
         passConfirmError.setText(string);
         passConfirm.setHint("");
         passConfirm.setText("");
         pass.setText("");
         passConfirmError.setVisibility(View.VISIBLE);
         passConfirmStatus.setVisibility(View.VISIBLE);
-        passConfirmStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("")?R.mipmap.ic_accept:R.mipmap.ic_failed));
+        passConfirmStatus.setImageDrawable(getActivity().getResources().getDrawable(string.equals("") ? R.mipmap.ic_accept : R.mipmap.ic_failed));
     }
 }

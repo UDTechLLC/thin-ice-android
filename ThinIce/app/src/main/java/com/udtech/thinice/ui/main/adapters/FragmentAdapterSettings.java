@@ -29,9 +29,13 @@ public class FragmentAdapterSettings extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch(position){
-            case  0 :{return "Measurements";}
-            case  1 :{return "Notifications";}
+        switch (position) {
+            case 0: {
+                return "Measurements";
+            }
+            case 1: {
+                return "Notifications";
+            }
         }
         return "";
     }

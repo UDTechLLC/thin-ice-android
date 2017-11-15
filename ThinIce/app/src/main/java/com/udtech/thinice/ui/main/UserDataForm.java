@@ -7,6 +7,6 @@ import com.udtech.thinice.model.users.User;
 /**
  * Created by JOkolot on 06.11.2015.
  */
-public abstract class UserDataForm extends Fragment{
+public abstract class UserDataForm extends Fragment {
     abstract User collectData(User user);
 }

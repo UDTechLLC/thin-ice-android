@@ -2,19 +2,11 @@ package com.udtech.thinice.ui.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -26,17 +18,17 @@ import android.widget.ImageView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.udtech.thinice.R;
 import com.udtech.thinice.UserSessionManager;
+import com.udtech.thinice.eventbus.model.devices.DeleteDevice;
 import com.udtech.thinice.eventbus.model.user.SaveUser;
 import com.udtech.thinice.model.users.User;
 import com.udtech.thinice.ui.LoginActivity;
 import com.udtech.thinice.ui.MainActivity;
 import com.udtech.thinice.ui.authorization.adapters.FragmentAdapterRegistration;
+import com.udtech.thinice.utils.AchievementManager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 
 import butterknife.Bind;
@@ -92,6 +84,8 @@ public class FragmentChangeRegistration extends UserDataForm {
         view.findViewById(R.id.action).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new DeleteDevice(null));
+                AchievementManager.getInstance(getContext()).commit(getContext());
                 Intent logout = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(logout);
                 getActivity().finish();
@@ -116,25 +110,23 @@ public class FragmentChangeRegistration extends UserDataForm {
     }
 
     public void onEvent(SaveUser event) {
-        User user = collectData(UserSessionManager.getSession(getActivity()));
-        if(user!=null){
+        User user = UserSessionManager.getSession(getActivity());
+        if (event.isAccount()) {
+            user = account.collectData(user);
+        } else {
+            user = info.collectData(user);
+        }
+
+        if (user != null) {
+            user.setImageUrl(avatarUrl);
             user.save();
             getActivity().onBackPressed();
         }
+
     }
+
     @Override
     User collectData(User user) {
-        account.collectData(user);
-        user.setImageUrl(avatarUrl);
-        user = account.collectData(user);
-        if (user == null) {
-            viewPager.setCurrentItem(0);
-        } else {
-            user = info.collectData(user);
-            if (user == null) {
-                viewPager.setCurrentItem(1);
-            }
-        }
         return user;
     }
 
@@ -142,7 +134,7 @@ public class FragmentChangeRegistration extends UserDataForm {
     void getAvatar() {
         final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Change photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -159,144 +151,26 @@ public class FragmentChangeRegistration extends UserDataForm {
     }
 
     private void takePhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        Intent intent = new Intent(getActivity(), CropActivity.class);
+        intent.putExtra(CropActivity.TAKE_PHOTO_FLAG, true);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
     private void selectFromGallery() {
-        Intent intent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(
-                Intent.createChooser(intent, "Select File"),
-                REQUEST_SELECT_FILE);
+        Intent intent = new Intent(getActivity(), CropActivity.class);
+        intent.putExtra(CropActivity.CHOOSE_PHOTO_FLAG, true);
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private String saveBitmap(Bitmap bmp) {
-        ContextWrapper cw = new ContextWrapper(getActivity());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File destFile = new File(directory, "profile.jpg");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(destFile);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return destFile.getAbsolutePath();
-    }
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (resultCode == getActivity().RESULT_OK) {
-                    Bitmap bmp = null;
-                    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-                        Bundle extras = data.getExtras();
-                        bmp = (Bitmap) extras.get("data");
-                        avatarUrl = saveBitmap(cropByMask(bmp));
-                    } else if (requestCode == REQUEST_SELECT_FILE && resultCode == getActivity().RESULT_OK) {
-                        Uri selectedImageUri = data.getData();
-                        try {
-                            bmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                            avatarUrl = saveBitmap(cropByMask(bmp));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    updateView();
-                }
-            }
-        }).start();
-    }
-
-    private Bitmap cropSquare(Bitmap bitmap) {
-        Bitmap dstBmp = null;
-        if (bitmap.getWidth() >= bitmap.getHeight()) {
-
-            dstBmp = Bitmap.createBitmap(
-                    bitmap,
-                    bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
-                    0,
-                    bitmap.getHeight(),
-                    bitmap.getHeight()
-            );
-
-        } else {
-
-            dstBmp = Bitmap.createBitmap(
-                    bitmap,
-                    0,
-                    bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                    bitmap.getWidth(),
-                    bitmap.getWidth()
-            );
+        if (resultCode == getActivity().RESULT_OK) {
+            avatarUrl = data.getStringExtra("path");
+            UserSessionManager.getSession(getContext()).setImageUrl(avatarUrl);
+            UserSessionManager.getSession(getContext()).save();
+            updateView();
         }
-        return dstBmp;
-    }
-
-    private Bitmap scaleBitmapToMask(Bitmap src, Bitmap mask) {
-        return Bitmap.createScaledBitmap(src, mask.getWidth(), mask.getHeight(), true);
-    }
-
-    private Bitmap cropByMask(Bitmap bmp) {
-        Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask);
-        bmp = scaleBitmapToMask(cropSquare(bmp), mask);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            options.inMutable = true;
-        }
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap source = bmp;
-        Bitmap bitmap;
-        if (source.isMutable()) {
-            bitmap = source;
-        } else {
-            bitmap = source.copy(Bitmap.Config.ARGB_8888, true);
-            source.recycle();
-        }
-        bitmap.setHasAlpha(true);
-
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        canvas.drawBitmap(mask, 0, 0, paint);
-        mask.recycle();
-        return addBorder(bitmap);
-    }
-
-    private Bitmap addBorder(Bitmap bmp) {
-        Bitmap mask = BitmapFactory.decodeResource(getResources(), R.mipmap.mask_add);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            options.inMutable = true;
-        }
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap source = bmp;
-        Bitmap bitmap;
-        if (source.isMutable()) {
-            bitmap = source;
-        } else {
-            bitmap = source.copy(Bitmap.Config.ARGB_8888, true);
-            source.recycle();
-        }
-        bitmap.setHasAlpha(true);
-
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
-        canvas.drawBitmap(mask, 0, 0, paint);
-        mask.recycle();
-        return bitmap;
     }
 
     private void updateView() {
