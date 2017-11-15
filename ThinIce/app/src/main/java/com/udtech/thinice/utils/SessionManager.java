@@ -41,17 +41,20 @@ public class SessionManager {//Concept was: that when you add device/change temp
             manager = new SessionManager(day, context);
         if (!manager.day.equals(day)) {
             manager.forceClose();
+            EventBus.getDefault().unregister(manager);
             EventBus.getDefault().post(day);
             manager = new SessionManager(day, context);
         }
         return getManager(context);
     }
 
-    public static SessionManager getManager(Context context) {
+    public static synchronized SessionManager getManager(Context context) {
         if(manager!=null&&manager.day!=null&&!com.udtech.thinice.utils.DateUtils.isToday(manager.day.getDate())){
+            EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
             Day day = new Day(UserSessionManager.getSession(context));
             day.save();
             SessionManager.initDay(day, context);
+            EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
         }
 
         return manager;

@@ -80,7 +80,7 @@ public class Session extends SugarRecord<Session> {
     }
 
     public long getStep() {
-        return step;
+        return 0;
     }
 
     public Integer getDutation() {

@@ -63,6 +63,26 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     private LinearLayout menu;
     private int openedMenuItem;
     private ProgressDialog mProgressDialog;
+    private boolean isOpened;
+    private boolean isDayWasChanged = false;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (DeviceManager.getDevice() != null && !DeviceManager.getDevice().isDisabled())
+            EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
+        try {
+            checkDay();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        isOpened = true;
+        if (isDayWasChanged) {
+            isDayWasChanged = false;
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentDashBoard()).commit();
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -179,6 +199,8 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
 
     @Override
     public void showMenuItem(int position) {
+        if (DeviceManager.getDevice() != null && !DeviceManager.getDevice().isDisabled())
+            EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
         if (position != openedMenuItem)
             switch (position) {
                 case MenuHolder.SETTINGS: {
@@ -226,7 +248,7 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     }
 
     private void openMenuItem(int position) {
-        if (DeviceManager.getDevice() != null&&!DeviceManager.getDevice().isDisabled())
+        if (DeviceManager.getDevice() != null && !DeviceManager.getDevice().isDisabled())
             EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
         if (position != openedMenuItem)
             switch (position) {
@@ -287,8 +309,10 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(openedMenuItem==MenuHolder.DASHBOARD){
+                if (openedMenuItem == MenuHolder.DASHBOARD && isOpened) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentDashBoard()).commit();
+                } else if (!isOpened) {
+                    isDayWasChanged = true;
                 }
             }
         });
@@ -321,6 +345,9 @@ public class MainActivity extends SlidingFragmentActivity implements MenuHolder 
     @Override
     protected void onPause() {
         super.onPause();
+        isOpened = false;
+        if (DeviceManager.getDevice() != null && !DeviceManager.getDevice().isDisabled())
+            EventBus.getDefault().post(new DeviceChanged(DeviceManager.getDevice()));
         AchievementManager.getInstance(getApplicationContext()).commit(getApplicationContext()); // committing for unexpected closing of app
     }
 

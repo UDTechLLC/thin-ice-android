@@ -149,7 +149,6 @@ public class FragmentAuth extends Fragment {
                                             innerUser.setFacebookId(id);
                                             saveSession(innerUser);
                                         }
-
                                     }
                                 }).executeAsync();
                     }

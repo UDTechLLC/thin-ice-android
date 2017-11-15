@@ -31,9 +31,6 @@ public class Day extends SugarRecord<Day> {
     private Float totalCallories;
     private boolean isRecalcing = false;
 
-    public float getTotalCallories() {
-        return totalCallories;
-    }
 
     public Pair<Long, Long> getAVGTempWithTimeCoficient() {
         List<Session> sessions = Session.find(Session.class, "day = " + getId(), null);
@@ -142,7 +139,7 @@ public class Day extends SugarRecord<Day> {
     }
 
     public synchronized float getTotalCalories() {
-        if (totalCallories == null)
+        if (totalCallories == null||totalCallories==0)
             recalc();
         return totalCallories;
     }
@@ -270,7 +267,7 @@ public class Day extends SugarRecord<Day> {
     }
 
     @Override
-    public void save() {
+    public synchronized void save() {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         Calendar calendar2 = new GregorianCalendar();
@@ -288,5 +285,9 @@ public class Day extends SugarRecord<Day> {
         }
         if (!created)
             super.save();
+    }
+
+    public void saveChanges() {
+        super.save();
     }
 }

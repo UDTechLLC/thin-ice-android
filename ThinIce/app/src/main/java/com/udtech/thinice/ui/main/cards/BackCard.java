@@ -110,7 +110,7 @@ public class BackCard extends FrameLayout implements CardEventListener {
             InputMethodManager imm = (InputMethodManager) (getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        day.save();
+        day.saveChanges();
         AchievementManager.getInstance(getContext()).dayChanged(getContext());
     }
 

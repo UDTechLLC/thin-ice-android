@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,34 +105,34 @@ public class FragmentStatistics extends Fragment {
                     if (day.getUser().getId() == UserSessionManager.getSession(getContext()).getId()) {
                         Pair<Long, Long> data = day.getAVGTempWithTimeCoficient();
                         long dayTime = data.first;
-                        long dayCal = (long)((float)data.second);
+                        long dayCal = (long) ((float) data.second);
                         calendar = new GregorianCalendar();
                         calendar.setTime(new Date(dayTime));
                         if (DateUtils.isSameWeek(new Date(), day.getDate())) {
-                            weekTime+= data.second*1000;
+                            weekTime += data.second * 1000;
                             Pair<Long, Long> avgTemp = day.getAVGTempWithTimeCoficient();
                             avgTempListWeek.add(avgTemp);
                             weekCal += day.getTotalDataForStatistics().second;
                         }
                         if (DateUtils.inTwoWeeks(new Date(), day.getDate())) {
-                            twoWeekTime+= data.second*1000;
+                            twoWeekTime += data.second * 1000;
                             Pair<Long, Long> avgTemp = day.getAVGTempWithTimeCoficient();
                             avgTempListTwoWeek.add(avgTemp);
                             twoWeekCal += day.getTotalDataForStatistics().second;
                             avgTempListTwoWeek.add(avgTemp);
                         }
                         if (DateUtils.isSameMonth(new Date(), day.getDate())) {
-                            monthTime+= data.second*1000;
+                            monthTime += data.second * 1000;
                             Pair<Long, Long> avgTemp = day.getAVGTempWithTimeCoficient();
                             avgTempListMonth.add(avgTemp);
                             monthCal += day.getTotalDataForStatistics().second;
                             monthTotalCal += (long) SessionManager.getManager(getContext()).getTargetCalories();
                         }
-                            totalTime+= data.second*1000;
-                            Pair<Long, Long> avgTemp = day.getAVGTempWithTimeCoficient();
-                            avgTempListTotal.add(avgTemp);
-                            totalCal += day.getTotalDataForStatistics().second;
-                            totalTotalCal += (long) SessionManager.getManager(getContext()).getTargetCalories();
+                        totalTime += data.second * 1000;
+                        Pair<Long, Long> avgTemp = day.getAVGTempWithTimeCoficient();
+                        avgTempListTotal.add(avgTemp);
+                        totalCal += day.getTotalDataForStatistics().second;
+                        totalTotalCal += (long) SessionManager.getManager(getContext()).getTargetCalories();
                     }
                 }
                 days = Day.findAll(Day.class);
@@ -193,7 +194,7 @@ public class FragmentStatistics extends Fragment {
                 diff /= 1000;
                 diff /= 3600;
                 diff /= 24;
-                final long finalTotalTotalCal =  count * 125;
+                final long finalTotalTotalCal = count * 125;
                 final long finalTotalCal = totalCal;
                 final long finalTotalTime = totalTime;
                 final int finalAvgTempWeek = avgTempWeek;
